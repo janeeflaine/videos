@@ -356,25 +356,78 @@ export function oculosRaioP(P) {
   pop();
 }
 
-// —— 10. BANHEIRO (cômodo seguro): porta aberta, azulejos, sem janela; lanterna e rádio de pilha ——
+// —— 10. BANHEIRO (cômodo seguro, sem janela): azulejo de metrô, piso xadrez, banheira com cortina e patinho,
+//    espelho, pia de coluna, vaso com caixa acoplada, toalha; lanterna e rádio de pilha no chão ——
 export function banheiro(P) {
   push(); translate(P.x, P.y); scale(P.s ?? 1);
-  shape(rect(-200, -340, 400, 340), { fill: PAL.tile, lw: 7, shade: () => {
-    for (let y = -340; y < 0; y += 40) stroke([[-200, y], [200, y]], 3, { line: PAL.tileS });
-    for (let x = -200; x < 200; x += 40) stroke([[x, -340], [x, 0]], 3, { line: PAL.tileS });
+  const T = { paint: '#bfe3dc', paintS: '#a6d2ca', tile: '#f6f3ea', grout: '#d5cfc0', floorA: '#e9e4d8', floorB: '#5c6b8a', white: '#ffffff', whiteS: '#dfe6ea', curtain: '#ff9fb2', curtainS: '#e77f95' };
+  const top = P.tall ? -1000 : -400, fl = P.tall ? 380 : 90, fw = P.tall ? 200 : 60, rows = P.tall ? 8 : 3;
+  // parede: pintura em cima, azulejo de metrô embaixo
+  shape(rect(-280, top, 560, -top), { fill: T.paint, lw: 7, shade: () => {
+    fillOnly(rect(-280, -200, 560, 200), T.tile, { boil: 0 });
+    for (let r = 0; r < 6; r++) { const y = -200 + r * 34; stroke([[-280, y], [280, y]], 3, { line: T.grout });
+      for (let x = -280 + (r % 2) * 35; x < 280; x += 70) stroke([[x, y], [x, y + 34]], 3, { line: T.grout }); }
+    fillOnly(rect(-280, -210, 560, 14), '#7fb9ae', { boil: 0 });
   } });
-  // vaso + pia
-  shape(rr(70, -210, 70, 100, 10), { fill: '#ffffff', lw: 6 });
-  shape(spline([[40, -110], [170, -110], [160, -50], [120, -20], [90, -20], [50, -50]]), { fill: '#ffffff', lw: 6 });
-  shape(rr(-170, -200, 110, 30, 8), { fill: '#ffffff', lw: 6 }); shape(rr(-126, -170, 22, 170, 6), { fill: '#ffffff', lw: 5 });
-  // lanterna + rádio
-  push(); translate(-90, -10); rotate(-.15);
-  shape(rr(-40, -26, 70, 26, 8), { fill: '#3f6fd1', lw: 5 }); shape(rr(28, -32, 22, 38, 6), { fill: '#e0e0d8', lw: 5 });
-  shape([[50, -30], [140, -60], [140, 34], [50, 4]], { fill: '#fff6b0', stroke: false, alpha: .5 });
+  // piso xadrez em perspectiva
+  shape([[-280, 0], [280, 0], [280 + fw, fl], [-280 - fw, fl]], { fill: T.floorA, lw: 6, shade: () => {
+    for (let r = 0; r < rows; r++) for (let c = 0; c < 10; c++) if ((r + c) % 2) {
+      const h = fl / rows, y0 = r * h, y1 = y0 + h, w0 = 280 + y0 / fl * fw, w1 = 280 + y1 / fl * fw;
+      const xa = u => -1 + u * 2;
+      fillOnly([[xa(c / 10) * w0, y0], [xa((c + 1) / 10) * w0, y0], [xa((c + 1) / 10) * w1, y1], [xa(c / 10) * w1, y1]], T.floorB, { boil: .2 });
+    }
+  } });
+  if (P.tall) {
+    // luminária pendente + prateleira com estoque de papel higiênico (o kit de emergência do Ademar)
+    stroke([[40, -1000], [40, -610]], 5);
+    shape(spline([[-20, -610], [100, -610], [80, -570], [0, -570]]), { fill: '#ffd23f', lw: 6 });
+    shape([[0, -570], [80, -570], [150, -410], [-70, -410]], { fill: '#fff6b0', stroke: false, alpha: .35 });
+    shape(rr(-250, -410, 220, 16, 6), { fill: '#c9a067', lw: 5 });
+    for (let k = 0; k < 4; k++) { shape(rr(-240 + k * 52, -470, 46, 60, 10), { fill: '#ffffff', lw: 5 }); shape(ell(-217 + k * 52, -440, 8, 8, 10), { fill: '#d5cfc0', lw: 3 }); }
+    for (let k = 0; k < 3; k++) { shape(rr(-214 + k * 52, -530, 46, 60, 10), { fill: '#ffffff', lw: 5 }); shape(ell(-191 + k * 52, -500, 8, 8, 10), { fill: '#d5cfc0', lw: 3 }); }
+    // quadrinho de patinho
+    shape(rect(130, -470, 120, 100), { fill: '#c9a067', lw: 6 }); shape(rect(142, -458, 96, 76), { fill: '#bfe3f5', lw: 4 });
+    shape(ell(190, -410, 22, 14, 14), { fill: '#ffd23f', lw: 4 }); shape(ell(202, -428, 11, 10, 12), { fill: '#ffd23f', lw: 4 });
+  }
+  // banheira (esquerda) com cortina puxada e patinho
+  stroke([[-276, -330], [-40, -330]], 7, { line: '#b9c2c9' }); stroke([[-276, -330], [-40, -330]], 2);
+  shape(spline([[-270, -326], [-200, -330], [-196, -250], [-210, -170], [-236, -120], [-268, -128]]), { fill: T.curtain, lw: 6, shade: () => {
+    fillOnly(rect(-230, -340, 40, 240), T.curtainS, { boil: .3 });
+    for (const [x, y] of [[-250, -290], [-222, -240], [-248, -190], [-225, -150]]) dot(x, y, 6, '#ffffff');
+  } });
+  for (let k = 0; k < 4; k++) stroke(arc(-260 + k * 22, -330, 6, 6, 0, TAU, 10), 3);
+  shape(rr(-262, -120, 226, 96, 30), { fill: T.white, lw: 7, shade: () => fillOnly(rect(-262, -60, 230, 40), T.whiteS, { boil: .3 }) });
+  shape(rr(-270, -128, 242, 22, 11), { fill: T.white, lw: 6 });
+  for (const x of [-236, -66]) shape(spline([[x - 12, -26], [x + 12, -26], [x + 8, 2], [x - 8, 2]]), { fill: '#e2b33c', lw: 5 });
+  // patinho de borracha na borda
+  push(); translate(-90, -132);
+  shape(ell(0, 0, 26, 18, 18), { fill: '#ffd23f', lw: 5 }); shape(ell(16, -20, 14, 13, 14), { fill: '#ffd23f', lw: 5 });
+  shape([[28, -22], [42, -18], [28, -14]], { fill: '#ff8a2a', lw: 4 }); dot(20, -24, 3);
   pop();
-  shape(rr(-30, -60, 90, 60, 10), { fill: '#e8392b', lw: 5, shade: () => fillOnly(ell(0, -30, 18, 18, 14), '#3a3a44', { boil: .2 }) });
-  stroke([[40, -60], [60, -100]], 4);
-  // batente de porta (vista de dentro)
-  shape(rect(-220, -360, 30, 360), { fill: '#f4f1ea', lw: 6 }); shape(rect(190, -360, 30, 360), { fill: '#f4f1ea', lw: 6 }); shape(rect(-220, -380, 440, 30), { fill: '#f4f1ea', lw: 6 });
+  // espelho oval + pia de coluna (centro)
+  shape(ell(40, -300, 58, 72, 30), { fill: PAL.brass, lw: 7 });
+  shape(ell(40, -300, 46, 60, 30), { fill: '#cfeaf2', lw: 5, shade: () => { stroke([[16, -330], [40, -300]], 6, { line: '#ffffff' }); stroke([[24, -300], [36, -288]], 5, { line: '#ffffff' }); } });
+  shape(rr(26, -150, 28, 150, 10), { fill: T.white, lw: 6, shade: () => fillOnly(rect(42, -150, 14, 150), T.whiteS, { boil: .2 }) });
+  shape(spline([[-26, -186], [106, -186], [96, -150], [40, -136], [-16, -150]]), { fill: T.white, lw: 6 });
+  shape(rr(32, -212, 16, 26, 5), { fill: '#b9c2c9', lw: 4 }); stroke(quad([40, -210], [40, -226], [58, -220], 8), 5);
+  // toalha listrada na barra
+  stroke([[150, -270], [270, -270]], 6, { line: '#b9c2c9' });
+  shape(rr(170, -276, 80, 130, 10), { fill: '#3f6fd1', lw: 6, shade: () => { fillOnly(rect(170, -186, 80, 14), '#ffffff', { boil: .2 }); fillOnly(rect(170, -166, 80, 8), '#ffffff', { boil: .2 }); } });
+  // vaso com caixa acoplada (direita)
+  shape(rr(170, -150, 96, 70, 12), { fill: T.white, lw: 6, shade: () => fillOnly(rect(240, -150, 30, 70), T.whiteS, { boil: .2 }) });
+  shape(rr(178, -160, 80, 16, 6), { fill: T.white, lw: 5 }); shape(rr(244, -138, 18, 8, 4), { fill: '#b9c2c9', lw: 3 });
+  shape(spline([[140, -80], [270, -80], [262, -46], [236, -24], [228, 0], [186, 0], [180, -24], [150, -46]]), { fill: T.white, lw: 6, shade: () => fillOnly(rect(220, -80, 60, 80), T.whiteS, { boil: .2 }) });
+  shape(ell(205, -82, 66, 12, 20), { fill: '#eef3f5', lw: 5 });
+  // lanterna acesa + rádio de pilha no chão
+  push(); translate(-170, 40); rotate(-.12);
+  shape([[30, -12], [190, -70], [190, 50], [30, 12]], { fill: '#fff6b0', stroke: false, alpha: .45 });
+  shape(rr(-50, -14, 70, 28, 8), { fill: '#3f6fd1', lw: 5 }); shape(rr(18, -20, 20, 40, 6), { fill: '#e0e0d8', lw: 5 });
+  pop();
+  push(); translate(80, 52);
+  stroke([[34, -40], [70, -96]], 4); dot(70, -96, 5);
+  shape(rr(-50, -44, 100, 56, 12), { fill: '#e8392b', lw: 5, shade: () => fillOnly(rect(-50, -44, 100, 12), '#c22a1e', { boil: .2 }) });
+  shape(ell(-18, -16, 18, 18, 16), { fill: '#3a3a44', lw: 4, shade: () => { for (let k = -2; k <= 2; k++) stroke([[-34, -16 + k * 6], [-2, -16 + k * 6]], 2, { line: '#6b6b78' }); } });
+  shape(rr(10, -30, 30, 12, 4), { fill: '#fff6b0', lw: 3 });
+  pop();
   pop();
 }

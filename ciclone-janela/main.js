@@ -412,15 +412,15 @@ function s8(t) { // 79,8–91,3: o que fazer — montagem com o mesmo enquadrame
   } else {
     // longe do vidro → banheiro (cômodo interno) → Defesa Civil
     bands(['#3f6f86'], 0, 1920);
-    cam(540, 1100, 1.6, () => {
-      banheiro({ x: 540, y: 1500, s: 1.15 });
+    cam(540, 1250, 1.75, () => {
+      banheiro({ x: 540, y: 1500, s: 1.15, tall: true });
       const tt = st(n), inn = ss(seg(n, 86.1, 87.6));
       ademar({ x: lerp(1100, 420, inn), y: 1500, s: .55, t: tt, lid: .3, look: [-.4, 0], mouth: { o: 0, sm: .2 } });
       kika({ x: lerp(1250, 620, inn), y: 1500, s: .7, t: tt, lid: .4, look: [-.6, 0] });
     });
-    if (n > 86.2) sign('LONGE DO VIDRO', 540, 300, { fill: '#ffd23f', sz: 48, pop: popIn(n, 86.2) });
-    if (n > 87.4) sign('CÔMODO INTERNO', 540, 410, { fill: '#ffffff', sz: 48, pop: popIn(n, 87.4) });
-    if (n > 88.6) { sign('DEFESA CIVIL · 199', 540, 1720, { fill: '#ff8a2a', sz: 58, rot: -.03, pop: popIn(n, 88.6) }); }
+    if (n > 86.2) sign('LONGE DO VIDRO', 540, 1590, { fill: '#ffd23f', sz: 48, pop: popIn(n, 86.2) });
+    if (n > 87.4) sign('CÔMODO INTERNO', 540, 1700, { fill: '#ffffff', sz: 48, pop: popIn(n, 87.4) });
+    if (n > 88.6) { sign('DEFESA CIVIL · 199', 540, 1830, { fill: '#ff8a2a', sz: 58, rot: -.03, pop: popIn(n, 88.6) }); }
   }
 }
 
