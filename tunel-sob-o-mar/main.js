@@ -571,6 +571,45 @@ function s11(t, u, D) {
   NEI({ x: 840, y: 1500, t, face: -1, look: [-1, .1], lid: .6, armR: { h: [80, lerp(60, -40, ss(seg(t, tSo + .3, tSo + .9)))], bend: 40 } });
 }
 
+
+// 11b — a resposta: o túnel pronto, com carros, e o navio passando em cima (espelha a abertura)
+function car(x, y, col, dir = 1) {
+  push(); translate(x, y); scale(dir, 1);
+  shape(rr(-70, -46, 140, 46, 16), { fill: col, lw: 6 });
+  shape(spline([[-40, -46], [-24, -78], [34, -78], [52, -46]]), { fill: col, lw: 6 });
+  shape([[-28, -50], [-18, -70], [8, -70], [8, -50]], { fill: '#bfe9ff', lw: 4 }); shape([[16, -50], [16, -70], [30, -70], [42, -50]], { fill: '#bfe9ff', lw: 4 });
+  for (const wx of [-40, 40]) shape(ell(wx, 0, 17, 17, 14), { fill: '#2b2a33', lw: 5 });
+  shape(ell(66, -28, 7, 6, 8), { fill: '#fff1a8', lw: 3 });
+  pop();
+}
+function s11b(t, u, D) {
+  const t0 = VO['11b'], k = eio(seg(t, t0 + .6, t0 + (DURS['11b'] ?? 3.2) + .6));
+  cam(540, lerp(3560, 2280, k), lerp(1.25, .62, k), 0, t);
+  bands(['#ffd59a', '#ffc98a', '#f7b979'], -1400, 1000, -1400, 2600);
+  shape(ell(860, 640, 70, 70, 30), { fill: '#fff1c4', lw: 7 });
+  bands(WATERS, 1000, 3000, -1400, 2600);
+  for (let i = 0; i < 9; i++) { const y = 1300 + i * 190, x = (hash(i) * 1600 + t * (i % 2 ? 40 : -40)) % 1800 - 300; shape(spline([[x, y], [x + 30, y - 14], [x + 60, y], [x + 30, y + 14]]), { fill: 'rgba(255,255,255,.18)', lw: 4 }); }
+  waves(1000, t, -1400, 2600);
+  ship(lerp(1500, -200, seg(t, t0 - .3, t0 + 6)), 1000, t);
+  soil(-1400, 3000, 4000, 2400, ['#d8c08a', '#c4a874', '#b19463', '#9c8257'], 3);
+  stroke(spline([[-1400, 3000], [0, 2990], [800, 3008], [2600, 2996]], false), 7);
+  // túnel pronto: anéis, luz, pista e carros
+  const cy = 3560, R = 160;
+  lining(-1400, 2600, cy, R, 32);
+  fillOnly(rect(-1400, cy - R, 4000, 2 * R), '#3d4554', { boil: 0 });
+  for (let x = -1380; x < 2600; x += 140) dot(x, cy - R + 18, 7, '#ffe28a');
+  shape(rect(-1400, cy + 70, 4000, 40), { fill: '#5d6672', lw: 6 });
+  for (let x = -1400 + ((t * 300) % 120); x < 2600; x += 120) stroke([[x, cy + 90], [x + 50, cy + 90]], 5, { line: '#f2f2ea' });
+  const COLS = ['#e8392b', '#3f6fd1', '#f2c230', '#3fa66b', '#ff8fd0', '#f4f1ea'];
+  for (let i = 0; i < 8; i++) {
+    const dir = i % 2 ? -1 : 1, sp = 420 + hash(i) * 160, span = 4200;
+    const x = ((hash(i * 3) * span + dir * t * sp) % span + span) % span - 1500;
+    car(x, cy + (dir > 0 ? 66 : 40), COLS[i % COLS.length], dir);
+  }
+  // Pingo, de volta ao mar, olhando o túnel lá de cima (vencido)
+  pingo({ x: 380, y: 2860, s: .9, t, look: [0, 1], mouth: { o: .05, sm: -.8 }, lid: .3 });
+}
+
 // 12 — chamada: CURIOSO SOH
 function s12(t, u, D) {
   const tCur = w('12', 'curioso');
@@ -594,7 +633,7 @@ function s12(t, u, D) {
   }
 }
 
-const FN = { '01': s01, '02': s02, '03': s03, '04': s04, '05': s05, '06': s06, '07': s07, '08': s08, '09': s09, '10a': s10a, '10b': s10b, '11': s11, '12': s12 };
+const FN = { '01': s01, '02': s02, '03': s03, '04': s04, '05': s05, '06': s06, '07': s07, '08': s08, '09': s09, '10a': s10a, '10b': s10b, '11': s11, '11b': s11b, '12': s12 };
 window.DUR = END;
 window.render = (t) => {
   frame(t);
@@ -630,10 +669,11 @@ ev('glorp', w('09', 'graxa')); ev('grout', w('09', 'injeta'), { d: w('09', 'cola
 ev('plip', VO['10a'] + DURS['10a'] + .75); ev('drip', VO['10b'] + .6, { d: 2.2 });
 ev('slide', w('10b', 'canaletas'), { d: w('10b', 'poco') - w('10b', 'canaletas') + .3 }); ev('splash', w('10b', 'poco') + .3);
 ev('pumpRun', w('10b', 'bombas'), { d: 2.2 }); ev('suck', w('10b', 'bombas'));
+for (let i = 0; i < 4; i++) ev('carBy', VO['11b'] + .2 + i * .7);
 ev('wheee', VO['11'] - .1, { d: w('11', 'so') - VO['11'] - .2 }); ev('splash', w('11', 'so') - .35); ev('cupSet', w('11', 'so') + .9);
 ev('portalOpen', VO['12'] - .25); ev('titleHit', w('12', 'curioso'));
 // ambiências por mundo
-for (const [id, a, b] of SC) ev('amb', a, { d: +(b - a).toFixed(3), w: { '01': 'sea', '02': 'cabin', '03': 'machine', '04': 'machine', '05': 'machine', '06': 'machine', '07': 'tunnel', '08': 'machine', '09': 'machine', '10a': 'cabin', '10b': 'tunnel', '11': 'sea', '12': 'none' }[id] });
+for (const [id, a, b] of SC) ev('amb', a, { d: +(b - a).toFixed(3), w: { '01': 'sea', '02': 'cabin', '03': 'machine', '04': 'machine', '05': 'machine', '06': 'machine', '07': 'tunnel', '08': 'machine', '09': 'machine', '10a': 'cabin', '10b': 'tunnel', '11': 'sea', '11b': 'sea', '12': 'none' }[id] });
 EV.sort((a, b) => a.t - b.t);
 window.EV = EV;
 

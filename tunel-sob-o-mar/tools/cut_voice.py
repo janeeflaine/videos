@@ -3,7 +3,7 @@
 import json, subprocess, os
 import numpy as np, soundfile as sf
 D = os.path.dirname(os.path.abspath(__file__)) + '/../voices'
-SRC, TEMPO, MAXP, KEEP = D + "/narracao.mp3", 1.17, .26, .2
+SRC, TEMPO, MAXP, KEEP = D + "/narracao.mp3", 1.05, .32, .26
 W = json.load(open(D + '/words_raw.json'))
 starts = {'01': 'Trinta', '02': 'A cada', '03': 'Essa', '04': 'máquina', '05': 'Pressão de', '06': 'E a terra', '07': 'Enquanto',
           '08': 'E para', '09': 'E onde', '10a': 'Então', '10b': 'Mentira', '11': 'Ou seja', '12': 'Se você'}

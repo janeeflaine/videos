@@ -119,7 +119,7 @@ def dive(): d = 1.4; return fade(norm(bpsweep(nz(d), 3000, 300, .4) * np.sin(np.
 FX = {'squish': (squish, .35), 'clunk': (clunk, .5), 'whistleFall': (whistle_fall, .3), 'slam': (slam, .7), 'jitter': (jitter, .25),
       'portalOpen': (portal_open, .55), 'portalWhoosh': (portal_whoosh, .45), 'gurgle': (gurgle, .35), 'pop': (lambda: pop(1), .35), 'ding': (lambda: ding(1), .3),
       'crumble': (crumble, .5), 'geyser': (geyser, .55), 'clack': (lambda: clack(1.2), .45), 'boing': (boing, .4), 'stamp': (stamp, .5), 'glorp': (glorp, .5),
-      'plip': (plip, .8), 'splash': (splash, .45), 'suck': (suck, .45), 'cupSet': (cupset, .3), 'titleHit': (title_hit, .5), 'dive': (dive, .35)}
+      'plip': (plip, .8), 'splash': (splash, .45), 'suck': (suck, .45), 'cupSet': (cupset, .3), 'carBy': (lambda: whoosh(.5), .25), 'titleHit': (title_hit, .5), 'dive': (dive, .35)}
 DFX = {'waves': (lambda d: fade(norm(lp(brown_(d), 900)), .2, .3), .25), 'grind': (grind, .3), 'pour': (pour, .25), 'tick': (tickloop, .5), 'pipeflow': (pipeflow, .25),
        'shaker': (shaker_, .15), 'hydraulic': (hydraulic, .35), 'grout': (grout, .3), 'drip': (drip, .6), 'slide': (slide_d := (lambda d: fade(norm(bp(nz(d), 500, 2500) * (.6 + .4 * np.sin(2 * np.pi * 22 * t_(d)))), .05, .1)), .3),
        'pumpRun': (pumprun, .3), 'wheee': (wheee, .22)}
@@ -143,6 +143,7 @@ for e in E['ev']:
 # —— narração ——
 for e in E['ev']:
     if e['type'] != 'vo': continue
+    if not os.path.exists(os.path.join(HERE, 'voices', e['id'] + '.wav')): print('sem áudio para', e['id']); continue
     y, sr = sf.read(os.path.join(HERE, 'voices', e['id'] + '.wav'))
     if y.ndim > 1: y = y.mean(1)
     y = compress(y / np.abs(y).max(), .3, 2.5)
