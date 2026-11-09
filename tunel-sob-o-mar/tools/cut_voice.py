@@ -53,5 +53,16 @@ for n, k in enumerate(keys):
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', p, '-af', f'atempo={TEMPO},afade=t=in:d=0.02,areverse,afade=t=in:d=0.06,areverse', '-ar', '48000', o], check=True)
     os.remove(p)
     d = sf.info(o).duration; out[k] = round(d, 3); print(k, f'{t0:.2f}-{t1:.2f}', round(d, 2))
+# falas gravadas à parte (voices/<id>_src.mp3): mesmo tratamento, aparando silêncio nas pontas
+for k in ['11b']:
+    src = f'{D}/{k}_src.mp3'
+    if not os.path.exists(src): continue
+    p = f'{D}/.{k}.wav'
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-ar', str(sr), '-ac', '1', p], check=True)
+    y, _ = sf.read(p); os.remove(p)
+    env = np.abs(y) > np.abs(y).max() * .02; i0 = max(0, np.argmax(env) - int(.06 * sr)); i1 = min(len(y), len(y) - np.argmax(env[::-1]) + int(.2 * sr))
+    y = squeeze(y[i0:i1]); sf.write(p, y, sr); o = f'{D}/{k}.wav'
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', p, '-af', f'atempo={TEMPO},afade=t=in:d=0.02,areverse,afade=t=in:d=0.06,areverse', '-ar', '48000', o], check=True)
+    os.remove(p); d = sf.info(o).duration; out[k] = round(d, 3); print(k, 'avulsa', round(d, 2))
 json.dump(out, open(D + '/dur.json', 'w'), indent=1)
 print('total fala', round(sum(out.values()), 2))
