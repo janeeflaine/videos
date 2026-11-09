@@ -5,5 +5,5 @@
 </head><body><canvas id="c" width="1080" height="1920"></canvas>
 <script type="module">
 const p = new URLSearchParams(location.search);
-await import(p.has('sheet') || true ? './sheet.js' : './main.js');
+await import(p.has('sheet') ? './sheet.js' : './main.js');
 </script></body></html>
