@@ -175,42 +175,62 @@ export function kika(P) {
   pop();
 }
 
-// —— 3. RODAMOINHO: o vento do ciclone, espiral de nuvem com olhos, bracinhos de rajada, lixo orbitando ——
+// —— 3. RODAMOINHO: o vento do ciclone em forma de funil — anéis de vento empilhados que giram, rosto no anel largo de cima,
+//    bracinhos de rajada e lixo orbitando. Silhueta de "redemoinho" clássico: lê-se como vento até em preto chapado ——
 export function rodamoinho(P) {
-  const t = P.t ?? 0, s = P.s ?? 1;
+  const t = P.t ?? 0, s = P.s ?? 1, dir = P.dir ?? 1;
   push(); translate(P.x, P.y); scale(s * (P.face ?? 1), s);
-  const spin = t * 2.2 * (P.dir ?? 1);
-  // cauda afunilada
-  shape(spline([[-60, -120], [60, -120], [26, -40], [8, 0], [-4, -6], [-22, -60]]), { fill: PAL.windS, lw: 7 });
-  // corpo: espiral de nuvem (lóbulos)
-  const lobes = [];
-  for (let i = 0; i < 14; i++) { const a = i / 14 * TAU; const r = 150 + (i % 2 ? 18 : -6) + wob(t, .8, i) * 4; lobes.push([Math.cos(a) * r * 1.15, -280 + Math.sin(a) * r]); }
-  shape(spline(lobes), {
+  const spin = t * 2.4 * dir;
+  // riscos de vento atrás do corpo
+  for (let k = 0; k < 3; k++) { const y = -90 - k * 110, rx = 90 + k * 60; stroke(arc(0, y, rx + 40, 26 + k * 6, Math.PI * (.9 + k * .1) + spin * .2, Math.PI * (1.3 + k * .1) + spin * .2, 10), 5, { line: PAL.windL }); }
+  // anéis do funil: de baixo (ponta fina) para cima (largo); o centro serpenteia bastante
+  const N = 6, rings = [];
+  for (let i = 0; i < N; i++) {
+    const u = i / (N - 1);
+    rings.push({ y: -20 - u * 330, rx: 22 + u * u * 110 + u * 44, ry: 10 + u * 20, cx: Math.sin(u * 3.2 + t * 3) * 38 * (1 - u * .6) });
+  }
+  // contorno fofo: cada anel faz um gomo para fora, como nuvem torcida
+  const side = sx => { const o = []; for (let i = 0; i < N - 1; i++) { const r0 = rings[i], r1 = rings[i + 1];
+    o.push([r0.cx + sx * r0.rx, r0.y]); o.push([lerp(r0.cx, r1.cx, .5) + sx * (lerp(r0.rx, r1.rx, .5) * 1.12 + 6), lerp(r0.y, r1.y, .5)]); }
+    o.push([rings[N - 1].cx + sx * rings[N - 1].rx, rings[N - 1].y]); return o; };
+  const L = side(-1), R = side(1).reverse();
+  shape(spline([[rings[0].cx, 4], ...L, ...R], true, 8), {
     fill: PAL.wind, lw: 7, shade: () => {
-      fillOnly(ell(70, -240, 120, 140, 30), PAL.windS, { boil: .5 });
-      fillOnly(ell(-60, -360, 60, 30, 20), PAL.windL, { boil: .4 });
+      fillOnly(spline([[rings[0].cx + 4, 4], ...rings.map(r => [r.cx + r.rx * .4, r.y]), ...side(1).reverse().map(([x, y]) => [x + 30, y]).reverse()].slice(0, N + 1).concat(side(1).reverse().map(([x, y]) => [x + 30, y]))), PAL.windS, { boil: .4 });
+      // faixas de giro inclinadas (não fechadas: vento, não metal)
+      for (let i = 0; i < N - 1; i++) {
+        const r = rings[i], ph = ((spin * .45 + i * .29) % 1 + 1) % 1, a0 = Math.PI * (.05 + ph * .6);
+        push(); translate(r.cx, r.y - 4); rotate(-.12);
+        stroke(arc(0, 0, r.rx * .95, r.ry, a0, a0 + 1.1, 12), 6, { line: '#5b7088' });
+        stroke(arc(0, 8, r.rx * .8, r.ry * .8, a0 + 1.4, a0 + 2.1, 8), 5, { line: PAL.windL });
+        pop();
+      }
     }
   });
-  // braços de espiral
-  for (let k = 0; k < 3; k++) {
-    const pts = []; const a0 = spin + k * TAU / 3;
-    for (let i = 0; i <= 20; i++) { const u = i / 20, a = a0 + u * 3.2, r = 40 + u * 120; pts.push([Math.cos(a) * r * 1.1, -280 + Math.sin(a) * r * .9]); }
-    stroke(pts, 8);
-  }
-  // riscos de vento ao redor
-  for (let k = 0; k < 4; k++) { const a = spin * .6 + k * TAU / 4; stroke(arc(0, -280, 250, 190, a, a + .9, 14), 5, { line: PAL.windL }); }
-  // olhos travessos + sorriso de quem procura fresta
-  eye(-46, -300, 30, 34, { lid: P.lid ?? .25, look: P.look || [.5, .1], skin: PAL.wind });
-  eye(40, -300, 30, 34, { lid: P.lid ?? .25, look: P.look || [.5, .1], skin: PAL.wind });
-  shape(rr(-82, -350, 50, 12, 6), { fill: PAL.windS, lw: 5 }); shape(rr(14, -346, 50, 12, 6), { fill: PAL.windS, lw: 5 });
-  mouth(-2, -238, 70, P.mouth || { o: .35, sm: .9, skew: -.3 });
-  // bracinhos de rajada
+  // nuvem no topo (gomos), girando devagar
+  const top = rings[N - 1], lobes = [];
+  for (let i = 0; i < 9; i++) { const a = Math.PI * (1.02 + i / 8 * .96) + wob(t, .5, i) * .03; lobes.push([top.cx + Math.cos(a) * top.rx * .95, top.y - 14 + Math.sin(a) * 46, 40 + (i % 3) * 8]); }
+  lobes.push([top.cx - top.rx * .55, top.y + 8, 40], [top.cx, top.y + 14, 44], [top.cx + top.rx * .55, top.y + 8, 40]);
+  for (const [x, y, r] of lobes) shape(ell(x, y, r, r * .86, 22), { fill: PAL.wind, lw: 7 });
+  for (const [x, y, r] of lobes) fillOnly(ell(x, y, r - 6, r * .86 - 6, 22), PAL.wind, { boil: .6 });
+  fillOnly(ell(top.cx, top.y - 10, top.rx * .95, 46, 30), PAL.wind, { boil: .4 });
+  fillOnly(ell(top.cx + top.rx * .45, top.y + 4, top.rx * .45, 28, 20), PAL.windS, { boil: .4 });
+  fillOnly(ell(top.cx - top.rx * .4, top.y - 48, 46, 14, 14), PAL.windL, { boil: .3 });
+  // rosto no segundo anel de cima (largo), olhos de quem procura fresta
+  const fr = rings[N - 2], fy = fr.y - 10, fx = fr.cx;
+  eye(fx - 38, fy - 4, 26, 30, { lid: P.lid ?? .3, look: P.look || [.55, .1], skin: PAL.wind });
+  eye(fx + 32, fy - 4, 26, 30, { lid: P.lid ?? .3, look: P.look || [.55, .1], skin: PAL.wind });
+  shape(rr(fx - 68, fy - 46, 46, 12, 6), { fill: PAL.windS, lw: 5 });
+  shape(rr(fx + 12, fy - 40, 46, 12, 6), { fill: PAL.windS, lw: 5 });
+  mouth(fx - 2, fy + 50, 56, P.mouth || { o: .3, sm: .9, skew: -.35 });
+  // bracinhos de rajada saindo dos lados do anel do rosto
   for (const sx of [-1, 1]) {
-    stroke(spline([[sx * 150, -260], [sx * 210, -300], [sx * 240, -250], [sx * 210, -230]], false), 14, { line: PAL.windS });
-    stroke(spline([[sx * 150, -260], [sx * 210, -300], [sx * 240, -250], [sx * 210, -230]], false), 4);
+    const x0 = fr.cx + sx * fr.rx * .95, y0 = fr.y + 20;
+    const arm = spline([[x0, y0], [x0 + sx * 50, y0 - 40], [x0 + sx * 86, y0 - 10], [x0 + sx * 66, y0 + 12]], false);
+    stroke(arm, 16); stroke(arm, 8, { line: PAL.wind });
   }
-  // lixo orbitando: meia, folha, telha
-  const orb = (k, draw) => { const a = spin * 1.3 + k * 2.1; push(); translate(Math.cos(a) * 230, -280 + Math.sin(a) * 120); rotate(a * 2); draw(); pop(); };
+  // riscos de vento ao redor + lixo orbitando (meia, folha, telha)
+    const orb = (k, draw) => { const a = spin * 1.2 + k * 2.1, ry = -150 - k * 70; push(); translate(Math.cos(a) * (150 + k * 40), ry + Math.sin(a) * 30); rotate(a * 2); draw(); pop(); };
   orb(0, () => shape(spline([[-14, -24], [8, -24], [8, 6], [26, 14], [22, 26], [-14, 18]]), { fill: '#f4f1ea', lw: 5, shade: () => fillOnly(rect(-20, -26, 40, 10), '#e8392b', { boil: .2 }) }));
   orb(1, () => shape(spline([[-24, 0], [0, -14], [24, 0], [0, 14]]), { fill: '#6cbf4a', lw: 5 }));
   orb(2, () => shape(spline([[-20, -8], [20, -12], [22, 8], [-18, 12]]), { fill: PAL.roof, lw: 5 }));

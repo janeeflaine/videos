@@ -34,7 +34,7 @@ window.render = (t) => {
 
   // 3 Rodamoinho — céu de ciclone
   cell(0, 790, 540, 440, ['#4a5468', '#414a5d', '#384052']);
-  rodamoinho({ x: 270, y: 1215, s: .78, t });
+  rodamoinho({ x: 270, y: 1222, s: .74, t });
   label(20, 828, 3, 'RODAMOINHO', 'o vento · não fala');
   // 4 Casa
   cell(540, 790, 540, 440, ['#7fc1d9', '#74b5cd', '#6aa9c1']);
