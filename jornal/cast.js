@@ -161,9 +161,32 @@ export function seu(P) {
   mouth(0, -8, 54, P.mouth || { o: .12, sm: .4 });
   stroke(arc(0, 6, 46, 26, Math.PI * .25, Math.PI * .75, 10), 4); // queixo duplo
   pop();
-  if (P.paper) { jornalAberto({ x: 0, y: b - 110, s: 1, t: P.t }); drawArm(shB, armB, true); }
-  drawArm(shF, armF, false);
+  if (P.paper) seguraJornal(b, P.t);
+  else drawArm(shF, armF, false);
   pop();
+}
+
+// segurando o jornal aberto (plano geral): ombros à vista, braços atrás do papel, antebraços em pé pelas laterais,
+// e do lado de cá do papel aparecem só os quatro dedos dobrados sobre a borda (o polegar fica do lado dele)
+function seguraJornal(b, t) {
+  const yH = b - 168;
+  for (const sx of [-1, 1]) shape(noodle([sx * 110, b - 244], [sx * 318, b + 4], sx * 30, 46, 40), { fill: PAL.sSkin, lw: 7 });
+  for (const sx of [-1, 1]) shape(noodle([sx * 326, b + 10], [sx * 322, yH + 20], 0, 42, 36), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? 330 : -360, b - 300, 30, 360), PAL.sSkinS, { boil: .3, alpha: .6 }) });
+  jornalAberto({ x: 0, y: b - 110, s: 1, t });
+  for (const sx of [-1, 1]) {
+    // costas da mão, por fora da borda
+    shape(spline([[sx * 300, yH - 34], [sx * 330, yH - 40], [sx * 350, yH - 14], [sx * 348, yH + 24], [sx * 326, yH + 40], [sx * 302, yH + 34]]), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(ell(sx * 342, yH, 12, 40, 12), PAL.sSkinS, { boil: .3, alpha: .6 }) });
+    // quatro dedos dobrados por cima da borda do papel
+    for (let k = 0; k < 4; k++) {
+      const fy = yH - 26 + k * 18, len = [30, 36, 34, 26][k];
+      shape(rr(sx > 0 ? 300 - len : -300, fy - 8, len + 6, 17, 8), { fill: PAL.sSkin, lw: 5 });
+      fillOnly(ell(sx * (300 - len + 7), fy, 4, 5, 8), '#e8b090', { boil: .2 });
+    }
+  }
+  // relógio dourado no pulso esquerdo (dele), visível pela lateral
+  const wx = -326, wy = yH + 74;
+  stroke([[wx - 26, wy], [wx + 26, wy]], 24); stroke([[wx - 24, wy], [wx + 24, wy]], 13, { line: PAL.goldS });
+  shape(ell(wx - 6, wy, 15, 15, 16), { fill: PAL.gold, lw: 5 }); shape(ell(wx - 6, wy, 8, 8, 12), { fill: '#fffbea', lw: 3 });
 }
 
 // jornal aberto segurado na frente da barriga (plano geral)
@@ -542,23 +565,32 @@ export function jornalClose(P) {
     for (let k = 0; k < 7; k++) fillOnly(rect(-W2 + 36 + c * cw, fy + 254 + k * 30, k === 6 ? cw * .55 : cw - 28, 10), '#a39a88', { boil: .2 });
   }
   pop();
-  // mãos dele (morenas, relógio dourado no pulso esquerdo) segurando as laterais, longe do selo de fonte
+  // mãos dele segurando as laterais, vistas do lado de quem lê: polegar por cima do papel, dedos por trás,
+  // a lateral da mão e do indicador por fora da borda. Relógio dourado no pulso esquerdo. Longe do selo de fonte.
   for (const sx of [-1, 1]) {
-    push(); translate(540 + sway + sx * (W2 + 6), 980 + 640); scale(sx, 1);
-    shape(noodle([150, 520], [20, 30], -20, 170, 130), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(70, -100, 300, 800), PAL.sSkinS, { boil: .3, alpha: .5 }) });
-    if (sx < 0) { // relógio: pulseira atravessando o antebraço + mostrador
-      const c = [52, 200], px = .97, py = -.24;
-      stroke([[c[0] - px * 84, c[1] - py * 84], [c[0] + px * 84, c[1] + py * 84]], 40);
-      stroke([[c[0] - px * 80, c[1] - py * 80], [c[0] + px * 80, c[1] + py * 80]], 28, { line: PAL.goldS });
-      shape(ell(c[0], c[1], 40, 40, 28), { fill: PAL.gold, lw: 6 });
-      shape(ell(c[0], c[1], 26, 26, 22), { fill: '#fffbea', lw: 4 });
-      stroke([[c[0], c[1]], [c[0], c[1] - 16]], 4); stroke([[c[0], c[1]], [c[0] + 12, c[1] + 4]], 4);
+    push(); translate(540 + sway + sx * (W2 + 6), 980 + 560); scale(sx, 1);
+    // antebraço
+    shape(noodle([200, 560], [56, 70], -16, 128, 104), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(120, -100, 300, 800), PAL.sSkinS, { boil: .3, alpha: .55 }) });
+    if (sx < 0) {
+      const c = [96, 240], px = .956, py = -.293;
+      stroke([[c[0] - px * 66, c[1] - py * 66], [c[0] + px * 66, c[1] + py * 66]], 42);
+      stroke([[c[0] - px * 62, c[1] - py * 62], [c[0] + px * 62, c[1] + py * 62]], 30, { line: PAL.goldS });
+      shape(ell(c[0], c[1], 38, 38, 28), { fill: PAL.gold, lw: 6 });
+      shape(ell(c[0], c[1], 25, 25, 22), { fill: '#fffbea', lw: 4 });
+      stroke([[c[0], c[1]], [c[0], c[1] - 15]], 4); stroke([[c[0], c[1]], [c[0] + 11, c[1] + 4]], 4);
     }
-    // palma (por fora da borda) + polegar por cima do papel
-    shape(spline([[-10, -70], [50, -96], [100, -60], [104, 20], [60, 70], [0, 60], [-20, 0]]), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(ell(80, 0, 40, 80, 20), PAL.sSkinS, { boil: .3, alpha: .5 }) });
-    shape(noodle([30, -20], [-70, -64], -10, 46, 36), { fill: PAL.sSkin, lw: 7 });
-    shape(ell(-70, -66, 14, 11, 12), { fill: '#e8b090', lw: 4 });
-    stroke(arc(-20, -50, 14, 10, Math.PI * 1.1, Math.PI * 1.7, 6), 4);
+    // mão: lateral do indicador dobrando atrás da borda + palma
+    shape(spline([[2, -92], [36, -110], [76, -100], [100, -60], [108, 0], [96, 62], [62, 104], [20, 96], [2, 40]]), {
+      fill: PAL.sSkin, lw: 7, shade: () => { fillOnly(ell(92, 10, 26, 90, 16), PAL.sSkinS, { boil: .3, alpha: .55 }); }
+    });
+    stroke(arc(34, -66, 22, 16, Math.PI * .15, Math.PI * .85, 8), 4);  // dobra do indicador
+    stroke(arc(40, -20, 20, 12, Math.PI * .2, Math.PI * .8, 8), 4);    // dobra do médio
+    // polegar: base gordinha, junta, ponta com unha
+    shape(spline([[40, 40], [10, -30], [-40, -64], [-86, -82], [-104, -66], [-94, -44], [-50, -24], [-10, 20], [6, 60]]), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(ell(10, 20, 30, 40, 12), PAL.sSkinS, { boil: .3, alpha: .4 }) });
+    push(); translate(-84, -66); rotate(.42);
+    shape(rr(-18, -12, 32, 22, 10), { fill: '#e8b090', lw: 4 });
+    pop();
+    stroke(arc(-42, -44, 12, 10, Math.PI * 1.15, Math.PI * 1.75, 6), 4); // vinco da junta
     pop();
   }
 }
