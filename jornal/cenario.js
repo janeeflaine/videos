@@ -1,7 +1,7 @@
 // Cenário fixo da série (quadro de abertura) e o close do jornal — 1080×1920
 // index.html?cenario → sala com todo o elenco no lugar; index.html?cenario&close → close em primeira pessoa
 import { INK, init, frame, g, shape, rr, text } from './toon.js';
-import { sala, seu, esposa, gato, papagaio, poleiro, poltrona, mesinha, garrafa, xicara, jornalClose, PAL } from './cast.js';
+import { sala, chico, zefinha, gato, papagaio, poleiro, poltrona, mesinha, garrafa, xicara, jornalClose, PAL } from './cast.js';
 
 init(document.getElementById('c'));
 const close = new URLSearchParams(location.search).has('close');
@@ -19,14 +19,14 @@ window.render = (t) => {
     tag('close em 1ª pessoa · prévia', 90);
     return;
   }
-  sala({ t }, { kitchen: () => esposa({ x: 780, y: 1302, s: .62, t, armR: { h: [130, 40], bend: -40, spoonA: -.6 }, look: [.5, 0], lid: .35, brow: .6 }) });
+  sala({ t }, { kitchen: () => zefinha({ x: 780, y: 1302, s: .66, t, spoon: true, armR: { h: [130, 40], bend: -40, spoonA: -.6 }, armL: { h: [-20, 200], bend: -10 }, look: [.5, 0], lid: .35, brow: .3 }) });
   poleiro({ x: 160, y: 1430, s: 1, h: 420 });
   papagaio({ x: 150, y: 996, s: .7, t, look: [.6, .3] });
   mesinha({ x: 860, y: 1770, s: .9 });
   garrafa({ x: 826, y: 1472, s: .55 });
   xicara({ x: 912, y: 1470, s: .6, t });
   poltrona({ x: 400, y: 1820, s: .9 });
-  seu({ x: 400, y: 1800, s: .95, t, sit: true, paper: {}, armL: { h: [-170, 128], bend: 30 }, armR: { h: [170, 128], bend: -30 }, look: [0, .1], lid: .3, brow: .3, mouth: { o: .25, sm: .8 } });
+  chico({ x: 400, y: 1800, s: .95, t, sit: true, paper: {}, look: [0, .1], lid: .3, brow: .3, mouth: { o: .25, sm: .8 } });
   gato({ x: 690, y: 1872, s: .58, t, arch: .2, look: [.7, -.8] });
   tag('cenário · sala com a cozinha ao fundo · 18h10', 120);
 };

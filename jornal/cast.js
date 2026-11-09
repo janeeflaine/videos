@@ -1,17 +1,18 @@
-// cast.js — elenco e cenário FIXOS da série "Jornal do seu ___" (reaproveitados em todo episódio)
-// O senhor, a esposa, o gato magricelo, o papagaio + a sala com a cozinha ao fundo e os objetos de cena.
+// cast.js — elenco e cenário FIXOS da série "Jornal do Seu Chicó" (reaproveitados em todo episódio)
+// Seu Chicó, Dona Zefinha, o gato magricelo, o papagaio + a sala com a cozinha ao fundo e os objetos de cena.
 // Coordenadas locais: origem nos pés (ou na base do objeto), y para baixo.
 import { clamp, lerp, hash, TAU } from './lib.js';
 import { INK, g, push, pop, translate, rotate, scale, shape, fillOnly, stroke, ell, arc, spline, rr, rect, noodle, quad, dot, text, wob } from './toon.js';
 
 export const PAL = {
   white: '#ffffff', mouthIn: '#4a1a2a', tongue: '#e8637a',
-  // o senhor: moreno de sol, marca de regata, bermuda tactel azul, chinelo de dedo
-  sSkin: '#bf7a46', sSkinS: '#a5673a', sTan: '#f1c79c', sNose: '#d8774f', sHair: '#6c6670', stache: '#3b3238', stacheG: '#8a8590',
-  short: '#2f6fd0', shortS: '#2456a6', flip: '#2fb37a', flipS: '#1f8a5b', strap: '#f4f1ea', gold: '#e2b33c', goldS: '#b98a1f',
-  // a esposa: alta e magra, vestido florido, avental, bobes
-  eSkin: '#94552f', eSkinS: '#743f20', eHair: '#d9d4dc', eHairS: '#b3adb8', dress: '#c4508f', dressS: '#9c3a70', flower: '#ffe0f0',
-  apron: '#ffd23f', apronS: '#e0ad1a', blush: '#c25a50', lip: '#b8283c', curl: ['#5ec4e8', '#ff8fb1', '#9be36b', '#ffb21e', '#5ec4e8'], eSlip: '#ff8fb1',
+  // Seu Chicó: moreno, cabelo branco cacheado, camiseta azul "14", calça azul-marinho
+  cSkin: '#b8734a', cSkinS: '#955733', cNose: '#c7764c', nail: '#e8b090', hairC: '#f2f1f4', hairCS: '#c4c2cc', stacheC: '#e6e3ea',
+  shirt: '#2347c8', shirtS: '#1a369c', pants: '#2a2e4e', pantsS: '#1d2038', frame: '#2a2226',
+  flip: '#2fb37a', flipS: '#1f8a5b', flipN: '#2c3050', flipNS: '#1d2038', strapN: '#4a5078', strap: '#f4f1ea', gold: '#e2b33c', goldS: '#b98a1f',
+  // Dona Zefinha: cabelo grisalho em coque, vestido azul de treliça, casaco vermelho geométrico
+  zSkin: '#ad6a42', zSkinS: '#8b502c', zHair: '#a29fa8', zHairS: '#75727c', dressZ: '#2446b8', dressZS: '#17307f', lattice: '#a9c4ff',
+  cardi: '#d8262e', cardiS: '#a51b23', cardiG: '#a9a9b0', cardiW: '#f4f1ea', cardiD: '#7a1420', frameZ: '#8a8078',
   // gato magricelo: cinza rajado
   cat: '#a19fab', catS: '#7d7b88', catStripe: '#64626e', catPink: '#f2a0b5', catBelly: '#d6d4dc',
   // papagaio (papagaio-verdadeiro): verde, testa azul, cara amarela, ombro vermelho
@@ -28,7 +29,7 @@ export const PAL = {
 };
 
 // —— gramática de rosto e mãos ——
-export function eye(cx, cy, rx, ry, { lid = 0, look = [0, 0], pupil = 4.5, skin = PAL.sSkin, closed = false, lw = 6, jitter = 0 } = {}) {
+export function eye(cx, cy, rx, ry, { lid = 0, look = [0, 0], pupil = 4.5, skin = PAL.cSkin, closed = false, lw = 6, jitter = 0 } = {}) {
   if (closed) { stroke(arc(cx, cy + ry * .15, rx * .8, ry * .45, Math.PI * .1, Math.PI * .9, 14), lw); return; }
   shape(ell(cx, cy, rx, ry, 36), {
     fill: PAL.white, lw, shade: () => {
@@ -56,7 +57,7 @@ export function mouth(cx, cy, mw, { o = 0, w = 1, sm = 0, skew = 0, lw = 6, teet
     }
   });
 }
-export function hand(x, y, ang, r = 20, col = PAL.sSkin, { fist = false, lw = 6 } = {}) {
+export function hand(x, y, ang, r = 20, col = PAL.cSkin, { fist = false, lw = 6 } = {}) {
   push(); translate(x, y); rotate(ang);
   const pts = fist ? spline([[-r * .6, -r * .8], [r * .7, -r * .9], [r * 1.1, -r * .1], [r * .8, r * .8], [-r * .5, r * .9], [-r * .9, 0]])
     : spline([[-r * .5, -r * .85], [r * .5, -r * 1.05], [r * 1.35, -r * .75], [r * 1.05, -r * .3], [r * 1.5, -r * .1], [r * 1.1, r * .3], [r * 1.35, r * .7], [r * .6, r * .95], [-r * .6, r * .8], [-r * .95, 0]]);
@@ -74,122 +75,142 @@ function flowers(x0, y0, w, h, col, step = 46, r = 6, seed = 1) {
   }
 }
 
-// —— chinelo de dedo (vista 3/4, dir = lado da ponta) ——
-function chinelo(fx, dir, skin) {
+// —— chinelo de dedo azul-marinho (vista 3/4, dir = lado da ponta) ——
+function chinelo(fx, dir, skin, sole = PAL.flip, soleS = PAL.flipS, strap = PAL.strapN) {
   push(); translate(fx, 0); scale(dir, 1);
-  shape(spline([[-34, 3], [-38, -10], [-10, -16], [36, -16], [62, -8], [58, 4]]), { fill: PAL.flip, lw: 6, shade: () => fillOnly(rect(-60, -4, 140, 10), PAL.flipS, { boil: .2 }) });
+  shape(spline([[-34, 3], [-38, -10], [-10, -16], [36, -16], [62, -8], [58, 4]]), { fill: sole, lw: 6, shade: () => fillOnly(rect(-60, -4, 140, 10), soleS, { boil: .2 }) });
   shape(spline([[-26, -10], [-24, -32], [6, -38], [40, -28], [50, -12], [44, -8]]), { fill: skin, lw: 6 });
   for (let k = 0; k < 3; k++) stroke(arc(30 + k * 7, -14, 4, 5, Math.PI * 1.1, Math.PI * 1.9, 5), 4);
-  stroke([[-4, -12], [16, -30], [36, -14]], 13); stroke([[-4, -12], [16, -30], [36, -14]], 6, { line: PAL.strap });
+  stroke([[-4, -12], [16, -30], [36, -14]], 13); stroke([[-4, -12], [16, -30], [36, -14]], 6, { line: strap });
   pop();
 }
+// braço com cotovelo: sh = ombro; arm = { e: [dx,dy] cotovelo, h: [dx,dy] mão } (relativos ao ombro) ou só { h, bend }
+function limb(sh, arm, { skin, sleeve, sleeveS, sleeveTo = .4, w0 = 44, w1 = 36, r = 22, fist = false, under = null, pattern = null }) {
+  const pat = pattern ? { shade: () => pattern(sh) } : {};
+  const hp = [sh[0] + arm.h[0], sh[1] + arm.h[1]];
+  if (arm.e) {
+    const ep = [sh[0] + arm.e[0], sh[1] + arm.e[1]];
+    shape(noodle(sh, ep, 0, w0, w0 * .92), { fill: sleeveTo >= 1 ? sleeve : skin, lw: 7, ...pat });
+    shape(noodle(ep, hp, 0, w0 * .92, w1), { fill: sleeveTo >= 1 ? sleeve : skin, lw: 7, ...pat });
+    if (sleeveTo < 1) shape(noodle(sh, [lerp(sh[0], ep[0], sleeveTo * 2), lerp(sh[1], ep[1], sleeveTo * 2)], 0, w0 + 22, w0 + 18), { fill: sleeve, lw: 7, shade: () => sleeveS && fillOnly(ell(sh[0] + 20, sh[1] + 30, 30, 30, 12), sleeveS, { boil: .3 }) });
+  } else {
+    shape(noodle(sh, hp, arm.bend ?? 0, w0, w1), { fill: sleeveTo >= 1 ? sleeve : skin, lw: 7, ...pat });
+    if (sleeveTo < 1) shape(noodle(sh, [lerp(sh[0], hp[0], sleeveTo), lerp(sh[1], hp[1], sleeveTo)], (arm.bend ?? 0) * sleeveTo, w0 + 22, w0 + 18), { fill: sleeve, lw: 7 });
+  }
+  if (under) under(hp);
+  const from = arm.e ? arm.e : [0, 0];
+  hand(hp[0], hp[1] + 6, arm.ang ?? Math.atan2(arm.h[1] - from[1], arm.h[0] - from[0]) - .2, r, skin, { fist: arm.fist ?? fist });
+  return hp;
+}
+// "14" pontilhado da camiseta (matriz de pontos 5×7)
+const GLYPH = { '1': ['00100', '01100', '00100', '00100', '00100', '00100', '01110'], '4': ['00010', '00110', '01010', '10010', '11111', '00010', '00010'] };
+function dotPrint(str, x, y, d, col) {
+  [...str].forEach((ch, i) => GLYPH[ch].forEach((row, r) => [...row].forEach((c, k) => { if (c === '1') dot(x + i * d * 6.4 + k * d, y + r * d, d * .36, col); })));
+}
+// rugas de gente de idade
+function rugas(y0, wide = 1) {
+  stroke(arc(0, y0 - 64, 40 * wide, 8, Math.PI * 1.15, Math.PI * 1.85, 10), 3.5);
+  stroke(arc(0, y0 - 50, 30 * wide, 6, Math.PI * 1.2, Math.PI * 1.8, 10), 3.5);
+}
 
-// —— 1. O SENHOR: calvo, bigodão escuro, óculos de leitura na ponta do nariz, sem camisa (com marca de regata),
-//    barrigão, bermuda tactel azul, chinelo de dedo e relógio dourado ——
-// P: { x, y, s, t, face, sit, armL, armR, mouth, look, lid, brow, tilt, paper: {open:bool} }
-export function seu(P) {
+// —— 1. SEU CHICÓ: cabelo branco cacheado, óculos de armação escura, bigodinho branco, camiseta azul com "14" pontilhado,
+//    calça social azul-marinho e chinelo de dedo. Gesto da casa: a mão no queixo, pensando na notícia ——
+// P: { x, y, s, t, face, sit, armL, armR (com e: cotovelo), mouth, look, lid, brow, tilt, paper, closed }
+export function chico(P) {
   const sit = P.sit ?? false;
   push(); translate(P.x, P.y); scale((P.s ?? 1) * (P.face ?? 1), P.s ?? 1);
-  const b = sit ? -262 : -206; // base da barriga
-  // pernas finas + chinelos
+  const hip = sit ? -262 : -300, T = hip - 262; // T = topo dos ombros
+  // pernas de calça + tornozelos + chinelos
   for (const sx of [-1, 1]) {
-    const top = sit ? [sx * 64, -236] : [sx * 46, -150], ank = sit ? [sx * 70, -30] : [sx * 50, -30];
-    shape(noodle(top, ank, 0, 36, 30), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? ank[0] : -400, -300, sx > 0 ? 400 : 400 + ank[0] - 8, 300), PAL.sSkinS, { boil: .3, alpha: sx > 0 ? .7 : 0 }) });
-    chinelo(ank[0], sx, PAL.sSkin);
+    const top = sit ? [sx * 84, hip + 46] : [sx * 46, hip + 20], ank = sit ? [sx * 96, -50] : [sx * 52, -50];
+    shape(noodle(top, ank, 0, 62, 54), { fill: PAL.pants, lw: 7, shade: () => fillOnly(rect(sx > 0 ? ank[0] - 4 : -600, -700, sx > 0 ? 600 : 600 + ank[0] - 30, 700), PAL.pantsS, { boil: .3, alpha: sx > 0 ? .8 : 0 }) });
+    shape(noodle([ank[0], ank[1] + 8], [ank[0] + 2, -24], 0, 34, 32), { fill: PAL.cSkin, lw: 6 });
+    shape(rr(ank[0] - 31, ank[1] - 6, 62, 18, 8), { fill: PAL.pants, lw: 6 }); // barra da calça
+    chinelo(ank[0] + 2, sx, PAL.cSkin, PAL.flipN, PAL.flipNS);
   }
-  // bermuda
-  const shorts = sit
-    ? spline([[-150, -306], [0, -312], [150, -306], [160, -240], [104, -214], [30, -228], [-30, -228], [-104, -214], [-160, -240]])
-    : spline([[-126, -262], [0, -268], [126, -262], [130, -150], [80, -132], [10, -150], [-10, -150], [-80, -132], [-130, -150]]);
-  shape(shorts, {
-    fill: PAL.short, lw: 7, shade: () => {
-      fillOnly(rect(60, -330, 200, 260), PAL.shortS, { boil: .3 });
-      for (const sx of [-1, 1]) fillOnly(rect(sx * (sit ? 142 : 116) - 7, -330, 14, 260), PAL.strap, { boil: .3 });
+  if (sit) shape(spline([[-122, hip - 24], [0, hip - 30], [122, hip - 24], [150, hip + 40], [112, hip + 70], [30, hip + 52], [-30, hip + 52], [-112, hip + 70], [-150, hip + 40]]), { fill: PAL.pants, lw: 7, shade: () => fillOnly(rect(40, hip - 60, 200, 160), PAL.pantsS, { boil: .3 }) });
+  else shape(spline([[-114, hip - 20], [114, hip - 20], [110, hip + 40], [10, hip + 60], [-110, hip + 40]]), { fill: PAL.pants, lw: 7 });
+  const shB = [-112, T + 16], shF = [112, T + 16];
+  const opt = { skin: PAL.cSkin, sleeve: PAL.shirt, sleeveS: PAL.shirtS, w0: 40, w1: 34, r: 23 };
+  const armB = P.armL || { h: [-26, 230], bend: -20 }, armF = P.armR || { h: [26, 230], bend: 20 };
+  if (!P.paper) limb(shB, armB, opt);
+  // camiseta azul
+  shape(spline([[-108, T + 2], [-40, T - 8], [40, T - 8], [108, T + 2], [124, T + 110], [126, T + 210], [120, T + 268], [0, T + 276], [-120, T + 268], [-126, T + 210], [-124, T + 110]]), {
+    fill: PAL.shirt, lw: 7, shade: () => {
+      fillOnly(spline([[60, T - 10], [140, T + 80], [140, T + 290], [80, T + 290], [96, T + 120]]), PAL.shirtS, { boil: .4 });
+      for (const [x, y] of [[-60, T + 230], [40, T + 250], [-20, T + 200]]) stroke(arc(x, y, 30, 8, Math.PI * .2, Math.PI * .8, 8), 3, { line: PAL.shirtS });
     }
   });
-  // braços
-  const shB = [-110, b - 244], shF = [110, b - 244];
-  const armB = P.armL || { h: [-30, 190], bend: -22 }, armF = P.armR || { h: [30, 190], bend: 22 };
-  const drawArm = (sh, arm, watch) => {
-    const hp = [sh[0] + arm.h[0], sh[1] + arm.h[1]];
-    shape(noodle(sh, hp, arm.bend ?? 0, 46, 38), { fill: PAL.sSkin, lw: 7 });
-    if (watch) { const w = [lerp(sh[0], hp[0], .84), lerp(sh[1], hp[1], .84)]; shape(ell(w[0], w[1], 24, 13, 16), { fill: PAL.gold, lw: 5, shade: () => fillOnly(ell(w[0] + 8, w[1] + 4, 14, 8, 10), PAL.goldS, { boil: .2 }) }); }
-    hand(hp[0], hp[1] + 8, Math.atan2(arm.h[1], arm.h[0]) - .2, 24, PAL.sSkin, { fist: arm.fist });
-  };
-  if (!P.paper) drawArm(shB, armB, true);
-  // tronco: barrigão com a marca de regata
-  const torso = spline([[-100, b - 262], [0, b - 276], [100, b - 262], [134, b - 190], [160, b - 92], [148, b - 18], [92, b + 10], [0, b + 18], [-92, b + 10], [-148, b - 18], [-160, b - 92], [-134, b - 190]]);
-  shape(torso, {
-    fill: PAL.sSkin, lw: 7, shade: () => {
-      fillOnly(spline([[-50, b - 296], [-34, b - 222], [0, b - 204], [34, b - 222], [50, b - 296], [84, b - 296], [76, b - 226], [96, b - 176], [150, b - 150], [176, b - 110], [176, b + 40], [-176, b + 40], [-176, b - 110], [-150, b - 150], [-96, b - 176], [-76, b - 226], [-84, b - 296]]), PAL.sTan, { boil: .4 });
-      fillOnly(spline([[80, b - 250], [170, b - 150], [170, b + 30], [70, b + 30], [110, b - 120]]), '#7a3a12', { boil: .4, alpha: .2 });
-      fillOnly(ell(-40, b - 150, 40, 18, 16), '#fff3e2', { boil: .3, alpha: .5 });
-    }
-  });
-  // pelinhos do peito + umbigo + dobra da barriga
-  for (const [cx, cy] of [[-30, b - 196], [-8, b - 186], [16, b - 194], [36, b - 182], [-4, b - 166]]) stroke(arc(cx, cy, 5, 6, Math.PI * .9, Math.PI * 2.2, 7), 4);
-  stroke(arc(0, b - 54, 9, 6, Math.PI * .1, Math.PI * .9, 8), 5);
-  stroke(arc(0, b - 34, 120, 26, Math.PI * .2, Math.PI * .8, 14), 5);
-  // cabeça
-  push(); translate(0, b - 272); rotate(P.tilt ?? 0);
-  shape(spline([[-60, 10], [-50, -40], [50, -40], [60, 10]]), { fill: PAL.sSkin, lw: 7 }); // pescoço
-  for (const sx of [-1, 1]) shape(ell(sx * 86, -78, 18, 26, 16), { fill: PAL.sSkin, lw: 6, shade: () => stroke(arc(sx * 88, -78, 8, 12, Math.PI * .6, Math.PI * 1.4, 6), 4) });
-  shape(ell(0, -88, 86, 100, 50), {
-    fill: PAL.sSkin, lw: 7, shade: () => {
-      fillOnly(ell(60, -60, 44, 90, 30), PAL.sSkinS, { boil: .4 });
-      fillOnly(ell(-28, -150, 28, 11, 14), '#ffe3c7', { boil: .3 }); fillOnly(ell(4, -164, 9, 5, 8), '#ffe3c7', { boil: .3 });
-      fillOnly(ell(-46, -36, 16, 10, 10), PAL.sNose, { boil: .3, alpha: .5 }); fillOnly(ell(46, -36, 16, 10, 10), PAL.sNose, { boil: .3, alpha: .5 });
-    }
-  });
-  // coroinha de cabelo grisalho dos lados
-  for (const sx of [-1, 1]) shape(spline([[sx * 66, -132], [sx * 96, -124], [sx * 102, -96], [sx * 96, -60], [sx * 80, -74], [sx * 72, -104]]), { fill: PAL.sHair, lw: 6 });
-  // sobrancelhas grossas pretas
-  const br = P.brow ?? 0;
-  shape(spline([[-64, -116 - br * 10], [-40, -128 - br * 12], [-14, -120 - br * 4], [-18, -110], [-60, -106 - br * 8]]), { fill: PAL.stache, lw: 5 });
-  shape(spline([[64, -116 + br * 2], [40, -128 + br * 2], [14, -120 + br * 4], [18, -110], [60, -106 + br * 2]]), { fill: PAL.stache, lw: 5 });
-  eye(-32, -88, 22, 24, { lid: P.lid ?? .35, look: P.look || [0, 0], skin: PAL.sSkin, closed: P.closed });
-  eye(32, -88, 22, 24, { lid: P.lid ?? .35, look: P.look || [0, 0], skin: PAL.sSkin, closed: P.closed });
-  // narigão
-  shape(spline([[-4, -76], [22, -66], [30, -42], [14, -28], [-14, -30], [-24, -48]]), { fill: PAL.sNose, lw: 6 });
-  // óculos de leitura meia-lua na ponta do nariz (ele olha por cima)
-  for (const sx of [-1, 1]) shape([[sx * 8, -62], [sx * 50, -62], ...arc(sx * 29, -62, 21, 14, 0, Math.PI, 12)], { fill: '#e8f6ff', alpha: .9, lw: 5 });
-  stroke([[-8, -64], [8, -64]], 5); stroke([[-50, -64], [-80, -78]], 4); stroke([[50, -64], [80, -78]], 4);
-  // bigodão escovão
-  shape(spline([[-70, -20], [-52, -42], [-20, -44], [0, -38], [20, -44], [52, -42], [70, -20], [52, -12], [24, -22], [0, -18], [-24, -22], [-52, -12]]), {
-    fill: PAL.stache, lw: 6, shade: () => { fillOnly(ell(-40, -34, 16, 5, 8), PAL.stacheG, { boil: .3 }); fillOnly(ell(34, -36, 12, 4, 8), PAL.stacheG, { boil: .3 }); }
-  });
-  mouth(0, -8, 54, P.mouth || { o: .12, sm: .4 });
-  stroke(arc(0, 6, 46, 26, Math.PI * .25, Math.PI * .75, 10), 4); // queixo duplo
+  // estampa: "STRONG AND FREE" virou uma fileira de pontinhos + o "14" pontilhado
+  for (let k = 0; k < 13; k++) dot(-62 + k * 10, T + 76, 2.2, '#dfe8ff');
+  dotPrint('14', -54, T + 92, 9.5, '#eef3ff');
+  // gola + pescoço
+  push(); translate(0, T - 4); rotate(P.tilt ?? 0);
+  shape(spline([[-40, 14], [-34, -40], [34, -40], [40, 14]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(10, -50, 40, 70), PAL.cSkinS, { boil: .3 }) });
   pop();
-  if (P.paper) seguraJornal(b, P.t);
-  else drawArm(shF, armF, false);
+  shape(spline([[-44, T - 6], [0, T + 18], [44, T - 6]], false, 8), { closed: false, lw: 10, line: PAL.shirtS, fill: null });
+  stroke(spline([[-44, T - 6], [0, T + 18], [44, T - 6]], false, 8), 6);
+  // cabeça
+  push(); translate(0, T - 30); rotate(P.tilt ?? 0);
+  for (const sx of [-1, 1]) shape(ell(sx * 78, -74, 17, 26, 16), { fill: PAL.cSkin, lw: 6, shade: () => stroke(arc(sx * 80, -74, 7, 12, Math.PI * .6, Math.PI * 1.4, 6), 4) });
+  shape(spline([[-76, -110], [-70, -170], [0, -186], [70, -170], [76, -110], [70, -40], [44, 4], [0, 16], [-44, 4], [-70, -40]]), {
+    fill: PAL.cSkin, lw: 7, shade: () => { fillOnly(ell(56, -60, 36, 90, 24), PAL.cSkinS, { boil: .4 }); }
+  });
+  // cabelo branco cacheado (nuvem de cachos)
+  const cur = []; const N = 15;
+  for (let i = 0; i <= N; i++) { const a = lerp(Math.PI * .93, Math.PI * 2.07, i / N), r = i % 2 ? 1.12 : 1; cur.push([Math.cos(a) * 92 * r, -126 + Math.sin(a) * 74 * r]); }
+  shape(spline([...cur, [76, -100], [52, -136], [0, -144], [-52, -136], [-76, -100]]), {
+    fill: PAL.hairC, lw: 6, shade: () => { fillOnly(ell(40, -170, 50, 40, 20), PAL.hairCS, { boil: .4 }); }
+  });
+  for (const [x, y] of [[-50, -170], [-12, -186], [26, -176], [58, -150], [-70, -136], [-30, -150], [10, -156]]) stroke(arc(x, y, 9, 8, Math.PI * .8, Math.PI * 2.1, 8), 3.5, { line: PAL.hairCS });
+  // costeletas brancas
+  for (const sx of [-1, 1]) shape(spline([[sx * 66, -114], [sx * 78, -110], [sx * 76, -76], [sx * 68, -84]]), { fill: PAL.hairC, lw: 5 });
+  rugas(-74, .9);
+  // sobrancelhas grisalhas
+  const br = P.brow ?? 0;
+  shape(rr(-58, -126 - br * 8, 42, 12, 6), { fill: PAL.hairCS, lw: 5 });
+  shape(rr(16, -126 + br * 2, 42, 12, 6), { fill: PAL.hairCS, lw: 5 });
+  eye(-30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
+  eye(30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
+  for (const sx of [-1, 1]) stroke(arc(sx * 30, -68, 16, 6, Math.PI * .15, Math.PI * .85, 8), 3); // bolsinhas
+  // óculos de armação escura retangular
+  for (const sx of [-1, 1]) stroke(rr(sx * 30 - 30, -120, 60, 46, 14), 8, { line: PAL.frame });
+  stroke([[-8, -104], [8, -104]], 7, { line: PAL.frame });
+  for (const sx of [-1, 1]) stroke([[sx * 60, -108], [sx * 76, -96]], 6, { line: PAL.frame });
+  // nariz
+  shape(spline([[-6, -92], [14, -66], [22, -46], [6, -36], [-18, -40], [-20, -56]]), { fill: PAL.cNose, lw: 6 });
+  // vincos do rosto
+  for (const sx of [-1, 1]) stroke(quad([sx * 26, -44], [sx * 40, -26], [sx * 34, -6]), 3.5);
+  // bigodinho branco
+  shape(spline([[-40, -26], [-20, -36], [0, -32], [20, -36], [40, -26], [22, -22], [0, -24], [-22, -22]]), { fill: PAL.stacheC, lw: 5 });
+  mouth(0, -12, 40, P.mouth || { o: 0, sm: -.1 });
+  pop();
+  if (P.paper) seguraJornal(T, hip, P.t);
+  else limb(shF, armF, opt);
   pop();
 }
 
-// segurando o jornal aberto (plano geral): ombros à vista, braços atrás do papel, antebraços em pé pelas laterais,
+// segurando o jornal aberto (plano geral): mangas à vista, braços atrás do papel, antebraços em pé pelas laterais,
 // e do lado de cá do papel aparecem só os quatro dedos dobrados sobre a borda (o polegar fica do lado dele)
-function seguraJornal(b, t) {
-  const yH = b - 168;
-  for (const sx of [-1, 1]) shape(noodle([sx * 110, b - 244], [sx * 318, b + 4], sx * 30, 46, 40), { fill: PAL.sSkin, lw: 7 });
-  for (const sx of [-1, 1]) shape(noodle([sx * 326, b + 10], [sx * 322, yH + 20], 0, 42, 36), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? 330 : -360, b - 300, 30, 360), PAL.sSkinS, { boil: .3, alpha: .6 }) });
-  jornalAberto({ x: 0, y: b - 110, s: 1, t });
+function seguraJornal(T, hip, t) {
+  const yP = hip - 70, yH = yP - 58;
   for (const sx of [-1, 1]) {
-    // costas da mão, por fora da borda
-    shape(spline([[sx * 300, yH - 34], [sx * 330, yH - 40], [sx * 350, yH - 14], [sx * 348, yH + 24], [sx * 326, yH + 40], [sx * 302, yH + 34]]), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(ell(sx * 342, yH, 12, 40, 12), PAL.sSkinS, { boil: .3, alpha: .6 }) });
-    // quatro dedos dobrados por cima da borda do papel
+    shape(noodle([sx * 112, T + 16], [sx * 318, hip + 30], sx * 30, 42, 38), { fill: PAL.cSkin, lw: 7 });
+    shape(noodle([sx * 112, T + 16], [sx * 180, T + 110], sx * 10, 64, 58), { fill: PAL.shirt, lw: 7 });
+  }
+  for (const sx of [-1, 1]) shape(noodle([sx * 326, hip + 34], [sx * 322, yH + 20], 0, 40, 34), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? 330 : -360, hip - 300, 30, 400), PAL.cSkinS, { boil: .3, alpha: .6 }) });
+  jornalAberto({ x: 0, y: yP, s: 1, t });
+  for (const sx of [-1, 1]) {
+    shape(spline([[sx * 300, yH - 34], [sx * 330, yH - 40], [sx * 350, yH - 14], [sx * 348, yH + 24], [sx * 326, yH + 40], [sx * 302, yH + 34]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(ell(sx * 342, yH, 12, 40, 12), PAL.cSkinS, { boil: .3, alpha: .6 }) });
     for (let k = 0; k < 4; k++) {
       const fy = yH - 26 + k * 18, len = [30, 36, 34, 26][k];
-      shape(rr(sx > 0 ? 300 - len : -300, fy - 8, len + 6, 17, 8), { fill: PAL.sSkin, lw: 5 });
-      fillOnly(ell(sx * (300 - len + 7), fy, 4, 5, 8), '#e8b090', { boil: .2 });
+      shape(rr(sx > 0 ? 300 - len : -300, fy - 8, len + 6, 17, 8), { fill: PAL.cSkin, lw: 5 });
+      fillOnly(ell(sx * (300 - len + 7), fy, 4, 5, 8), PAL.nail, { boil: .2 });
     }
   }
-  // relógio dourado no pulso esquerdo (dele), visível pela lateral
-  const wx = -326, wy = yH + 74;
-  stroke([[wx - 26, wy], [wx + 26, wy]], 24); stroke([[wx - 24, wy], [wx + 24, wy]], 13, { line: PAL.goldS });
-  shape(ell(wx - 6, wy, 15, 15, 16), { fill: PAL.gold, lw: 5 }); shape(ell(wx - 6, wy, 8, 8, 12), { fill: '#fffbea', lw: 3 });
 }
 
-// jornal aberto segurado na frente da barriga (plano geral)
+// jornal aberto segurado na frente do corpo (plano geral)
 export function jornalAberto(P) {
   push(); translate(P.x, P.y); scale(P.s ?? 1);
   const w = 300, h = 210;
@@ -206,67 +227,93 @@ export function jornalAberto(P) {
   pop();
 }
 
-// —— 2. A ESPOSA: alta e magra, bobes coloridos no cabelo, vestido florido, avental amarelo, chinelo rosa, colher de pau ——
-// P: { x, y, s, t, face, armL, armR, mouth, look, lid, brow, tilt, spoon }
-export function esposa(P) {
-  push(); translate(P.x, P.y); scale((P.s ?? 1) * (P.face ?? 1), P.s ?? 1);
-  for (const sx of [-1, 1]) {
-    shape(noodle([sx * 26, -200], [sx * 28, -26], 0, 26, 22), { fill: PAL.eSkin, lw: 7 });
-    push(); translate(sx * 28, 0); scale(sx * .9, 1);
-    shape(spline([[-26, 3], [-28, -12], [20, -20], [50, -10], [46, 3]]), { fill: PAL.eSlip, lw: 6 });
-    shape(spline([[-20, -10], [-18, -30], [16, -34], [38, -16], [36, -8]]), { fill: PAL.eSkin, lw: 6 });
-    stroke([[-10, -20], [26, -22]], 14); stroke([[-10, -20], [26, -22]], 7, { line: PAL.eSlip });
-    pop();
+// estampa do vestido: treliça de losangos com cruzinhas
+function trelica(x0, y0, w, h, col, step = 34) {
+  for (let k = -Math.ceil(h / step); k < Math.ceil(w / step) + 1; k++) {
+    stroke([[x0 + k * step, y0], [x0 + k * step + h, y0 + h]], 2.5, { line: col, boil: .3 });
+    stroke([[x0 + k * step + h, y0], [x0 + k * step, y0 + h]], 2.5, { line: col, boil: .3 });
   }
-  const shB = [-58, -536], shF = [58, -536];
-  const armB = P.armL || { h: [-34, 210], bend: -20 }, armF = P.armR || { h: [40, 200], bend: 24 };
-  const drawArm = (sh, arm, spoon) => {
-    const hp = [sh[0] + arm.h[0], sh[1] + arm.h[1]];
-    shape(noodle(sh, hp, arm.bend ?? 0, 26, 22), { fill: PAL.eSkin, lw: 7 });
-    shape(ell(sh[0] + arm.h[0] * .1, sh[1] + arm.h[1] * .12, 30, 28, 20), { fill: PAL.dress, lw: 6, shade: () => fillOnly(ell(sh[0] + 14, sh[1] + 20, 22, 18, 12), PAL.dressS, { boil: .3 }) }); // manguinha bufante
-    if (spoon) { // colher de pau
-      const a = arm.spoonA ?? -1.9;
-      push(); translate(hp[0], hp[1] + 6); rotate(a);
-      shape(rr(-6, -14, 180, 12, 6), { fill: PAL.wood, lw: 5 });
-      shape(ell(196, -8, 30, 20, 18), { fill: PAL.wood, lw: 6, shade: () => fillOnly(ell(200, -4, 18, 10, 12), PAL.woodS, { boil: .3 }) });
-      pop();
-    }
-    hand(hp[0], hp[1] + 6, Math.atan2(arm.h[1], arm.h[0]) - .2, 17, PAL.eSkin, { fist: arm.fist || spoon });
-  };
-  drawArm(shB, armB, false);
-  // vestido em A
-  shape(spline([[-58, -548], [0, -560], [58, -548], [70, -420], [104, -280], [124, -186], [60, -176], [0, -182], [-60, -176], [-124, -186], [-104, -280], [-70, -420]]), {
-    fill: PAL.dress, lw: 7, shade: () => { flowers(-140, -560, 280, 400, PAL.flower, 44, 6, 3); fillOnly(spline([[30, -560], [80, -430], [130, -300], [140, -170], [70, -170], [60, -400]]), PAL.dressS, { boil: .4, alpha: .55 }); }
+  for (let y = y0; y < y0 + h; y += step) for (let x = x0 + ((y - y0) / step % 2) * step / 2; x < x0 + w; x += step) { stroke([[x - 5, y + step / 2], [x + 5, y + step / 2]], 3, { line: col, boil: .2 }); stroke([[x, y + step / 2 - 5], [x, y + step / 2 + 5]], 3, { line: col, boil: .2 }); }
+}
+// estampa do casaco: triângulos cinza, brancos e vinho
+function geometrico(x0, y0, w, h, seed = 1) {
+  const cols = [PAL.cardiG, PAL.cardiW, PAL.cardiD, PAL.cardiG];
+  for (let y = y0; y < y0 + h; y += 54) for (let x = x0; x < x0 + w; x += 54) {
+    const r = hash(x * .13 + y * .29 + seed); if (r < .18) continue;
+    const c = cols[Math.floor(r * 4)], f = r > .7;
+    fillOnly(f ? [[x, y], [x + 48, y + 24], [x, y + 48]] : [[x + 48, y], [x + 48, y + 48], [x, y + 24]], c, { boil: .3 });
+  }
+}
+
+// —— 2. DONA ZEFINHA: cabelo grisalho puxado num coque, óculos de aro fino, vestido azul de treliça,
+//    casaco vermelho geométrico aberto, chinelo azul-marinho; braços cruzados, cara de "bem que te avisei" ——
+// P: { x, y, s, t, face, armL, armR, cross (braços cruzados), mouth, look, lid, brow, tilt, spoon }
+export function zefinha(P) {
+  const cross = P.cross ?? !P.armR;
+  push(); translate(P.x, P.y); scale((P.s ?? 1) * (P.face ?? 1), P.s ?? 1);
+  // pernas firmes + chinelos
+  for (const sx of [-1, 1]) {
+    shape(noodle([sx * 34, -220], [sx * 38, -28], 0, 40, 32), { fill: PAL.zSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? 44 : -400, -260, 400, 260), PAL.zSkinS, { boil: .3, alpha: sx > 0 ? .6 : 0 }) });
+    chinelo(sx * 38, sx, PAL.zSkin, PAL.flipN, PAL.flipNS);
+  }
+  const T = -540;
+  const sleeve = { skin: PAL.zSkin, sleeve: PAL.cardi, sleeveTo: 1, w0: 54, w1: 44, r: 20, pattern: sh => geometrico(sh[0] - 220, sh[1] - 60, 440, 340, sh[0] > 0 ? 7 : 11) };
+  const shB = [-104, T + 18], shF = [104, T + 18];
+  if (!cross) limb(shB, P.armL || { h: [-30, 220], bend: -20 }, sleeve);
+  // vestido azul de treliça (até abaixo do joelho, barra em babado)
+  shape(spline([[-96, T + 4], [0, T - 6], [96, T + 4], [116, T + 160], [128, T + 300], [140, -200], [70, -186], [0, -196], [-70, -186], [-140, -200], [-128, T + 300], [-116, T + 160]]), {
+    fill: PAL.dressZ, lw: 7, shade: () => { trelica(-160, T - 10, 320, 360, PAL.lattice, 30); fillOnly(rect(60, T - 20, 120, 380), PAL.dressZS, { boil: .3, alpha: .5 }); }
   });
-  // avental amarelo com bolso e babado
-  shape(spline([[-62, -420], [0, -414], [62, -420], [84, -300], [90, -226], [0, -218], [-90, -226], [-84, -300]]), {
-    fill: PAL.apron, lw: 6, shade: () => { fillOnly(rect(30, -440, 120, 240), PAL.apronS, { boil: .3 }); for (let k = 0; k < 7; k++) fillOnly(ell(-84 + k * 28, -224, 16, 10, 10), '#fff1a8', { boil: .3 }); }
-  });
-  shape(rr(-44, -350, 70, 52, 10), { fill: PAL.apronS, lw: 5 });
-  shape(rr(-70, -432, 140, 22, 10), { fill: PAL.apron, lw: 5 });
+  stroke(spline([[-140, -214], [-70, -200], [0, -210], [70, -200], [140, -214]], false, 8), 4); // babado
+  // casaco vermelho aberto, comprido até a coxa
+  for (const sx of [-1, 1]) {
+    shape(spline([[sx * 110, T + 2], [sx * 40, T - 8], [sx * 30, T + 60], [sx * 44, T + 200], [sx * 64, -300], [sx * 150, -306], [sx * 146, T + 120], [sx * 132, T + 30]]), {
+      fill: PAL.cardi, lw: 7, shade: () => { geometrico(sx > 0 ? 20 : -170, T - 20, 150, 280, sx * 3); fillOnly(rect(sx > 0 ? 110 : -160, T, 50, 280), PAL.cardiS, { boil: .3, alpha: .6 }); }
+    });
+    stroke(spline([[sx * 40, T - 8], [sx * 30, T + 60], [sx * 44, T + 200], [sx * 64, -300]], false, 8), 12, { line: PAL.cardiG }); stroke(spline([[sx * 40, T - 8], [sx * 30, T + 60], [sx * 44, T + 200], [sx * 64, -300]], false, 8), 5);
+  }
   // cabeça
-  push(); translate(0, -560); rotate(P.tilt ?? 0);
-  shape(spline([[-26, 10], [-22, -40], [22, -40], [26, 10]]), { fill: PAL.eSkin, lw: 7 }); // pescoço comprido
-  // cabelo grisalho (volume atrás)
-  shape(spline([[-84, -110], [-74, -168], [0, -196], [74, -168], [84, -110], [70, -70], [-70, -70]]), { fill: PAL.eHair, lw: 6, shade: () => fillOnly(ell(50, -120, 40, 60, 20), PAL.eHairS, { boil: .3 }) });
-  shape(ell(0, -88, 62, 78, 44), { fill: PAL.eSkin, lw: 7, shade: () => { fillOnly(ell(44, -70, 34, 76, 24), PAL.eSkinS, { boil: .4 }); for (const sx of [-1, 1]) fillOnly(ell(sx * 34, -54, 14, 8, 10), PAL.blush, { boil: .3, alpha: .7 }); } });
-  // franja enrolada
-  shape(spline([[-60, -120], [-30, -150], [10, -156], [56, -138], [62, -112], [30, -128], [-10, -126], [-44, -110]]), { fill: PAL.eHair, lw: 6 });
-  // bobes
-  const cs = [[-62, -170, -.5], [-24, -194, -.15], [16, -196, .15], [54, -176, .5]];
-  cs.forEach(([x, y, a], i) => { push(); translate(x, y); rotate(a); shape(rr(-20, -14, 40, 28, 12), { fill: PAL.curl[i], lw: 5 }); for (let k = -1; k <= 1; k++) stroke([[k * 10, -12], [k * 10, 12]], 3); pop(); });
-  // argolas
-  for (const sx of [-1, 1]) stroke(ell(sx * 64, -50, 10, 13, 14), 6, { line: PAL.gold });
-  // sobrancelha arqueada (uma lá em cima: cética)
-  const br = P.brow ?? .6;
-  stroke(quad([-44, -120], [-28, -134 - br * 6], [-12, -122]), 7);
-  stroke(quad([12, -124], [28, -136 - br * 16], [46, -128 - br * 4]), 7);
-  eye(-26, -100, 17, 20, { lid: P.lid ?? .45, look: P.look || [0, 0], skin: PAL.eSkin, pupil: 4 });
-  eye(26, -100, 17, 20, { lid: P.lid ?? .45, look: P.look || [0, 0], skin: PAL.eSkin, pupil: 4 });
-  shape(spline([[-2, -88], [12, -66], [8, -56], [-6, -58]]), { fill: PAL.eSkinS, lw: 5 });
-  mouth(0, -34, 26, { lip: PAL.lip, lw: 5, ...(P.mouth || { o: 0, sm: -.2, skew: .4 }) });
+  push(); translate(0, T - 8); rotate(P.tilt ?? 0); scale(1.14);
+  shape(spline([[-34, 14], [-30, -40], [30, -40], [34, 14]]), { fill: PAL.zSkin, lw: 7, shade: () => fillOnly(rect(8, -50, 40, 70), PAL.zSkinS, { boil: .3 }) });
+  shape(ell(0, -184, 32, 24, 20), { fill: PAL.zHair, lw: 6, shade: () => stroke(arc(0, -184, 20, 14, Math.PI * 1.1, Math.PI * 1.9, 8), 3, { line: PAL.zHairS }) }); // coque
+  for (const sx of [-1, 1]) shape(ell(sx * 70, -78, 14, 22, 14), { fill: PAL.zSkin, lw: 6 });
+  shape(spline([[-70, -110], [-62, -160], [0, -172], [62, -160], [70, -110], [64, -44], [40, -2], [0, 10], [-40, -2], [-64, -44]]), {
+    fill: PAL.zSkin, lw: 7, shade: () => fillOnly(ell(52, -60, 30, 90, 24), PAL.zSkinS, { boil: .4 })
+  });
+  // cabelo grisalho puxado pra trás (rente, com os riscos do pente)
+  shape(spline([[-72, -104], [-70, -150], [-30, -178], [0, -182], [30, -178], [70, -150], [72, -104], [60, -120], [36, -144], [0, -152], [-36, -144], [-60, -120]]), {
+    fill: PAL.zHair, lw: 6, shade: () => { for (let k = 0; k < 3; k++) stroke(arc(0, -104, 54 + k * 9, 52 + k * 8, Math.PI * 1.18, Math.PI * 1.82, 14), 3, { line: PAL.zHairS }); fillOnly(ell(-30, -168, 22, 7, 10), '#cfccd4', { boil: .3 }); }
+  });
+  rugas(-70, .8);
+  const br = P.brow ?? .3;
+  stroke(quad([-48, -116 + br * 4], [-30, -124], [-12, -116 - br * 2]), 6);
+  stroke(quad([12, -116 - br * 2], [30, -124], [48, -116 + br * 4]), 6);
+  eye(-28, -96, 17, 19, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
+  eye(28, -96, 17, 19, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
+  for (const sx of [-1, 1]) stroke(arc(sx * 28, -70, 14, 6, Math.PI * .15, Math.PI * .85, 8), 3);
+  // óculos de aro fino, arredondados
+  for (const sx of [-1, 1]) stroke(rr(sx * 28 - 27, -118, 54, 44, 20), 4.5, { line: PAL.frameZ });
+  stroke([[-6, -102], [6, -102]], 4, { line: PAL.frameZ });
+  for (const sx of [-1, 1]) stroke([[sx * 55, -104], [sx * 70, -94]], 4, { line: PAL.frameZ });
+  shape(spline([[-4, -88], [12, -62], [8, -48], [-10, -50], [-16, -60]]), { fill: PAL.zSkinS, lw: 5 });
+  for (const sx of [-1, 1]) stroke(quad([sx * 22, -50], [sx * 34, -34], [sx * 30, -16]), 3.5);
+  mouth(0, -26, 34, P.mouth || { o: 0, sm: -.45 });
+  stroke(arc(0, -2, 22, 8, Math.PI * .2, Math.PI * .8, 8), 3); // queixo
   pop();
-  drawArm(shF, armF, P.spoon ?? true);
+  if (cross) {
+    // braços cruzados na cintura, mangas compridas do casaco, mãos uma sobre a outra
+    limb(shB, { e: [-50, 190], h: [130, 210], ang: -.1 }, sleeve);
+    limb(shF, { e: [50, 190], h: [-120, 196], ang: Math.PI + .2 }, sleeve);
+  } else {
+    const armF = P.armR || { h: [40, 200], bend: 24 };
+    limb(shF, armF, { ...sleeve, under: P.spoon ? hp => colher(hp, armF.spoonA ?? -1.9) : null });
+  }
+  pop();
+}
+function colher(hp, a) {
+  push(); translate(hp[0], hp[1] + 6); rotate(a);
+  shape(rr(-6, -14, 180, 12, 6), { fill: PAL.wood, lw: 5 });
+  shape(ell(196, -8, 30, 20, 18), { fill: PAL.wood, lw: 6, shade: () => fillOnly(ell(200, -4, 18, 10, 12), PAL.woodS, { boil: .3 }) });
   pop();
 }
 
@@ -565,30 +612,22 @@ export function jornalClose(P) {
     for (let k = 0; k < 7; k++) fillOnly(rect(-W2 + 36 + c * cw, fy + 254 + k * 30, k === 6 ? cw * .55 : cw - 28, 10), '#a39a88', { boil: .2 });
   }
   pop();
-  // mãos dele segurando as laterais, vistas do lado de quem lê: polegar por cima do papel, dedos por trás,
-  // a lateral da mão e do indicador por fora da borda. Relógio dourado no pulso esquerdo. Longe do selo de fonte.
+  // mãos do Seu Chicó segurando as laterais, vistas do lado de quem lê: polegar por cima do papel, dedos por trás,
+  // a lateral da mão e do indicador por fora da borda. Longe do selo de fonte.
   for (const sx of [-1, 1]) {
     push(); translate(540 + sway + sx * (W2 + 6), 980 + 560); scale(sx, 1);
     // antebraço
-    shape(noodle([200, 560], [56, 70], -16, 128, 104), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(rect(120, -100, 300, 800), PAL.sSkinS, { boil: .3, alpha: .55 }) });
-    if (sx < 0) {
-      const c = [96, 240], px = .956, py = -.293;
-      stroke([[c[0] - px * 66, c[1] - py * 66], [c[0] + px * 66, c[1] + py * 66]], 42);
-      stroke([[c[0] - px * 62, c[1] - py * 62], [c[0] + px * 62, c[1] + py * 62]], 30, { line: PAL.goldS });
-      shape(ell(c[0], c[1], 38, 38, 28), { fill: PAL.gold, lw: 6 });
-      shape(ell(c[0], c[1], 25, 25, 22), { fill: '#fffbea', lw: 4 });
-      stroke([[c[0], c[1]], [c[0], c[1] - 15]], 4); stroke([[c[0], c[1]], [c[0] + 11, c[1] + 4]], 4);
-    }
+    shape(noodle([200, 560], [56, 70], -16, 128, 104), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(120, -100, 300, 800), PAL.cSkinS, { boil: .3, alpha: .55 }) });
     // mão: lateral do indicador dobrando atrás da borda + palma
     shape(spline([[2, -92], [36, -110], [76, -100], [100, -60], [108, 0], [96, 62], [62, 104], [20, 96], [2, 40]]), {
-      fill: PAL.sSkin, lw: 7, shade: () => { fillOnly(ell(92, 10, 26, 90, 16), PAL.sSkinS, { boil: .3, alpha: .55 }); }
+      fill: PAL.cSkin, lw: 7, shade: () => { fillOnly(ell(92, 10, 26, 90, 16), PAL.cSkinS, { boil: .3, alpha: .55 }); }
     });
     stroke(arc(34, -66, 22, 16, Math.PI * .15, Math.PI * .85, 8), 4);  // dobra do indicador
     stroke(arc(40, -20, 20, 12, Math.PI * .2, Math.PI * .8, 8), 4);    // dobra do médio
     // polegar: base gordinha, junta, ponta com unha
-    shape(spline([[40, 40], [10, -30], [-40, -64], [-86, -82], [-104, -66], [-94, -44], [-50, -24], [-10, 20], [6, 60]]), { fill: PAL.sSkin, lw: 7, shade: () => fillOnly(ell(10, 20, 30, 40, 12), PAL.sSkinS, { boil: .3, alpha: .4 }) });
+    shape(spline([[40, 40], [10, -30], [-40, -64], [-86, -82], [-104, -66], [-94, -44], [-50, -24], [-10, 20], [6, 60]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(ell(10, 20, 30, 40, 12), PAL.cSkinS, { boil: .3, alpha: .4 }) });
     push(); translate(-84, -66); rotate(.42);
-    shape(rr(-18, -12, 32, 22, 10), { fill: '#e8b090', lw: 4 });
+    shape(rr(-18, -12, 32, 22, 10), { fill: PAL.nail, lw: 4 });
     pop();
     stroke(arc(-42, -44, 12, 10, Math.PI * 1.15, Math.PI * 1.75, 6), 4); // vinco da junta
     pop();

@@ -1,4 +1,4 @@
-# Série "Jornal do seu ___"
+# Série "Jornal do Seu Chicó"
 
 Formato novo, separado do padrão de curiosidades (PADRAO.md). Mesmo estilo visual Sci-Fi Sitcom Toon, 9:16, 60–130 s, sem legendas.
 
@@ -6,8 +6,8 @@ Formato novo, separado do padrão de curiosidades (PADRAO.md). Mesmo estilo visu
 A pessoa manda uma **notícia** (de preferência o link; print também serve). Um senhorzinho lê o jornal em casa, comenta com humor, a esposa e os bichos zoam, e no fim ele vai dormir.
 
 ## Elenco fixo (desenhar uma vez, reaproveitar em todo episódio)
-- **O senhor:** calvo, de bigode, sem camisa, de bermuda e chinelo. Sentado na poltrona; lê o jornal todo dia, dá opiniões engraçadas e ri.
-- **A esposa:** sempre na cozinha fazendo alguma coisa. Se intromete de vez em quando com bordões: "bem que te avisei", "né pussive", "rapaz, o mundo tá de cabeça pra baixo mesmo" e outros a inventar.
+- **Seu Chicó** (o senhor; desenhado a partir da foto de referência da pessoa): cabelo branco cacheado, óculos de armação escura, bigodinho branco, camiseta azul com o "14" pontilhado, calça azul-marinho e chinelo de dedo. Gesto típico: a mão no queixo. Sentado na poltrona, lê o jornal todo dia, dá opiniões engraçadas e ri.
+- **Dona Zefinha** (a esposa; mesma foto de referência): cabelo grisalho puxado num coque, óculos de aro fino, vestido azul com estampa de treliça, casaco vermelho com desenhos geométricos e chinelo azul-marinho. Fica de braços cruzados e cara séria. Está sempre na cozinha fazendo alguma coisa. Se intromete de vez em quando com bordões: "bem que te avisei", "né pussive", "rapaz, o mundo tá de cabeça pra baixo mesmo" e outros a inventar.
 - **Gato magricelo:** faz bagunça e estressa o senhor (derruba a xícara etc.).
 - **Papagaio:** repete palavras para zoar o senhor no pior momento.
 
@@ -49,5 +49,5 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 
 ## Próximo passo
 1. Folha de elenco e cenário para aprovação: senhor, esposa, gato, papagaio e a sala com a cozinha ao fundo. **Feito, aguardando aprovação:** `jornal/elenco-previa.jpg`, `jornal/cenario-previa.jpg`, `jornal/jornal-close-previa.jpg` (código em `jornal/cast.js`).
-2. Definir os nomes dos personagens e as vozes do ElevenLabs.
+2. Nomes: **Seu Chicó** e **Dona Zefinha** (definidos). Faltam o nome do gato e do papagaio, as vozes do ElevenLabs e o nome do jornal (provisório: "O NOTICIÃO").
 3. Primeira notícia: roteiro com as falas por personagem → MP3s da pessoa → produção. Reaproveitar o pipeline de `ciclone-janela/`: `tools/`, `toon.js`, `lib.js`, `mix.py`, `score.py`.

@@ -1,10 +1,10 @@
-# Série "Jornal do seu ___" — elenco e cenário fixos
+# Série "Jornal do Seu Chicó" — elenco e cenário fixos
 
 Ideia e regras da série: [../SERIE-JORNAL.md](../SERIE-JORNAL.md). Estilo Sci-Fi Sitcom Toon, 9:16, 1080×1920.
 
 Esta pasta guarda o que se desenha **uma vez** e se reaproveita em todo episódio:
 
-- `cast.js` — o senhor (`seu`), a esposa (`esposa`), o gato (`gato`), o papagaio (`papagaio` + `poleiro`),
+- `cast.js` — Seu Chicó (`chico`), Dona Zefinha (`zefinha`), o gato (`gato`), o papagaio (`papagaio` + `poleiro`),
   a poltrona, a mesinha, a garrafa de café, a xícara, o jornal aberto (`jornalAberto`),
   o cenário da sala com a cozinha ao fundo (`sala`) e o close em primeira pessoa do jornal (`jornalClose`,
   que recebe manchete, resumo e selo de fonte de cada notícia).
