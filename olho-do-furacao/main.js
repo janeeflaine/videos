@@ -180,12 +180,12 @@ function s03(t) {
   cam(540, 960, 1, 0, t);
   crossSection(t, { eyeW: 460, dark: 0 });
   scr();
+  if (t > tFo - .2) for (let k = 0; k < 5; k++) { const y = 650 + k * 200, ph = (t * 1.6 + k * .3) % 1; arrow(lerp(-80, 260, ph), y, lerp(-80, 260, ph) + 120, y - 20, '#ffffff', 14); arrow(lerp(1160, 820, ph), y + 60, lerp(1160, 820, ph) - 120, y + 40, '#ffffff', 14); }
   if (t > tPa - .1) {
     const a = popIn(t, tPa - .1);
     sign('PAREDE', 160, 900, { size: 54, fill: '#ff8a7a', s: a, rot: -.08 }); sign('PAREDE', 920, 900, { size: 54, fill: '#ff8a7a', s: a, rot: .08 });
     arrow(250, 1000, 300, 1100, '#ff8a7a', 18); arrow(830, 1000, 780, 1100, '#ff8a7a', 18);
   }
-  if (t > tFo - .2) for (let k = 0; k < 5; k++) { const y = 650 + k * 200, ph = (t * 1.6 + k * .3) % 1; arrow(lerp(-80, 260, ph), y, lerp(-80, 260, ph) + 120, y - 20, '#ffffff', 14); arrow(lerp(1160, 820, ph), y + 60, lerp(1160, 820, ph) - 120, y + 40, '#ffffff', 14); }
 }
 // 04 — dentro da parede: sobe-e-desce; tudo voa
 function s04(t) {
