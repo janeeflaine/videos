@@ -1,7 +1,7 @@
 # TREATMENT — "E se o avião entrar no olho?" (Curioso Soh)
 
-Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). 1080×1920 (9:16), 24 fps, alvo ~120 s (faixa 60–130 s), PT-BR, humor.
-Narração única (ElevenLabs, voz ZqE9vIHPcrC35dZv0Svu, gerada pela pessoa). Sem legendas; textos curtos de piada permitidos
+Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). 1080×1920 (9:16), 24 fps, final 128,8 s (faixa 60–130 s), PT-BR, humor.
+Narração (ElevenLabs, voz ZqE9vIHPcrC35dZv0Svu, gerada pela pessoa; chamada final em arquivo separado), acelerada 7% e com "dezenas de quilômetros" cortado da fala 10 para caber em 130 s. Sem legendas; textos curtos de piada permitidos
 ("OLHO: 30–60 km", "PAREDE", "+50% de folga", "1943 — APOSTA", "HUGO 1989", "CURIOSO SOH").
 Música: lounge de aeroporto (vibrafone + baixo de jazz); teremim desafinado na parede do olho, calmo dentro do olho.
 Baixa (~14 dB sob a voz, ducking ~9 dB).

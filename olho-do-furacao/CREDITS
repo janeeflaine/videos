@@ -1,0 +1,18 @@
+E se o avião entrar no olho? — créditos de terceiros
+
+Narração: ElevenLabs (elevenlabs.io), voz ZqE9vIHPcrC35dZv0Svu, gerada pela pessoa no site com a conta dela.
+  Uso conforme os termos da ElevenLabs para o plano da conta. Áudio original: voices/narracao.mp3 e voices/12_src.mp3 (chamada).
+Verificação de fala: faster-whisper (MIT) com o modelo Systran/faster-whisper-small (MIT).
+Fontes (SIL Open Font License 1.1, Google Fonts): Baloo 2, Titan One, VT323, Bungee.
+Música e efeitos sonoros: sintetizados em código para este filme (sem samples).
+Motor de desenho e ferramentas de render: biblioteca Lemo-Opuscar (MIT), estilo Sci-Fi Sitcom Toon.
+
+Fontes dos dados citados no roteiro:
+  Altitudes de penetração e turbulência na parede do olho: https://hurricanescience.org/science/observation/aircraftrecon/hurricanehunters/index.html
+  Olho calmo (30–60 km), ventos mais fortes na parede: https://www.canada.ca/en/environment-climate-change/services/archive/hurricanes/structure-and-motion.html
+  Caso Hugo 1989 (NOAA 42): https://www.aoml.noaa.gov/hurricane_blog/25th-anniversary-of-a-hairy-hop-into-hurricane-hugo
+                            https://en.wikipedia.org/wiki/1989_Hurricane_Hunters_NOAA_42_incident
+  Voo de 1943 (aposta): https://www.aoml.noaa.gov/hurricane_blog/seventy-fifth-anniversary-of-first-hurricane-eye-penetration/
+  Caçadores não reforçados: https://wikipedia.com/wiki/WP-3D_Orion
+  Cargas estruturais (FAR 25.337; fator de segurança 1,5 em 25.303): https://www.law.cornell.edu/cfr/text/14/25.337
+  Desvio de tempestades: https://thepointsguy.com/news/can-planes-fly-through-thunderstorms-and-hurricanes/
