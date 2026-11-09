@@ -233,37 +233,51 @@ export function xWindow(x, y, r, { open = 1, t = 0 } = {}) {
   pop();
 }
 
-// —— 5. O NAVIO (vista lateral): casco largo, pilhas de contêineres, ponte de comando à frente ——
-// origem na linha d'água, no meio do navio; L = comprimento em px
-export function ship(x, y, L = 900, { roll = 0, pitch = 0, t = 0, lost = 0 } = {}) {
-  push(); translate(x, y); rotate(pitch);
-  const h = L * .1, d = L * .04;
-  // casco
-  shape([[-L / 2, -h], [L / 2 - L * .06, -h], [L / 2 + L * .02, -h * .7], [L / 2 - L * .02, d], [-L / 2 + L * .02, d], [-L / 2, -h * .2]], {
-    fill: PAL.hull, lw: 7, shade: () => { fillOnly(rect(-L, -8, 2 * L, d + 40), PAL.antifoul, { boil: .3 }); fillOnly(rect(-L, -h - 10, 2 * L, 10), '#f4f1ea', { boil: .2 }); }
-  });
-  // pilhas de contêineres
-  const cw = L * .045, chh = cw * .42, cols = 18, x0 = -L / 2 + L * .06;
-  for (let c = 0; c < cols; c++) {
-    const xc = x0 + c * (cw + 2) + (c > 4 ? cw * .9 : 0);
-    if (xc > L / 2 - L * .1) break;
-    const n = 6 + Math.floor(hash(c * 1.7) * 3);
+// —— 5. O NAVIO (vista lateral): proa com bulbo, ponte com janelão, pilhas em arco, chaminé listrada ——
+// origem na linha d'água, no meio do navio; L = comprimento em px. roll = inclinação; lost = fração de caixas que caíram do topo
+export function ship(x, y, L = 900, { roll = 0, t = 0, lost = 0, speed = 0, name = 'CURIOSO' } = {}) {
+  push(); translate(x, y); rotate(roll); scale(L / 1000);
+  // pilhas de contêineres em arco (mais altas no meio)
+  const CW = 40, CH = 23, x0 = -440, NB = 19;
+  for (let i = 0; i < NB; i++) {
+    const xc = x0 + i * (CW + 6) + (i >= 14 ? 40 : 0);
+    if (i === 14 || xc > 440) continue;
+    const n = 3 + Math.round(5 * Math.sin(Math.PI * (i + .6) / NB)) + (hash(i * 1.3) > .6 ? 1 : 0);
+    let top = 0;
     for (let r = 0; r < n; r++) {
-      if (lost && r >= n - 2 && hash(c * 3 + r) < lost) continue;
-      fillOnly(rect(xc, -h - (r + 1) * chh, cw, chh - 1), PAL.box[Math.floor(hash(c * 13 + r * 7) * PAL.box.length)], { boil: .2 });
+      if (lost && r >= n - 2 && hash(i * 3 + r) < lost) continue;
+      const yy = -118 - (r + 1) * CH, col = PAL.box[Math.floor(hash(i * 13 + r * 7) * PAL.box.length)];
+      shape(rect(xc, yy, CW, CH - 1), { fill: col, lw: 3.5, shade: () => { for (const k of [.33, .66]) fillOnly(rect(xc + CW * k - 1, yy, 2.5, CH), 'rgba(0,0,0,.18)', { boil: 0 }); } });
+      top = r + 1;
     }
-    stroke([[xc, -h], [xc, -h - n * chh]], 3);
-    stroke([[xc, -h - n * chh], [xc + cw, -h - n * chh], [xc + cw, -h]], 3);
   }
-  // ponte de comando (superestrutura) perto da proa
-  const bx = x0 + 5 * (cw + 2) - cw * .1;
-  const BH = L * .2;
-  shape(rect(bx, -h - BH, cw * .9, BH), { fill: '#f4f1ea', lw: 6 });
-  for (let k = 0; k < 9; k++) shape(rect(bx + 6, -h - BH + 30 + k * 20, cw * .9 - 12, 8), { fill: '#9fb0c0', lw: 3 });
-  shape(rect(bx - 22, -h - BH - 12, cw * .9 + 44, 26), { fill: '#f4f1ea', lw: 5 });
-  for (let k = 0; k < 4; k++) shape(rect(bx - 16 + k * ((cw * .9 + 32) / 4), -h - BH - 6, (cw * .9 + 32) / 4 - 6, 12), { fill: '#7fd0e6', lw: 3 });
-  // chaminé à ré
-  shape(rect(L / 2 - L * .16, -h - L * .08, cw * .7, L * .08), { fill: '#e8392b', lw: 6 });
+  // chaminé (popa)
+  shape(spline([[-468, -118], [-470, -300], [-410, -306], [-404, -118]]), { fill: '#e8392b', lw: 7, shade: () => { fillOnly(rect(-480, -262, 90, 22), '#f2c230', { boil: .2 }); fillOnly(rect(-480, -320, 90, 22), '#1a1a22', { boil: .2 }); } });
+  for (let k = 0; k < 3; k++) { const ph = (t * .6 + k / 3) % 1; fillOnly(ell(-440 - ph * 60, -320 - ph * 80, 14 + ph * 26, 10 + ph * 18, 14), `rgba(220,220,230,${.5 * (1 - ph)})`, { boil: .4 }); }
+  // ponte de comando (torre + casa do leme com janelão e asas)
+  shape(rect(212, -118 - 250, 70, 250), { fill: '#f4f1ea', lw: 6, shade: () => fillOnly(rect(256, -380, 40, 270), '#d8d2c4', { boil: .3 }) });
+  for (let k = 0; k < 7; k++) shape(rr(222, -350 + k * 32, 50, 12, 4), { fill: '#9fc7dc', lw: 3 });
+  shape(spline([[170, -404], [326, -404], [334, -366], [162, -366]]), { fill: '#f4f1ea', lw: 6 });
+  shape(rr(176, -398, 146, 22, 6), { fill: '#7fd0e6', lw: 4, shade: () => { for (let k = 1; k < 6; k++) fillOnly(rect(176 + k * 24, -400, 3, 26), '#4a8fb0', { boil: 0 }); } });
+  stroke([[247, -404], [247, -470]], 5);
+  push(); translate(247, -470); rotate(Math.sin(t * 2.5) * .9); shape(rr(-30, -6, 60, 12, 5), { fill: '#d8dde2', lw: 4 }); pop();
+  dot(247, -478, 7, Math.floor(t * 2) % 2 ? '#ff5a4a' : '#7a2a24');
+  // casco: proa curva com bulbo, popa arredondada
+  const HULL = spline([[-510, -128], [0, -118], [470, -136], [548, -160], [522, -70], [486, -8], [516, 22], [494, 54], [430, 64], [-440, 64], [-498, 24], [-510, -60]]);
+  shape(HULL, {
+    fill: PAL.hull, lw: 8, shade: () => {
+      fillOnly(rect(-700, 0, 1400, 120), PAL.antifoul, { boil: .2 });
+      fillOnly(rect(-700, -14, 1400, 14), '#f4f1ea', { boil: .2 });
+      fillOnly(spline([[-700, -140], [0, -128], [700, -150], [700, -112], [0, -100], [-700, -112]]), PAL.hullS, { boil: .2 });
+    }
+  });
+  stroke(spline([[-505, -124], [0, -114], [470, -132], [546, -156]], false), 5, { line: '#f4f1ea' });   // amurada
+  for (let k = 0; k < 7; k++) shape(ell(-300 + k * 90, -60, 7, 7, 10), { fill: '#7fd0e6', lw: 3 });   // vigias
+  // âncora + nome
+  push(); translate(470, -96); shape(ell(0, 0, 9, 9, 10), { fill: '#f4f1ea', lw: 4 }); stroke([[0, 6], [0, 32]], 4, { line: '#f4f1ea' }); stroke(arc(0, 20, 16, 14, .2, Math.PI - .2, 8), 4, { line: '#f4f1ea' }); pop();
+  if (name) text(name, 330, -64, { font: '800 40px "Baloo 2"', fill: '#f4f1ea' });
+  // espuma na proa
+  if (speed > 0) for (let k = 0; k < 6; k++) { const ph = (t * 2 + k / 6) % 1; shape(ell(520 - ph * 160, 8 - Math.sin(ph * Math.PI) * 14, 16 * (1 - ph) + 6, 8 * (1 - ph) + 4, 10), { fill: '#f2fbff', lw: 3, alpha: speed * (1 - ph * .6) }); }
   pop();
 }
 // corte transversal do casco (vista de frente): mostra G, B, linha d'água, lastro e aletas

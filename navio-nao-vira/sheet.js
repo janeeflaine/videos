@@ -54,8 +54,10 @@ window.render = (t) => {
   // 6 o navio
   cell(0, 1200, 1080, 360, ['#5b3f8a', '#4f3780']);
   bands(["#2a9fd6", "#2189bd", "#1a73a3"], 1500, 1560, 0, 1080);
-  ship(560, 1500, 880, { t });
-  text("400 m · 20 mil contêineres", 760, 1538, { font: '800 26px "Baloo 2"', fill: '#ffffff', outlineW: 7 });
+  ship(540, 1505, 640, { t, speed: 1 });
+  fillOnly(rect(0, 1505, 1080, 60), 'rgba(42,159,214,.82)', { boil: .5 });
+  stroke([[0, 1505], [1080, 1505]], 4, { line: '#e9fbff' });
+  text("400 m · 20 mil contêineres", 820, 1538, { font: '800 26px "Baloo 2"', fill: '#ffffff', outlineW: 7 });
   label(20, 1240, 6, 'O NAVIO', '');
   stroke([[0, 1200], [1080, 1200]], 6);
 
