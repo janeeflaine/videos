@@ -1,6 +1,6 @@
 # TREATMENT — "Abre a janela, Seu Ademar?" (Curioso Soh)
 
-Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). 1080×1920 (9:16), 24 fps, alvo ~118 s (faixa 60–130 s), PT-BR, humor.
+Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). 1080×1920 (9:16), 24 fps, duração final 107,5 s (faixa 60–130 s), master −14 LUFS, PT-BR, humor.
 Narração única (ElevenLabs, voz ZqE9vIHPcrC35dZv0Svu, gerada pela pessoa). Sem legendas; textos curtos de piada permitidos
 ("fresta nº 47", "180 km/h", "Defesa Civil 199", "CURIOSO SOH"). Música baixa (≥14 dB sob a voz, ducking ~9 dB).
 Final: resposta sobre o trabalho pronto (casa inteira, protegida, ao amanhecer) → chamada "Se você gostou, comenta: Curioso Soh!".

@@ -14,3 +14,4 @@ export const hash = n => { n = Math.sin(n * 127.1 + 311.7) * 43758.5453; return 
 export const vnoise = x => { const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f); return lerp(hash(i), hash(i + 1), u); };
 export const TAU = Math.PI * 2;
 
+export const env = (t, a, b, fi = .3, fo = .3) => Math.min(seg(t, a, a + fi), 1 - seg(t, b - fo, b));

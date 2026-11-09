@@ -280,10 +280,11 @@ export function janela(P) {
   const o = P.open ?? 0;
   push(); translate(P.x, P.y); scale(P.s ?? 1);
   shape(rect(-170, -300, 340, 300), { fill: PAL.frame, lw: 7 });
-  shape(rect(-150, -280, 300, 260), { fill: '#2a2f45', lw: 6 }); // fundo (noite lá fora)
+  shape(rect(-150, -280, 300, 260), { fill: P.sky ?? '#2a2f45', lw: 6, shade: P.outside }); // fundo (lá fora)
   // folha fixa (direita) e folha móvel (esquerda)
+  const ga = P.glassA ?? 1;
   const glassPane = (x0, front) => shape(rect(x0, -280, 150, 260), {
-    fill: PAL.glass, lw: 6, alpha: front ? 1 : .95, shade: () => {
+    fill: PAL.glass, lw: 6, alpha: ga, shade: () => {
       fillOnly(rect(x0 + 100, -280, 50, 260), PAL.glassS, { boil: .3 });
       stroke([[x0 + 26, -250], [x0 + 70, -200]], 7, { line: '#ffffff' }); stroke([[x0 + 30, -210], [x0 + 52, -188]], 6, { line: '#ffffff' });
     }
