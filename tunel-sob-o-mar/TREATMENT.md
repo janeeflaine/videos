@@ -1,6 +1,8 @@
 # TREATMENT — "Nem uma gota?" (Curioso Soh)
 
-Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). Formato 1080×1920 (9:16), 24 fps, ~75 s, PT-BR.
+Estilo: Sci-Fi Sitcom Toon (`scifi-toon`). Formato 1080×1920 (9:16), 24 fps, ~84 s (faixa 65–100 s: o detalhamento manda), PT-BR.
+Cenas extras aprovadas: como a máquina anda (macacos hidráulicos empurrando o último anel) e para onde vai a terra
+(misturada à lama, bombeada por tubos até a usina de separação na superfície, que devolve a lama limpa).
 Narração única (ElevenLabs, voz ZqE9vIHPcrC35dZv0Svu). Sem legendas. Textos curtos de piada permitidos
 (manômetro "3 bar", placa final "CURIOSO SOH" em destaque). Música baixa (~14 dB sob a voz, ducking ~9 dB).
 
