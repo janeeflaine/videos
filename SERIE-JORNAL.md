@@ -1,4 +1,4 @@
-# Série "Jornal do seu ___" — ideia aprovada para começar em outra sessão
+# Série "Jornal do seu ___"
 
 Formato novo, separado do padrão de curiosidades (PADRAO.md). Mesmo estilo visual Sci-Fi Sitcom Toon, 9:16, 60–130 s, sem legendas.
 
@@ -47,7 +47,7 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 - Entrada: notícia (link ou print), em vez de pergunta ou título.
 - Custo: o primeiro episódio é o mais caro (cria elenco e cenário); os seguintes saem mais baratos que os vídeos de curiosidade.
 
-## Próximo passo (na nova sessão)
-1. Folha de elenco e cenário para aprovação: senhor, esposa, gato, papagaio e a sala com a cozinha ao fundo.
+## Próximo passo
+1. Folha de elenco e cenário para aprovação: senhor, esposa, gato, papagaio e a sala com a cozinha ao fundo. **Feito, aguardando aprovação:** `jornal/elenco-previa.jpg`, `jornal/cenario-previa.jpg`, `jornal/jornal-close-previa.jpg` (código em `jornal/cast.js`).
 2. Definir os nomes dos personagens e as vozes do ElevenLabs.
 3. Primeira notícia: roteiro com as falas por personagem → MP3s da pessoa → produção. Reaproveitar o pipeline de `ciclone-janela/`: `tools/`, `toon.js`, `lib.js`, `mix.py`, `score.py`.
