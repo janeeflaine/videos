@@ -82,10 +82,9 @@ const BOL = (o) => bolota({ s: 1.12, ...o });
 // —— cabine (verde-oliva + mostarda) ——
 function cabin(t, { gaugeVal = 3, lamp = 1 } = {}) {
   fillScreen('#6f7d42');
-  scr();
-  bands(['#808f4c', '#76854a', '#6c7a43', '#62703c'], 0, 1460, -20, W + 20);
+  bands(['#808f4c', '#76854a', '#6c7a43', '#62703c'], -400, 1460, -400, W + 400);
   // teto curvo com tubos
-  shape([[-20, -20], [W + 20, -20], [W + 20, 180], [W / 2, 250], [-20, 180]], { fill: '#525c30', lw: 7 });
+  shape([[-400, -400], [W + 400, -400], [W + 400, 180], [W / 2, 250], [-400, 180]], { fill: '#525c30', lw: 7 });
   for (let k = 0; k < 3; k++) stroke(spline([[-20, 200 + k * 30], [W / 2, 270 + k * 30], [W + 20, 200 + k * 30]], false), 10, { line: k === 1 ? '#c8402f' : '#9aa0a6' });
   // monitor com a roda girando (VT323)
   shape(rr(90, 380, 330, 250, 18), { fill: '#3a3f2a', lw: 7 });
@@ -96,7 +95,7 @@ function cabin(t, { gaugeVal = 3, lamp = 1 } = {}) {
   // manômetro na parede
   gauge(760, 500, 120, { val: gaugeVal, t });
   // painel / chão
-  fillOnly(rect(-20, 1460, W + 40, 500), '#4f5a2e', { boil: 0 });
+  fillOnly(rect(-400, 1460, W + 800, 800), '#4f5a2e', { boil: 0 });
   stroke([[-20, 1460], [W + 20, 1460]], 7);
   for (let x = 30; x < W; x += 90) stroke([[x, 1500], [x + 40, 1900]], 4, { line: '#3f4824' });
   // luz de alerta
@@ -342,22 +341,23 @@ function s05(t, u, D) {
 function s06(t, u, D) {
   const tMis = w('06', 'mistura'), tUs = w('06', 'usina'), tSep = w('06', 'separa'), tVol = w('06', 'volta');
   const k = eio(seg(t, tMis + .2, tUs + .2));
-  cam(lerp(540, 600, k), lerp(2700, 470, k), lerp(.9, 1.15, k), 0, t);
+  cam(lerp(540, 600, k), lerp(2700, 560, k), lerp(.9, 1.15, k), 0, t);
   // terra (topo) + usina
   bands(['#bfe3dc', '#a9d8cf'], -400, 600, -500, 1600);
   soil(-500, 600, 2100, 200, ['#9c8257', '#8a7350'], 2);
   fillOnly(rect(-500, 600, 2100, 16), '#5f8f4a', { boil: 0 });
   bands(WATERS, 800, 2400, -500, 1600);
-  soil(-500, 2400, 2100, 900, ['#d8c08a', '#c4a874', '#b19463'], 5);
+  soil(-500, 2400, 2100, 1800, ['#d8c08a', '#c4a874', '#b19463'], 5);
   // tubos: ida (lama suja, sobe) e volta (lama limpa, desce)
-  stroke([[420, 2850], [420, 380]], 46, { line: INK }); stroke([[420, 2850], [420, 380]], 32, { line: '#7c5a3a' });
-  stroke([[660, 380], [660, 2850]], 46, { line: INK }); stroke([[660, 380], [660, 2850]], 32, { line: '#d9c39a' });
+  stroke([[420, 2850], [420, 560]], 46, { line: INK }); stroke([[420, 2850], [420, 560]], 32, { line: '#7c5a3a' });
+  stroke([[660, 560], [660, 2850]], 46, { line: INK }); stroke([[660, 560], [660, 2850]], 32, { line: '#d9c39a' });
   for (let i = 0; i < 18; i++) {
     const ph = (t * .35 + i / 18) % 1;
-    dot(420, lerp(2850, 380, ph), 12, '#4a3524');
-    if (t > tSep) dot(660, lerp(380, 2850, (ph + .5) % 1), 11, '#f6e7cc');
+    dot(420, lerp(2850, 560, ph), 12, '#4a3524');
+    if (t > tSep) dot(660, lerp(560, 2850, (ph + .5) % 1), 11, '#f6e7cc');
   }
   // usina de separação
+  push(); translate(0, 220);
   shape(rr(700, -40, 150, 300, 20), { fill: '#d8dde2', lw: 7, shade: () => fillOnly(rect(790, -50, 80, 320), '#b4bcc4', { boil: .3 }) });   // silo de lama limpa
   shape(ell(775, -40, 75, 20, 20), { fill: '#c4ccd4', lw: 6 });
   shape([[260, 60], [780, 60], [780, 380], [260, 380]], { fill: '#3f9c8a', lw: 7, shade: () => fillOnly(rect(560, 50, 260, 340), '#2f7d6e', { boil: .3 }) });
@@ -367,11 +367,12 @@ function s06(t, u, D) {
   const shk = t > tSep ? Math.sin(t * 40) * 5 : 0;
   shape(rect(330 + shk, 300, 300, 30), { fill: PAL.steel, lw: 6 });                 // peneira vibratória
   for (let x = 350; x < 620; x += 30) stroke([[x + shk, 300], [x + shk, 330]], 3);
+  pop();
   // monte de terra separada
   const pile = ss(seg(t, tSep, tSep + 2));
   shape(spline([[790, 600], [880, 600 - 230 * pile - 6], [990, 600 - 120 * pile - 4], [1060, 600]]), { fill: '#8a6c47', lw: 7 });
   if (pile > .3) sign('TERRA', 925, 520 - 240 * pile, { size: 46, fill: '#f2c230' });
-  for (let i = 0; i < 4; i++) if (t > tSep) { const ph = (t * 1.2 + i / 4) % 1; shape(ell(lerp(640, 900, ph), 330 + ph * ph * 230, 12, 10, 10), { fill: '#8a6c47', lw: 4 }); }
+  for (let i = 0; i < 4; i++) if (t > tSep) { const ph = (t * 1.2 + i / 4) % 1; shape(ell(lerp(780, 900, ph), 520 + ph * ph * 60, 12, 10, 10), { fill: '#8a6c47', lw: 4 }); }
   // tuneladora lá embaixo
   lining(1000, 1700, 2850, 160, 30);
   tbm(160, 2850, 1, { t, cut: true });
