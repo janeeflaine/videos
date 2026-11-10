@@ -11,7 +11,7 @@ const srv = http.createServer((req, res) => {
 }).listen(0, async () => {
   const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   p.on('pageerror', e => { console.error(e); process.exit(1); });
-  await p.goto(`http://127.0.0.1:${srv.address().port}/index.html`);
+  await p.goto(`http://127.0.0.1:${srv.address().port}/index.html?${process.env.Q || ""}`); // Q=ep=ep02-iphones
   await p.waitForFunction(() => window.READY);
   for (const t of times) { await p.evaluate(t => window.render(t), parseFloat(t)); await p.screenshot({ path: path.join(out, `t_${t}.jpg`), type: 'jpeg', quality: 85 }); }
   await b.close(); srv.close();

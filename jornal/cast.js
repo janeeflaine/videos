@@ -735,10 +735,12 @@ export function jornalClose(P) {
 }
 
 // —— CELULAR VELHO DO SEU CHICÓ (ep. 02): tijolão de teclinha com antena, tela verde e a borrachinha segurando a tampa ——
-// P: { x, y, s, rot, t, lit (0..1 tela acesa), ring (0..1 tremendo), parts: 0 = inteiro, 0..1 = desmontando (tampa e bateria voam) }
+// P: { x, y, s, rot, t, lit (0..1 tela acesa), ring (0..1 tremendo), scr ('sinal' | 'cobrinha' | 'bateria'),
+//      parts: 0 = inteiro, 0..1 = desmontando (tampa, bateria e borrachinha voam) ou { tampa, bateria, banda } (0..1 cada) }
 // origem no centro do aparelho; altura ≈ 300
 export function celularVelho(P) {
-  const t = P.t ?? 0, ring = P.ring ?? 0, parts = P.parts ?? 0, lit = P.lit ?? 0;
+  const t = P.t ?? 0, ring = P.ring ?? 0, lit = P.lit ?? 0;
+  const pr = typeof P.parts === 'object' ? P.parts : { tampa: P.parts ?? 0, bateria: P.parts ?? 0, banda: P.parts ?? 0 };
   const jx = ring ? Math.sin(t * 90) * 6 * ring : 0, jr = ring ? Math.sin(t * 70) * .06 * ring : 0;
   push(); translate(P.x + jx, P.y); rotate((P.rot ?? 0) + jr); scale(P.s ?? 1);
   // antena (com bolinha na ponta)
@@ -750,29 +752,33 @@ export function celularVelho(P) {
   // alto-falante
   for (let k = 0; k < 3; k++) stroke([[-22, -112 + k * 9], [22, -112 + k * 9]], 3.5);
   // tela verde de cristal líquido (acende quando liga)
-  const scr = lit > .5 ? '#b8f07a' : '#7fa36a';
+  const on = lit > .5, scr = on ? '#b8f07a' : '#7fa36a', ink = '#2e4a1e';
   shape(rr(-48, -86, 96, 76, 8), { fill: '#2b2e38', lw: 6 });
   shape(rr(-38, -76, 76, 56, 4), { fill: scr, lw: 4, shade: () => {
-    if (lit > .5) { for (let k = 0; k < 4; k++) fillOnly(rect(-30 + k * 7, -70 + (3 - k) * 4, 5, 8 + k * 4), '#2e4a1e', { boil: 0 }); // sinal
-      fillOnly(rect(14, -70, 18, 9), '#2e4a1e', { boil: 0 }); fillOnly(rect(-30, -40, 60, 8), '#2e4a1e', { boil: 0 }); }
+    if (!on) return;
+    if (P.scr === 'cobrinha') { // a cobrinha andando em pixels, com a comidinha
+      const k = Math.floor(t * 8);
+      for (let i = 0; i < 6; i++) { const q = (k - i + 40) % 16, x = q < 8 ? -30 + q * 7 : -30 + (15 - q) * 7, y = q < 8 ? -60 : -46; fillOnly(rect(x, y, 6, 6), ink, { boil: 0 }); }
+      fillOnly(rect(20, -36, 6, 6), ink, { boil: 0 });
+    } else if (P.scr === 'bateria') { // bateria cheinha
+      shape(rr(-26, -62, 46, 26, 3), { fill: scr, lw: 3, line: ink }); fillOnly(rect(20, -54, 5, 10), ink, { boil: 0 });
+      for (let i = 0; i < 4; i++) fillOnly(rect(-22 + i * 10.5, -58, 8, 18), ink, { boil: 0 });
+    } else { for (let k = 0; k < 4; k++) fillOnly(rect(-30 + k * 7, -70 + (3 - k) * 4, 5, 8 + k * 4), ink, { boil: 0 }); // sinal
+      fillOnly(rect(14, -70, 18, 9), ink, { boil: 0 }); fillOnly(rect(-30, -40, 60, 8), ink, { boil: 0 }); }
   } });
   // teclinhas (4 × 3) + botão verde e vermelho
   shape(rr(-50, 4, 36, 18, 8), { fill: '#3cb44b', lw: 4 }); shape(rr(14, 4, 36, 18, 8), { fill: '#e5402f', lw: 4 });
   for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) shape(rr(-46 + c * 32, 32 + r * 26, 28, 18, 7), { fill: '#d8dbe3', lw: 4 });
   // borrachinha de dinheiro segurando tudo
-  if (parts <= 0) shape(rr(-74, 62, 148, 14, 6), { fill: '#f0a32a', lw: 5 });
+  if (pr.banda <= 0) shape(rr(-74, 62, 148, 14, 6), { fill: '#f0a32a', lw: 5 });
   pop();
-  if (parts > 0) { // tampa e bateria voando pra lados opostos
-    const u = clamp(parts), up = Math.sin(u * Math.PI) * 90;
-    push(); translate(P.x - 150 * u, P.y - up + 40 * u); rotate(-u * 2.2); scale(P.s ?? 1);
-    shape(rr(-60, -60, 120, 150, 16), { fill: '#5a5e6e', lw: 6, shade: () => fillOnly(rect(20, -60, 40, 150), '#44475a', { boil: .3 }) }); // tampa
-    pop();
-    push(); translate(P.x + 170 * u, P.y - up * .8 + 60 * u); rotate(u * 1.7); scale(P.s ?? 1);
-    shape(rr(-44, -60, 88, 120, 8), { fill: '#2b2e38', lw: 6, shade: () => { fillOnly(rect(-44, -60, 88, 34), '#e2b33c', { boil: .2 }); } }); // bateria
-    text('+', -22, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' }); text('−', 20, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' });
-    pop();
-    if (u < 1) { push(); translate(P.x + 60 * u, P.y - up * .5); rotate(u * 5); scale(P.s ?? 1); shape(rr(-74, -7, 148, 14, 6), { fill: '#f0a32a', lw: 5 }); pop(); } // borrachinha
-  }
+  // peças voando (no tombo) — e voltando, quando ele conserta (é só rodar o valor de 1 pra 0)
+  const fly = (u, dx, dy, spin, k, draw) => { if (u <= 0) return; const up = Math.sin(clamp(u) * Math.PI) * 90;
+    push(); translate(P.x + dx * u, P.y - up * k + dy * u); rotate(u * spin); scale(P.s ?? 1); draw(); pop(); };
+  fly(pr.tampa, -150, 40, -2.2, 1, () => shape(rr(-60, -60, 120, 150, 16), { fill: '#5a5e6e', lw: 6, shade: () => fillOnly(rect(20, -60, 40, 150), '#44475a', { boil: .3 }) }));
+  fly(pr.bateria, 170, 60, 1.7, .8, () => { shape(rr(-44, -60, 88, 120, 8), { fill: '#2b2e38', lw: 6, shade: () => fillOnly(rect(-44, -60, 88, 34), '#e2b33c', { boil: .2 }) });
+    text('+', -22, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' }); text('−', 20, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' }); });
+  if (pr.banda < 1) fly(pr.banda, 60, -30, 5, .5, () => shape(rr(-74, -7, 148, 14, 6), { fill: '#f0a32a', lw: 5 }));
 }
 // iPhone novinho na almofada de veludo, com etiqueta de preço (ilustração do jornal, desenho nosso)
 const P_TAG = 'R$ 13.499';

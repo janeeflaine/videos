@@ -53,18 +53,18 @@ SFX e música são meus; não precisam ir no áudio.
 1. **Abertura (fala 1):** a sala às 18h10. Seu Chicó se ajeita na poltrona, serve o café e abre o jornal.
 2. **Manchete (fala 2):** corte para o **close em primeira pessoa**: as mãos dele com o BRAZUELA.
 3. **O resumo (fala 3):** a câmera desce pela página: ilustração do iPhone na almofada, resumo impresso e, no fim, o selo de fonte, parado na tela por uns 2 s. No meio, um corte rápido para a Dona Zefinha ouvindo da cozinha.
-4. **O preço (fala 4):** ele baixa o jornal devagar, de boca aberta, e quase engasga com o café.
+4. **O preço (fala 4):** ele baixa o jornal com a câmera tremendo, de boca aberta ("boing"). Na "secretária", aparece um balão de pensamento com uma secretária de fone dentro do celular, dizendo "alô?".
 5. **"Deus me livre... mas quem me dera" (fala 5):** Dona Zefinha na porta da cozinha, olhando pro teto, sonhando, com a colher de pau no peito. No "mas quem me dera", um brilho de estrelinha nos óculos.
-6. **O tijolão (fala 6):** ele tira o tijolão do bolso e ergue como um troféu; a cada item, um efeito: a lanterninha acende, um chiado de rádio, o "bip" da cobrinha.
+6. **O tijolão (fala 6):** ele tira o tijolão do bolso e ergue como um troféu; na cobrinha e na bateria a câmera vai até a telinha; a cada item, um efeito: a lanterninha acende, um chiado de rádio, o "bip" da cobrinha.
 7. **Gag do papagaio (falas 7–8):** Lorenzo faz "trim-trim". Seu Chicó leva um susto, olha pro celular (tela apagada), atende assim mesmo: "Alô? Alô? Quem fala?". Só no fim percebe e se vira pro poleiro. Lorenzo balança a cabeça, satisfeito.
 8. **"Dura mais que mandato" (fala 9):** ele põe o celular em pé na mesinha, ao lado da xícara, como num pedestal. Enquanto ele fala, o Bituca sobe na mesinha. No "senador!", a pata derruba o celular (sim, o Bituca de novo).
 9. **O tombo (fala 10):** o celular bate no chão e desmonta: tampa pra um lado, bateria pro outro, borrachinha voando. Silêncio; só o relógio. Close tremido: "BITUCA!".
 10. **O conserto (sem fala, ~2,5 s):** três cortes rápidos com estalinhos: encaixa a bateria, a tampa, estica a borrachinha... e a tela acende com um "plim".
 11. **A vitória (fala 11):** ele ergue o celular de novo, rindo.
 12. **A facada (falas 12–13):** Lorenzo abre as asas: "Quem paga é você!". A risada dele morre; ele murcha na poltrona.
-13. **Dona Zefinha (falas 14–15):** de braços cruzados, ela solta a ideia; ele ri, mexendo os dedões no chinelo.
-14. **Final de mau humor (fala 16):** ele levanta emburrado, deixa o tijolão na mesinha e vai de chinelo pro quarto. Na porta, sem se virar: "...diz que eu tô sem sinal."
+13. **Dona Zefinha (falas 14–15):** de braços cruzados, ela solta a ideia; ele ri, e no "chinelo" a câmera desce até os pés dele.
+14. **Final de mau humor (fala 16):** emburrado, "vou dormir que é melhor"; no "E se o Senado ligar..." ele levanta e vai de chinelo pro quarto, falando sem se virar.
 15. **Chamada (fala 17):** sala vazia; Lorenzo grita a chamada, que neste episódio puxa o tema: os letreiros dizem "Se você também quer um celular, comenta:" e "SENADO, QUERO CELULAR!", e no "tchau, tchau" ele acena com a asa. Fim.
 
-## Estimativa de tempo
-As falas geradas somam ≈ 113 s (sem as duas do Lorenzo) e as vozes saíram mais pausadas do que o previsto. Com os silêncios de cada fala cortados, ≈ 5 s a mais do Lorenzo e ≈ 18 s de pausas e gags, o total dá ≈ 130 s. Na montagem eu aperto as pausas para ficar em ≈ 120–125 s.
+## Tempo final
+**126 s.** As vozes do v4 saíram pausadas, então Chicó e Zefinha entram 8% mais rápidos (atempo, sem mudar o tom) e as pausas entre as falas foram apertadas (`timeline.py`).

@@ -1,0 +1,10 @@
+"Jornal do Seu Chicó", ep. 02 — "Dura mais que mandato" — Curioso Soh
+Estilo: Sci-Fi Sitcom Toon (biblioteca Lemo-Opuscar). Elenco, cenário e animação originais, feitos em código.
+Vozes: Seu Chicó e Dona Zefinha — ElevenLabs (modelo v4; vozes "Sergio" e "Edna E."); Lorenzo — Fish Audio (voz pública "Papagaio", modelo s1).
+Falas geradas pela API a partir do roteiro (vozes.py), escolhidas e aprovadas pela autora.
+Trilha e efeitos: sintetizados em código (music/score.py, mix.py), sem samples.
+Fontes tipográficas (SIL Open Font License 1.1): Baloo 2, Titan One, Bungee — Google Fonts.
+Notícia: CNN Brasil, 10/11/2026 ("Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores", Lucas Massei e Laura Molfese);
+números conferidos em ND+, MacMagazine, InfoMoney, Midiamax, Lupa1, Clic Camaquã e Blog do Valente.
+Manchete reproduzida; resumo escrito por nós; nenhuma foto ou imagem da matéria foi usada.
+Tempo das palavras: alinhamento do ElevenLabs (Chicó e Zefinha) e faster-whisper, modelo medium, local (Lorenzo).

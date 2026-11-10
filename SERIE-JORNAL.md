@@ -55,4 +55,4 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 
 ## Episódios
 - **Ep. 01 — "Visita boa toma café e vai embora"** (notícia: g1, 09/11/2026, queixa da esposa de FHC contra homem que fez vídeo no apartamento): `jornal/ep01-fhc/visita-boa.mp4`, 118 s, 9:16, −14 LUFS. Roteiro em `jornal/ep01-fhc/ROTEIRO.md`; reconstruir com `sh jornal/ep01-fhc/build.sh`.
-- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): roteiro, prévias e vozes do Chicó e da Zefinha em `jornal/ep02-iphones/`. Todas as 17 falas prontas; próximo passo: produção (linha do tempo, animação, trilha e mixagem).
+- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): `jornal/ep02-iphones/dura-mais-que-mandato.mp4`, 126 s, 9:16, −14 LUFS. Roteiro em `jornal/ep02-iphones/ROTEIRO.md`; reconstruir com `sh jornal/ep02-iphones/build.sh`. Chicó e Zefinha entram 8% mais rápidos (as vozes do v4 saem pausadas).
