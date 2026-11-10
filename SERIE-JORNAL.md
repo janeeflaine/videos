@@ -6,7 +6,7 @@ Formato novo, separado do padrão de curiosidades (PADRAO.md). Mesmo estilo visu
 A pessoa manda uma **notícia** (de preferência o link; print também serve). Um senhorzinho lê o jornal em casa, comenta com humor, a esposa e os bichos zoam, e no fim ele vai dormir.
 
 ## Elenco fixo (desenhar uma vez, reaproveitar em todo episódio)
-- **Seu Chicó** (o senhor; desenhado a partir da foto de referência da pessoa): cabelo branco cacheado, óculos de armação escura, bigodinho branco, camiseta azul com o "14" pontilhado, calça azul-marinho e chinelo de dedo. Gesto típico: a mão no queixo. Sentado na poltrona, lê o jornal todo dia, dá opiniões engraçadas e ri.
+- **Seu Chicó** (o senhor; rosto desenhado pela foto dele, roupa pela primeira referência): cabelo grisalho desgrenhado com mecha na testa, barba grisalha por fazer, bigode curto, narigão, sorriso que aperta os olhos; camiseta azul com o "14" pontilhado, calça azul-marinho e chinelo de dedo. Gesto típico: a mão no queixo. Sentado na poltrona, lê o jornal todo dia, dá opiniões engraçadas e ri.
 - **Dona Zefinha** (a esposa; mesma foto de referência): cabelo grisalho repartido no meio e amarrado pra trás bem curto, pele morena clara com sardinhas, óculos grandes quadrados de armação rosada, vestido azul com estampa de treliça, casaco vermelho com desenhos geométricos e chinelo azul-marinho. Fica de braços cruzados e cara séria. Está sempre na cozinha fazendo alguma coisa. Se intromete de vez em quando com bordões: "bem que te avisei", "né pussive", "rapaz, o mundo tá de cabeça pra baixo mesmo" e outros a inventar.
 - **Bituca** (gato magricelo): faz bagunça e estressa o senhor (derruba a xícara etc.).
 - **Lorenzo** (papagaio): repete palavras para zoar o senhor no pior momento.

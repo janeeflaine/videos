@@ -6,8 +6,8 @@ import { INK, g, push, pop, translate, rotate, scale, shape, fillOnly, stroke, e
 
 export const PAL = {
   white: '#ffffff', mouthIn: '#4a1a2a', tongue: '#e8637a',
-  // Seu Chicó: moreno, cabelo branco cacheado, camiseta azul "14", calça azul-marinho
-  cSkin: '#b8734a', cSkinS: '#955733', cNose: '#c7764c', nail: '#e8b090', hairC: '#f2f1f4', hairCS: '#c4c2cc', stacheC: '#e6e3ea',
+  // Seu Chicó: moreno, cabelo grisalho desgrenhado, barba por fazer, camiseta azul "14", calça azul-marinho
+  cSkin: '#b8734a', cSkinS: '#955733', cNose: '#c7764c', nail: '#e8b090', hairC: '#e6e5ea', hairCS: '#a7a4ae', stacheC: '#d9d6de', stubble: '#9a8f92',
   shirt: '#2347c8', shirtS: '#1a369c', pants: '#2a2e4e', pantsS: '#1d2038', frame: '#2a2226',
   flip: '#2fb37a', flipS: '#1f8a5b', flipN: '#2c3050', flipNS: '#1d2038', strapN: '#4a5078', strap: '#f4f1ea', gold: '#e2b33c', goldS: '#b98a1f',
   // Dona Zefinha: pele morena clara, cabelo grisalho curtinho amarrado pra trás, vestido azul de treliça, casaco vermelho geométrico
@@ -113,7 +113,7 @@ function rugas(y0, wide = 1) {
   stroke(arc(0, y0 - 50, 30 * wide, 6, Math.PI * 1.2, Math.PI * 1.8, 10), 3.5);
 }
 
-// —— 1. SEU CHICÓ: cabelo branco cacheado, óculos de armação escura, bigodinho branco, camiseta azul com "14" pontilhado,
+// —— 1. SEU CHICÓ: cabelo grisalho desgrenhado, barba por fazer grisalha, narigão, sorriso de olho apertado (óculos só com P.glasses), camiseta azul com "14" pontilhado,
 //    calça social azul-marinho e chinelo de dedo. Gesto da casa: a mão no queixo, pensando na notícia ——
 // P: { x, y, s, t, face, sit, armL, armR (com e: cotovelo), mouth, look, lid, brow, tilt, paper, closed }
 export function chico(P) {
@@ -151,39 +151,46 @@ export function chico(P) {
   pop();
   shape(spline([[-44, T - 6], [0, T + 18], [44, T - 6]], false, 8), { closed: false, lw: 10, line: PAL.shirtS, fill: null });
   stroke(spline([[-44, T - 6], [0, T + 18], [44, T - 6]], false, 8), 6);
-  // cabeça
+  // cabeça (pela foto: cabelo grisalho desgrenhado, barba por fazer grisalha, narigão, sorriso de olhinho apertado)
   push(); translate(0, T - 30); rotate(P.tilt ?? 0);
-  for (const sx of [-1, 1]) shape(ell(sx * 78, -74, 17, 26, 16), { fill: PAL.cSkin, lw: 6, shade: () => stroke(arc(sx * 80, -74, 7, 12, Math.PI * .6, Math.PI * 1.4, 6), 4) });
-  shape(spline([[-76, -110], [-70, -170], [0, -186], [70, -170], [76, -110], [70, -40], [44, 4], [0, 16], [-44, 4], [-70, -40]]), {
-    fill: PAL.cSkin, lw: 7, shade: () => { fillOnly(ell(56, -60, 36, 90, 24), PAL.cSkinS, { boil: .4 }); }
+  const sm0 = (P.mouth && P.mouth.sm) ?? .5;
+  for (const sx of [-1, 1]) shape(ell(sx * 76, -76, 18, 28, 16), { fill: PAL.cSkin, lw: 6, shade: () => stroke(arc(sx * 78, -76, 7, 13, Math.PI * .6, Math.PI * 1.4, 6), 4) });
+  shape(spline([[-72, -112], [-66, -166], [0, -184], [66, -166], [72, -112], [68, -46], [44, 0], [0, 14], [-44, 0], [-68, -46]]), {
+    fill: PAL.cSkin, lw: 7, shade: () => {
+      fillOnly(ell(56, -60, 34, 90, 24), PAL.cSkinS, { boil: .4 });
+      // barba por fazer, grisalha (queixo, buço e mandíbula)
+      fillOnly(spline([[-70, -56], [-50, -40], [-30, -34], [0, -40], [30, -34], [50, -40], [70, -56], [66, 6], [0, 26], [-66, 6]]), PAL.stubble, { boil: .4, alpha: .55 });
+      for (let k = 0; k < 40; k++) { const x = (hash(k * 3.7) - .5) * 120, y = -30 + hash(k * 9.1) * 40; dot(x, y, 1.6, '#e9e6ee'); }
+    }
   });
-  // cabelo branco cacheado (nuvem de cachos)
-  const cur = []; const N = 15;
-  for (let i = 0; i <= N; i++) { const a = lerp(Math.PI * .93, Math.PI * 2.07, i / N), r = i % 2 ? 1.12 : 1; cur.push([Math.cos(a) * 92 * r, -126 + Math.sin(a) * 74 * r]); }
-  shape(spline([...cur, [76, -100], [52, -136], [0, -144], [-52, -136], [-76, -100]]), {
-    fill: PAL.hairC, lw: 6, shade: () => { fillOnly(ell(40, -170, 50, 40, 20), PAL.hairCS, { boil: .4 }); }
+  // cabelo grisalho desgrenhado, com mecha caindo na testa
+  const top = []; for (let i = 0; i <= 16; i++) { const a = lerp(Math.PI * .96, Math.PI * 2.04, i / 16), r = 1 + (i % 2 ? .1 : -.02) + (hash(i * 4.3) - .5) * .08; top.push([Math.cos(a) * 86 * r, -128 + Math.sin(a) * 68 * r]); }
+  shape(spline([...top, [84, -108], [72, -118], [66, -142], [40, -150], [10, -146], [-14, -138], [-30, -122], [-48, -134], [-62, -122], [-74, -104]]), {
+    fill: PAL.hairC, lw: 6, shade: () => {
+      fillOnly(ell(40, -176, 46, 30, 20), PAL.hairCS, { boil: .4 }); fillOnly(ell(-50, -150, 20, 30, 14), PAL.hairCS, { boil: .4, alpha: .7 });
+    }
   });
-  for (const [x, y] of [[-50, -170], [-12, -186], [26, -176], [58, -150], [-70, -136], [-30, -150], [10, -156]]) stroke(arc(x, y, 9, 8, Math.PI * .8, Math.PI * 2.1, 8), 3.5, { line: PAL.hairCS });
-  // costeletas brancas
-  for (const sx of [-1, 1]) shape(spline([[sx * 66, -114], [sx * 78, -110], [sx * 76, -76], [sx * 68, -84]]), { fill: PAL.hairC, lw: 5 });
-  rugas(-74, .9);
+  for (const q of [[[-60, -170], [-30, -180], [-6, -164]], [[-20, -190], [10, -184], [30, -166]], [[20, -178], [50, -172], [66, -150]], [[-80, -140], [-66, -150], [-52, -140]], [[-34, -150], [-24, -140], [-28, -128]]]) stroke(quad(...q, 8), 3.5, { line: PAL.hairCS });
+  for (const q of [[[-52, -186], [-60, -206], [-48, -214]], [[18, -194], [26, -214], [40, -212]], [[70, -168], [92, -176], [98, -164]]]) stroke(quad(...q, 8), 3.5);
+  // costeletas grisalhas
+  for (const sx of [-1, 1]) shape(spline([[sx * 64, -112], [sx * 76, -108], [sx * 74, -70], [sx * 66, -80]]), { fill: PAL.hairCS, lw: 5 });
+  rugas(-76, .9);
   // sobrancelhas grisalhas
   const br = P.brow ?? 0;
-  for (const sx of [-1, 1]) { push(); translate(sx * 37, -120 + br * 3); rotate(-sx * br * .22); shape(rr(-21, -6, 42, 12, 6), { fill: PAL.hairCS, lw: 5 }); pop(); }
-  eye(-30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
-  eye(30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
-  for (const sx of [-1, 1]) stroke(arc(sx * 30, -68, 16, 6, Math.PI * .15, Math.PI * .85, 8), 3); // bolsinhas
-  // óculos de armação escura retangular
-  for (const sx of [-1, 1]) stroke(rr(sx * 30 - 30, -120, 60, 46, 14), 8, { line: PAL.frame });
-  stroke([[-8, -104], [8, -104]], 7, { line: PAL.frame });
-  for (const sx of [-1, 1]) stroke([[sx * 60, -108], [sx * 76, -96]], 6, { line: PAL.frame });
-  // nariz
-  shape(spline([[-6, -92], [14, -66], [22, -46], [6, -36], [-18, -40], [-20, -56]]), { fill: PAL.cNose, lw: 6 });
-  // vincos do rosto
-  for (const sx of [-1, 1]) stroke(quad([sx * 26, -44], [sx * 40, -26], [sx * 34, -6]), 3.5);
-  // bigodinho branco
-  shape(spline([[-40, -26], [-20, -36], [0, -32], [20, -36], [40, -26], [22, -22], [0, -24], [-22, -22]]), { fill: PAL.stacheC, lw: 5 });
-  mouth(0, -12, 40, P.mouth || { o: 0, sm: -.1 });
+  for (const sx of [-1, 1]) { push(); translate(sx * 36, -120 + br * 3); rotate(-sx * br * .22); shape(rr(-21, -7, 42, 14, 7), { fill: PAL.hairCS, lw: 5 }); pop(); }
+  // olhos (apertam quando ele sorri) + pés de galinha
+  const lidS = clamp((P.lid ?? .4) + Math.max(0, sm0 - .4) * .45, 0, .85);
+  eye(-30, -96, 18, 20, { lid: lidS, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
+  eye(30, -96, 18, 20, { lid: lidS, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
+  for (const sx of [-1, 1]) { stroke(arc(sx * 30, -70, 16, 7, Math.PI * .15, Math.PI * .85, 8), 3); for (let k = -1; k <= 1; k++) stroke([[sx * 52, -96 + k * 8], [sx * 64, -98 + k * 14]], 3); }
+  if (P.glasses) { for (const sx of [-1, 1]) stroke(rr(sx * 30 - 30, -120, 60, 46, 14), 7, { line: PAL.frame }); stroke([[-8, -104], [8, -104]], 6, { line: PAL.frame }); }
+  // narigão redondo
+  shape(spline([[-8, -94], [10, -76], [28, -56], [22, -36], [0, -32], [-24, -36], [-26, -56]]), { fill: PAL.cNose, lw: 6, shade: () => fillOnly(ell(12, -48, 10, 7, 10), '#e09a70', { boil: .3 }) });
+  // vincos do sorriso
+  for (const sx of [-1, 1]) stroke(quad([sx * 30, -42], [sx * 46, -24], [sx * 40, -2]), 3.5);
+  // bigode curto grisalho
+  shape(spline([[-38, -26], [-18, -34], [0, -30], [18, -34], [38, -26], [22, -20], [0, -22], [-22, -20]]), { fill: PAL.stacheC, lw: 5, shade: () => fillOnly(rect(-40, -40, 80, 6), '#a9a6b0', { boil: .3 }) });
+  mouth(0, -10, 46, P.mouth || { o: 0, sm: .5 });
   pop();
   if (P.paper) seguraJornal(T, hip, P.t);
   else limb(shF, armF, opt);
