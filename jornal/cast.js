@@ -11,8 +11,8 @@ export const PAL = {
   shirt: '#2347c8', shirtS: '#1a369c', pants: '#2a2e4e', pantsS: '#1d2038', frame: '#2a2226',
   flip: '#2fb37a', flipS: '#1f8a5b', flipN: '#2c3050', flipNS: '#1d2038', strapN: '#4a5078', strap: '#f4f1ea', gold: '#e2b33c', goldS: '#b98a1f',
   // Dona Zefinha: pele morena clara, cabelo grisalho curtinho amarrado pra trás, vestido azul de treliça, casaco vermelho geométrico
-  zSkin: '#deb08c', zSkinS: '#c39472', zHair: '#a29fa8', zHairS: '#75727c', dressZ: '#2446b8', dressZS: '#17307f', lattice: '#a9c4ff',
-  cardi: '#d8262e', cardiS: '#a51b23', cardiG: '#a9a9b0', cardiW: '#f4f1ea', cardiD: '#7a1420', frameZ: '#8a8078',
+  zSkin: '#dca78b', zSkinS: '#c38c71', zHair: '#a29fa8', zHairS: '#75727c', dressZ: '#2446b8', dressZS: '#17307f', lattice: '#a9c4ff',
+  cardi: '#d8262e', cardiS: '#a51b23', cardiG: '#a9a9b0', cardiW: '#f4f1ea', cardiD: '#7a1420', frameZ: '#b77f78',
   // gato magricelo: cinza rajado
   cat: '#a19fab', catS: '#7d7b88', catStripe: '#64626e', catPink: '#f2a0b5', catBelly: '#d6d4dc',
   // papagaio (papagaio-verdadeiro): verde, testa azul, cara amarela, ombro vermelho
@@ -275,29 +275,43 @@ export function zefinha(P) {
   // rabinho curtinho amarrado atrás (só a pontinha aparece do lado da nuca) + elástico
   shape(spline([[52, -70], [76, -64], [92, -44], [84, -30], [64, -42], [50, -52]]), { fill: PAL.zHair, lw: 5, shade: () => stroke([[60, -60], [84, -40]], 3, { line: PAL.zHairS }) });
   shape(ell(56, -62, 7, 9, 10), { fill: PAL.cardiD, lw: 4 });
-  for (const sx of [-1, 1]) shape(ell(sx * 70, -78, 14, 22, 14), { fill: PAL.zSkin, lw: 6 });
-  shape(spline([[-70, -110], [-62, -160], [0, -172], [62, -160], [70, -110], [64, -44], [40, -2], [0, 10], [-40, -2], [-64, -44]]), {
-    fill: PAL.zSkin, lw: 7, shade: () => fillOnly(ell(52, -60, 30, 90, 24), PAL.zSkinS, { boil: .4 })
+  for (const sx of [-1, 1]) shape(ell(sx * 78, -80, 14, 22, 14), { fill: PAL.zSkin, lw: 6 });
+  // rosto redondo e largo, bochechas cheias
+  shape(spline([[-76, -112], [-66, -158], [0, -174], [66, -158], [76, -112], [78, -64], [62, -22], [30, 4], [0, 10], [-30, 4], [-62, -22], [-78, -64]]), {
+    fill: PAL.zSkin, lw: 7, shade: () => {
+      fillOnly(ell(58, -64, 30, 92, 24), PAL.zSkinS, { boil: .4 });
+      for (const [fx, fy] of [[-50, -52], [-40, -40], [-56, -36], [44, -46], [52, -34], [-20, -150], [24, -146], [8, -136]]) dot(fx, fy, 2.4, '#b9785c'); // sardinhas
+    }
   });
-  // cabelo grisalho puxado pra trás (rente, com os riscos do pente)
-  shape(spline([[-72, -104], [-70, -150], [-30, -178], [0, -182], [30, -178], [70, -150], [72, -104], [60, -120], [36, -144], [0, -152], [-36, -144], [-60, -120]]), {
-    fill: PAL.zHair, lw: 6, shade: () => { for (let k = 0; k < 3; k++) stroke(arc(0, -104, 54 + k * 9, 52 + k * 8, Math.PI * 1.18, Math.PI * 1.82, 14), 3, { line: PAL.zHairS }); fillOnly(ell(-30, -168, 22, 7, 10), '#cfccd4', { boil: .3 }); }
+  // cabelo grisalho repartido no meio, puxado e amarrado pra trás
+  shape(spline([[-80, -100], [-76, -152], [-34, -182], [0, -186], [34, -182], [76, -152], [80, -100], [70, -112], [52, -138], [18, -150], [0, -146], [-18, -150], [-52, -138], [-70, -112]]), {
+    fill: PAL.zHair, lw: 6, shade: () => {
+      for (const sx of [-1, 1]) for (let k = 0; k < 3; k++) stroke(quad([sx * 4, -150 - k * 10], [sx * (40 + k * 6), -160 - k * 8], [sx * (78 - k * 4), -116 - k * 10]), 3, { line: PAL.zHairS });
+      fillOnly(ell(-40, -172, 18, 6, 10), '#d6d3da', { boil: .3 });
+    }
   });
-  rugas(-70, .8);
+  stroke([[0, -148], [0, -186]], 3.5); // risca do meio
+  rugas(-66, .9);
+  for (const sx of [-1, 1]) { stroke(arc(sx * 50, -46, 16, 18, Math.PI * (sx < 0 ? .5 : .5), Math.PI * (sx < 0 ? 1.0 : 0.0), 6), 3); stroke(arc(sx * 60, -30, 10, 12, Math.PI * .6, Math.PI * 1.1, 6), 3); }
   const br = P.brow ?? .3;
-  stroke(quad([-48, -116 + br * 4], [-30, -124], [-12, -116 - br * 2]), 6);
-  stroke(quad([12, -116 - br * 2], [30, -124], [48, -116 + br * 4]), 6);
-  eye(-28, -96, 17, 19, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
-  eye(28, -96, 17, 19, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
-  for (const sx of [-1, 1]) stroke(arc(sx * 28, -70, 14, 6, Math.PI * .15, Math.PI * .85, 8), 3);
-  // óculos de aro fino, arredondados
-  for (const sx of [-1, 1]) stroke(rr(sx * 28 - 27, -118, 54, 44, 20), 4.5, { line: PAL.frameZ });
-  stroke([[-6, -102], [6, -102]], 4, { line: PAL.frameZ });
-  for (const sx of [-1, 1]) stroke([[sx * 55, -104], [sx * 70, -94]], 4, { line: PAL.frameZ });
-  shape(spline([[-4, -88], [12, -62], [8, -48], [-10, -50], [-16, -60]]), { fill: PAL.zSkinS, lw: 5 });
-  for (const sx of [-1, 1]) stroke(quad([sx * 22, -50], [sx * 34, -34], [sx * 30, -16]), 3.5);
-  mouth(0, -26, 34, P.mouth || { o: 0, sm: -.45 });
-  stroke(arc(0, -2, 22, 8, Math.PI * .2, Math.PI * .8, 8), 3); // queixo
+  stroke(quad([-50, -124 + br * 4], [-32, -132], [-14, -124 - br * 2]), 4.5, { line: PAL.zHairS });
+  stroke(quad([14, -124 - br * 2], [32, -132], [50, -124 + br * 4]), 4.5, { line: PAL.zHairS });
+  eye(-30, -98, 16, 18, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
+  eye(30, -98, 16, 18, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.zSkin, pupil: 4 });
+  for (const sx of [-1, 1]) { stroke(arc(sx * 30, -74, 15, 6, Math.PI * .15, Math.PI * .85, 8), 3); stroke(arc(sx * 30, -66, 13, 5, Math.PI * .2, Math.PI * .8, 8), 2.5); }
+  // óculos grandes, quadradões, armação rosada (lentes com reflexo)
+  for (const sx of [-1, 1]) {
+    shape(rr(sx * 32 - 32, -126, 64, 54, 12), { fill: '#f7eaea', alpha: .12, lw: 0, stroke: false });
+    stroke(rr(sx * 32 - 32, -126, 64, 54, 12), 6.5, { line: PAL.frameZ });
+    stroke([[sx * 32 - 24, -112], [sx * 32 - 16, -120]], 3, { line: '#ffffff' });
+  }
+  stroke(quad([-4, -112], [0, -118], [4, -112]), 5, { line: PAL.frameZ });
+  for (const sx of [-1, 1]) stroke([[sx * 64, -116], [sx * 78, -100]], 5, { line: PAL.frameZ });
+  // nariz e vincos
+  shape(spline([[-4, -88], [14, -60], [10, -46], [-10, -48], [-18, -58]]), { fill: PAL.zSkinS, lw: 5 });
+  for (const sx of [-1, 1]) stroke(quad([sx * 22, -48], [sx * 36, -32], [sx * 32, -12]), 3.5);
+  mouth(0, -24, 34, P.mouth || { o: 0, sm: -.15 });
+  stroke(arc(0, 0, 24, 8, Math.PI * .2, Math.PI * .8, 8), 3); // queixo
   pop();
   if (cross) {
     // braços cruzados na cintura, mangas compridas do casaco, mãos uma sobre a outra
