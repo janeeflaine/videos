@@ -122,11 +122,12 @@ export function chico(P) {
   const hip = sit ? -262 : -300, T = hip - 262; // T = topo dos ombros
   // pernas de calça + tornozelos + chinelos
   for (const sx of [-1, 1]) {
-    const top = sit ? [sx * 84, hip + 46] : [sx * 46, hip + 20], ank = sit ? [sx * 96, -50] : [sx * 52, -50];
+    const wk = P.walk != null ? Math.sin(P.walk * TAU + (sx > 0 ? 0 : Math.PI)) : 0, lift = P.walk != null ? Math.max(0, wk) * 26 : 0;
+    const top = sit ? [sx * 84, hip + 46] : [sx * 46, hip + 20], ank = sit ? [sx * 96, -50] : [sx * 52 + wk * 22, -50 - lift];
     shape(noodle(top, ank, 0, 62, 54), { fill: PAL.pants, lw: 7, shade: () => fillOnly(rect(sx > 0 ? ank[0] - 4 : -600, -700, sx > 0 ? 600 : 600 + ank[0] - 30, 700), PAL.pantsS, { boil: .3, alpha: sx > 0 ? .8 : 0 }) });
     shape(noodle([ank[0], ank[1] + 8], [ank[0] + 2, -24], 0, 34, 32), { fill: PAL.cSkin, lw: 6 });
     shape(rr(ank[0] - 31, ank[1] - 6, 62, 18, 8), { fill: PAL.pants, lw: 6 }); // barra da calça
-    chinelo(ank[0] + 2, sx, PAL.cSkin, PAL.flipN, PAL.flipNS);
+    push(); translate(0, -lift); chinelo(ank[0] + 2, sx, PAL.cSkin, PAL.flipN, PAL.flipNS); pop();
   }
   if (sit) shape(spline([[-122, hip - 24], [0, hip - 30], [122, hip - 24], [150, hip + 40], [112, hip + 70], [30, hip + 52], [-30, hip + 52], [-112, hip + 70], [-150, hip + 40]]), { fill: PAL.pants, lw: 7, shade: () => fillOnly(rect(40, hip - 60, 200, 160), PAL.pantsS, { boil: .3 }) });
   else shape(spline([[-114, hip - 20], [114, hip - 20], [110, hip + 40], [10, hip + 60], [-110, hip + 40]]), { fill: PAL.pants, lw: 7 });
@@ -143,7 +144,7 @@ export function chico(P) {
   });
   // estampa: "STRONG AND FREE" virou uma fileira de pontinhos + o "14" pontilhado
   for (let k = 0; k < 13; k++) dot(-62 + k * 10, T + 76, 2.2, '#dfe8ff');
-  dotPrint('14', -54, T + 92, 9.5, '#eef3ff');
+  push(); if ((P.face ?? 1) < 0) { translate(12, 0); scale(-1, 1); translate(-12, 0); } dotPrint('14', -54, T + 92, 9.5, '#eef3ff'); pop();
   // gola + pescoço
   push(); translate(0, T - 4); rotate(P.tilt ?? 0);
   shape(spline([[-40, 14], [-34, -40], [34, -40], [40, 14]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(10, -50, 40, 70), PAL.cSkinS, { boil: .3 }) });
@@ -168,8 +169,7 @@ export function chico(P) {
   rugas(-74, .9);
   // sobrancelhas grisalhas
   const br = P.brow ?? 0;
-  shape(rr(-58, -126 - br * 8, 42, 12, 6), { fill: PAL.hairCS, lw: 5 });
-  shape(rr(16, -126 + br * 2, 42, 12, 6), { fill: PAL.hairCS, lw: 5 });
+  for (const sx of [-1, 1]) { push(); translate(sx * 37, -120 + br * 3); rotate(-sx * br * .22); shape(rr(-21, -6, 42, 12, 6), { fill: PAL.hairCS, lw: 5 }); pop(); }
   eye(-30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
   eye(30, -96, 19, 21, { lid: P.lid ?? .4, look: P.look || [0, 0], skin: PAL.cSkin, closed: P.closed });
   for (const sx of [-1, 1]) stroke(arc(sx * 30, -68, 16, 6, Math.PI * .15, Math.PI * .85, 8), 3); // bolsinhas
@@ -424,8 +424,7 @@ export function poltrona(P, part = 'all') {
       }
     });
     // paninho de crochê no encosto (bordas em leque)
-    const dp = []; for (let i = 0; i <= 10; i++) { const x = lerp(-110, 110, i / 10); dp.push([x, -640 + (i % 2 ? 22 : 10)]); }
-    shape([[-110, -706], [110, -706], ...dp.reverse()], { fill: PAL.doily, lw: 5, shade: () => { for (let i = 0; i < 6; i++) stroke(ell(-80 + i * 32, -672, 8, 8, 10), 3, { line: '#d9cdb0' }); } });
+    if (!P.noDoily) paninho(0, -680, 1);
   }
   if (part !== 'back') {
     // assento
@@ -442,6 +441,13 @@ export function poltrona(P, part = 'all') {
   pop();
 }
 
+// paninho de crochê (solto: dá pra jogar em cima do papagaio)
+export function paninho(x, y, s = 1, rot = 0) {
+  push(); translate(x, y); rotate(rot); scale(s);
+  const dp = []; for (let i = 0; i <= 10; i++) { const xx = lerp(-110, 110, i / 10); dp.push([xx, 40 + (i % 2 ? 22 : 10)]); }
+  shape([[-110, -26], [110, -26], ...dp.reverse()], { fill: PAL.doily, lw: 5, shade: () => { for (let i = 0; i < 6; i++) stroke(ell(-80 + i * 32, 8, 8, 8, 10), 3, { line: '#d9cdb0' }); } });
+  pop();
+}
 // mesinha redonda com toalhinha
 export function mesinha(P) {
   push(); translate(P.x, P.y); scale(P.s ?? 1);
@@ -487,9 +493,9 @@ export const SET = { floorY: 1350, door: { x0: 600, x1: 1000, top: 560 }, kFloor
 export function sala(P = {}, hooks = {}) {
   const t = P.t ?? 0, D = SET.door, F = SET.floorY;
   // parede: verde-água em cima, barra pintada embaixo
-  fillOnly(rect(-40, -40, 1160, 1060), PAL.wallT, { boil: 0 });
-  fillOnly(rect(-40, 1000, 1160, F - 1000), PAL.wallB, { boil: 0 });
-  stroke([[-40, 1000], [1120, 1000]], 6);
+  fillOnly(rect(-400, -400, 1880, 1420), PAL.wallT, { boil: 0 });
+  fillOnly(rect(-400, 1000, 1880, F - 1000), PAL.wallB, { boil: 0 });
+  stroke([[-400, 1000], [1480, 1000]], 6);
   // cozinha (atrás da porta em arco)
   const archPts = [[D.x0, F], [D.x0, D.top + 100], ...arc((D.x0 + D.x1) / 2, D.top + 100, (D.x1 - D.x0) / 2, 100, Math.PI, TAU, 18), [D.x1, F]];
   const arch = shape(archPts, {
@@ -526,11 +532,11 @@ export function sala(P = {}, hooks = {}) {
   text('NOV', 510, 622, { font: '700 18px "Baloo 2"', fill: '#ffffff' });
   stroke([[510, 500], [470, 520]], 3); stroke([[510, 500], [550, 520]], 3); dot(510, 500, 5);
   // rodapé + piso de vermelhão em perspectiva
-  fillOnly(rect(-40, F, 1160, 640), PAL.floor, { boil: 0 });
-  shape(rect(-40, F - 16, D.x0 - 22 + 40, 16), { fill: PAL.woodS, lw: 5 }); shape(rect(D.x1 + 22, F - 16, 200, 16), { fill: PAL.woodS, lw: 5 });
-  stroke([[-40, F], [1120, F]], 6);
-  for (let k = -8; k <= 8; k++) stroke([[540 + k * 70, F], [540 + k * 230, 1960]], 3, { line: PAL.grout, boil: .4 });
-  for (const y of [1400, 1470, 1570, 1710, 1900]) stroke([[-40, y], [1120, y]], 3, { line: PAL.grout, boil: .4 });
+  fillOnly(rect(-400, F, 1880, 1000), PAL.floor, { boil: 0 });
+  shape(rect(-400, F - 16, D.x0 - 22 + 400, 16), { fill: PAL.woodS, lw: 5 }); shape(rect(D.x1 + 22, F - 16, 500, 16), { fill: PAL.woodS, lw: 5 });
+  stroke([[-400, F], [1480, F]], 6);
+  for (let k = -10; k <= 10; k++) stroke([[540 + k * 70, F], [540 + k * 230 * 1.35, F + 830]], 3, { line: PAL.grout, boil: .4 });
+  for (const y of [1400, 1470, 1570, 1710, 1900, 2140]) stroke([[-400, y], [1480, y]], 3, { line: PAL.grout, boil: .4 });
   // tapete de barbante redondo
   for (let k = 0; k < 4; k++) shape(ell(470, 1790, 470 - k * 80, 90 - k * 16, 60), { fill: PAL.rug[k], lw: 5, boil: .5 });
 }
@@ -575,6 +581,12 @@ function fogao({ x, y, s, t }) { push(); translate(x, y); scale(s);
   for (let k = 0; k < 3; k++) { const ph = t * 1.2 + k * .33, a = ph % 1; stroke(spline([[-60 + k * 36, -420], [-72 + k * 36 + Math.sin(ph * 5) * 8, -460], [-56 + k * 36, -500], [-66 + k * 36, -530]], false, 6), 5, { line: '#ffffff', alpha: .9 - a * .6 }); }
   pop(); }
 
+// quebra de linha por largura (fonte do canvas)
+export function wrap(str, font, maxW) {
+  g.save(); g.font = font; const out = []; let cur = '';
+  for (const w of str.split(/\s+/)) { const tryS = cur ? cur + ' ' + w : w; if (g.measureText(tryS).width > maxW && cur) { out.push(cur); cur = w; } else cur = tryS; }
+  if (cur) out.push(cur); g.restore(); return out;
+}
 // —— CLOSE EM PRIMEIRA PESSOA: as mãos dele segurando o jornal com a notícia (momento da credibilidade) ——
 // P: { t, masthead, date, kicker, headline:[linhas], resumo:[linhas], fonte:[linhas], clip: fn opcional (recorte de print) }
 export function jornalClose(P) {
@@ -589,33 +601,37 @@ export function jornalClose(P) {
   text(P.masthead ?? 'BRAZUELA', 0, -H2 + 82, { font: '92px "Titan One"', fill: PAL.news });
   text(P.date ?? 'SEGUNDA-FEIRA, 9 DE NOVEMBRO DE 2026', 0, -H2 + 174, { font: '700 26px "Baloo 2"', fill: PAL.news });
   if (P.kicker) { shape(rr(-W2 + 34, -H2 + 222, 260, 44, 8), { fill: PAL.pRed, lw: 5 }); text(P.kicker, -W2 + 164, -H2 + 245, { font: '800 28px "Baloo 2"', fill: '#ffffff' }); }
-  const hl = P.headline ?? ['A MANCHETE REAL', 'DA NOTÍCIA ENTRA', 'AQUI, BEM GRANDE'];
-  hl.forEach((l, i) => text(l, -W2 + 36, -H2 + 330 + i * 86, { font: '68px "Bungee"', fill: PAL.news, align: 'left' }));
-  const y0 = -H2 + 330 + hl.length * 86 + 10;
-  // ilustração nossa (nunca a foto da matéria)
-  if (P.clip) P.clip(-W2 + 36, y0, 380, 300);
-  else shape(rr(-W2 + 36, y0, 380, 300, 8), { fill: '#e9e0c8', lw: 5, shade: () => { stroke([[-W2 + 36, y0], [-W2 + 416, y0 + 300]], 3, { line: '#b9ae95' }); stroke([[-W2 + 416, y0], [-W2 + 36, y0 + 300]], 3, { line: '#b9ae95' }); } });
-  if (!P.clip) text('ilustração', -W2 + 226, y0 + 150, { font: '700 30px "Baloo 2"', fill: '#8a8070' });
-  const rs = P.resumo ?? ['Resumo curto,', 'com as minhas', 'palavras: o que', 'aconteceu, onde', 'e por quê.'];
-  rs.forEach((l, i) => text(l, -W2 + 446, y0 + 22 + i * 46, { font: '600 34px "Baloo 2"', fill: PAL.news, align: 'left' }));
+  const hl = wrap(P.headline ?? 'A MANCHETE REAL DA NOTÍCIA ENTRA AQUI, BEM GRANDE', '64px "Bungee"', W2 * 2 - 72);
+  hl.forEach((l, i) => text(l, -W2 + 36, -H2 + 320 + i * 78, { font: '64px "Bungee"', fill: PAL.news, align: 'left' }));
+  const y0 = -H2 + 320 + hl.length * 78 - 6;
+  stroke([[-W2 + 36, y0], [W2 - 36, y0]], 3, { line: PAL.news });
+  // resumo (escrito por nós) à esquerda + ilustração nossa à direita (nunca a foto da matéria)
+  const iw = 230, rsW = W2 * 2 - 72 - iw - 30;
+  const rs = wrap(P.resumo ?? 'Resumo curto, com as minhas palavras: o que aconteceu, onde e por quê.', '600 33px "Baloo 2"', rsW);
+  rs.forEach((l, i) => text(l, -W2 + 36, y0 + 44 + i * 44, { font: '600 33px "Baloo 2"', fill: PAL.news, align: 'left' }));
+  const ix = W2 - 36 - iw, iy = y0 + 26;
+  if (P.clip) P.clip(ix, iy, iw, iw);
+  else { shape(rr(ix, iy, iw, iw, 8), { fill: '#e9e0c8', lw: 5 }); text('ilustração', ix + iw / 2, iy + iw / 2, { font: '700 26px "Baloo 2"', fill: '#8a8070' }); }
+  const fy0 = Math.max(y0 + 44 + rs.length * 44, iy + iw + 30);
   // selo de fonte, bem legível
-  const fy = y0 + 340;
+  const fy = fy0;
   shape(rr(-W2 + 36, fy, W2 * 2 - 72, 150, 14), { fill: '#fff6c2', lw: 6, shade: () => fillOnly(rect(-W2 + 36, fy, 22, 150), PAL.pRed, { boil: 0 }) });
   const fo = P.fonte ?? ['FONTE: Nome do Veículo · 09/11/2026', 'siteoriginal.com.br/caminho-da-materia'];
   text(fo[0], -W2 + 74, fy + 50, { font: '800 34px "Baloo 2"', fill: PAL.news, align: 'left' });
   text(fo[1], -W2 + 74, fy + 104, { font: '600 30px "Baloo 2"', fill: '#4a4458', align: 'left' });
   // resto da página: outras notas (só linhas, ilegíveis de propósito)
-  stroke([[-W2 + 36, fy + 184], [W2 - 36, fy + 184]], 3, { line: PAL.news });
+  if (fy + 184 < H2 - 20) stroke([[-W2 + 36, fy + 184], [W2 - 36, fy + 184]], 3, { line: PAL.news });
   const cw = (W2 * 2 - 72 + 28) / 3;
   for (let c = 0; c < 3; c++) {
-    fillOnly(rect(-W2 + 36 + c * cw, fy + 210, cw * .7, 22), '#6e6676', { boil: .2 });
-    for (let k = 0; k < 7; k++) fillOnly(rect(-W2 + 36 + c * cw, fy + 254 + k * 30, k === 6 ? cw * .55 : cw - 28, 10), '#a39a88', { boil: .2 });
+    if (fy + 232 < H2 - 30) fillOnly(rect(-W2 + 36 + c * cw, fy + 210, cw * .7, 22), '#6e6676', { boil: .2 });
+    const rows = Math.max(0, Math.min(7, Math.floor((H2 - 40 - (fy + 254)) / 30)));
+    for (let k = 0; k < rows; k++) fillOnly(rect(-W2 + 36 + c * cw, fy + 254 + k * 30, k === rows - 1 ? cw * .55 : cw - 28, 10), '#a39a88', { boil: .2 });
   }
   pop();
   // mãos do Seu Chicó segurando as laterais, vistas do lado de quem lê: polegar por cima do papel, dedos por trás,
   // a lateral da mão e do indicador por fora da borda. Longe do selo de fonte.
   for (const sx of [-1, 1]) {
-    push(); translate(540 + sway + sx * (W2 + 6), 980 + 560); scale(sx, 1);
+    push(); translate(540 + sway + sx * (W2 + 6), 980 + 650); scale(sx, 1);
     // antebraço
     shape(noodle([200, 560], [56, 70], -16, 128, 104), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(120, -100, 300, 800), PAL.cSkinS, { boil: .3, alpha: .55 }) });
     // mão: lateral do indicador dobrando atrás da borda + palma

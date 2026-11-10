@@ -1,0 +1,9 @@
+"Jornal do Seu Chicó", ep. 01 — "Visita boa toma café e vai embora" — Curioso Soh
+Estilo: Sci-Fi Sitcom Toon (biblioteca Lemo-Opuscar). Elenco, cenário e animação originais, feitos em código.
+Vozes: ElevenLabs (Seu Chicó, Dona Zefinha, Lorenzo), geradas pela autora.
+Trilha e efeitos: sintetizados em código (music/score.py, mix.py), sem samples.
+Fontes tipográficas (SIL Open Font License 1.1): Baloo 2, Titan One, Bungee — Google Fonts.
+Notícia: g1 São Paulo, 09/11/2026 ("Esposa de FHC presta queixa contra homem que fez vídeo em apartamento do ex-presidente");
+fatos conferidos em Metrópoles, Ric.com.br, A Crítica de Campo Grande, Diário do Centro do Mundo e poa24horas.
+Manchete reproduzida; resumo escrito por nós; nenhuma foto ou imagem da matéria foi usada.
+Transcrição para sincronia labial: faster-whisper (modelo medium), local.
