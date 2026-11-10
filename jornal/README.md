@@ -7,7 +7,8 @@ Esta pasta guarda o que se desenha **uma vez** e se reaproveita em todo episódi
 - `cast.js` — Seu Chicó (`chico`), Dona Zefinha (`zefinha`), o gato (`gato`), o papagaio (`papagaio` + `poleiro`),
   a poltrona, a mesinha, a garrafa de café, a xícara, o jornal aberto (`jornalAberto`),
   o cenário da sala com a cozinha ao fundo (`sala`) e o close em primeira pessoa do jornal (`jornalClose`,
-  que recebe manchete, resumo e selo de fonte de cada notícia).
+  que recebe manchete, resumo e selo de fonte de cada notícia; `hlSize` diminui uma manchete longa).
+  Do ep. 02: o celular velho do Seu Chicó (`celularVelho`) e a ilustração do iPhone na almofada (`iphoneAlmofada`).
 - `toon.js`, `lib.js`, `tools/` — mesmo motor e ferramentas do `ciclone-janela/`.
 
 Prévias para aprovação (`node tools/still.cjs <saída.jpg> <t> <query>`):
@@ -17,5 +18,6 @@ Prévias para aprovação (`node tools/still.cjs <saída.jpg> <t> <query>`):
 | `elenco-previa.jpg` | `sheet` |
 | `cenario-previa.jpg` | `cenario` |
 | `jornal-close-previa.jpg` | `cenario&close` |
+| `ep02-iphones/previa-sala.jpg` · `previa-jornal.jpg` · `previa-celular.jpg` | `previa=ep02-iphones` · `previa=ep02-iphones&close` · `previa=ep02-iphones&fone` |
 
 Antes da primeira renderização: `sh tools/fonts.sh` (baixa as fontes, que não ficam no git).

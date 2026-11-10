@@ -193,7 +193,7 @@ export function chico(P) {
   mouth(0, -10, 46, P.mouth || { o: 0, sm: .5 });
   pop();
   if (P.paper) seguraJornal(T, hip, P.t);
-  else limb(shF, armF, opt);
+  else { const hp = limb(shF, armF, opt); if (P.holdR) P.holdR(hp); } // holdR(hp): desenha o que ele segura na mão da frente
   pop();
 }
 
@@ -684,9 +684,10 @@ export function jornalClose(P) {
   text(P.masthead ?? 'BRAZUELA', 0, -H2 + 82, { font: '92px "Titan One"', fill: PAL.news });
   text(P.date ?? 'SEGUNDA-FEIRA, 9 DE NOVEMBRO DE 2026', 0, -H2 + 174, { font: '700 26px "Baloo 2"', fill: PAL.news });
   if (P.kicker) { shape(rr(-W2 + 34, -H2 + 222, 260, 44, 8), { fill: PAL.pRed, lw: 5 }); text(P.kicker, -W2 + 164, -H2 + 245, { font: '800 28px "Baloo 2"', fill: '#ffffff' }); }
-  const hl = wrap(P.headline ?? 'A MANCHETE REAL DA NOTÍCIA ENTRA AQUI, BEM GRANDE', '64px "Bungee"', W2 * 2 - 72);
-  hl.forEach((l, i) => text(l, -W2 + 36, -H2 + 320 + i * 78, { font: '64px "Bungee"', fill: PAL.news, align: 'left' }));
-  const y0 = -H2 + 320 + hl.length * 78 - 6;
+  const hs = P.hlSize ?? 64, hf = `${hs}px "Bungee"`, hlh = Math.round(hs * 1.22); // manchete longa: hlSize menor
+  const hl = wrap(P.headline ?? 'A MANCHETE REAL DA NOTÍCIA ENTRA AQUI, BEM GRANDE', hf, W2 * 2 - 72);
+  hl.forEach((l, i) => text(l, -W2 + 36, -H2 + 320 + i * hlh, { font: hf, fill: PAL.news, align: 'left' }));
+  const y0 = -H2 + 320 + hl.length * hlh - 6;
   stroke([[-W2 + 36, y0], [W2 - 36, y0]], 3, { line: PAL.news });
   // resumo (escrito por nós) à esquerda + ilustração nossa à direita (nunca a foto da matéria)
   const iw = 230, rsW = W2 * 2 - 72 - iw - 30;
@@ -731,4 +732,63 @@ export function jornalClose(P) {
     stroke(arc(-42, -44, 12, 10, Math.PI * 1.15, Math.PI * 1.75, 6), 4); // vinco da junta
     pop();
   }
+}
+
+// —— CELULAR VELHO DO SEU CHICÓ (ep. 02): tijolão de teclinha com antena, tela verde e a borrachinha segurando a tampa ——
+// P: { x, y, s, rot, t, lit (0..1 tela acesa), ring (0..1 tremendo), parts: 0 = inteiro, 0..1 = desmontando (tampa e bateria voam) }
+// origem no centro do aparelho; altura ≈ 300
+export function celularVelho(P) {
+  const t = P.t ?? 0, ring = P.ring ?? 0, parts = P.parts ?? 0, lit = P.lit ?? 0;
+  const jx = ring ? Math.sin(t * 90) * 6 * ring : 0, jr = ring ? Math.sin(t * 70) * .06 * ring : 0;
+  push(); translate(P.x + jx, P.y); rotate((P.rot ?? 0) + jr); scale(P.s ?? 1);
+  // antena (com bolinha na ponta)
+  shape(rr(34, -196, 22, 66, 8), { fill: '#3a3a44', lw: 6 }); shape(ell(45, -200, 16, 14, 12), { fill: '#3a3a44', lw: 5 });
+  // corpo cinza-escuro, gordinho
+  shape(spline([[-62, -132], [62, -132], [70, -110], [70, 128], [56, 150], [-56, 150], [-70, 128], [-70, -110]], true, 4), {
+    fill: '#5a5e6e', lw: 7, shade: () => { fillOnly(rect(34, -140, 40, 300), '#44475a', { boil: .3 }); fillOnly(rect(-60, -126, 10, 250), '#7d8296', { boil: .2 }); }
+  });
+  // alto-falante
+  for (let k = 0; k < 3; k++) stroke([[-22, -112 + k * 9], [22, -112 + k * 9]], 3.5);
+  // tela verde de cristal líquido (acende quando liga)
+  const scr = lit > .5 ? '#b8f07a' : '#7fa36a';
+  shape(rr(-48, -86, 96, 76, 8), { fill: '#2b2e38', lw: 6 });
+  shape(rr(-38, -76, 76, 56, 4), { fill: scr, lw: 4, shade: () => {
+    if (lit > .5) { for (let k = 0; k < 4; k++) fillOnly(rect(-30 + k * 7, -70 + (3 - k) * 4, 5, 8 + k * 4), '#2e4a1e', { boil: 0 }); // sinal
+      fillOnly(rect(14, -70, 18, 9), '#2e4a1e', { boil: 0 }); fillOnly(rect(-30, -40, 60, 8), '#2e4a1e', { boil: 0 }); }
+  } });
+  // teclinhas (4 × 3) + botão verde e vermelho
+  shape(rr(-50, 4, 36, 18, 8), { fill: '#3cb44b', lw: 4 }); shape(rr(14, 4, 36, 18, 8), { fill: '#e5402f', lw: 4 });
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) shape(rr(-46 + c * 32, 32 + r * 26, 28, 18, 7), { fill: '#d8dbe3', lw: 4 });
+  // borrachinha de dinheiro segurando tudo
+  if (parts <= 0) shape(rr(-74, 62, 148, 14, 6), { fill: '#f0a32a', lw: 5 });
+  pop();
+  if (parts > 0) { // tampa e bateria voando pra lados opostos
+    const u = clamp(parts), up = Math.sin(u * Math.PI) * 90;
+    push(); translate(P.x - 150 * u, P.y - up + 40 * u); rotate(-u * 2.2); scale(P.s ?? 1);
+    shape(rr(-60, -60, 120, 150, 16), { fill: '#5a5e6e', lw: 6, shade: () => fillOnly(rect(20, -60, 40, 150), '#44475a', { boil: .3 }) }); // tampa
+    pop();
+    push(); translate(P.x + 170 * u, P.y - up * .8 + 60 * u); rotate(u * 1.7); scale(P.s ?? 1);
+    shape(rr(-44, -60, 88, 120, 8), { fill: '#2b2e38', lw: 6, shade: () => { fillOnly(rect(-44, -60, 88, 34), '#e2b33c', { boil: .2 }); } }); // bateria
+    text('+', -22, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' }); text('−', 20, 30, { font: '800 36px "Baloo 2"', fill: '#e2b33c' });
+    pop();
+    if (u < 1) { push(); translate(P.x + 60 * u, P.y - up * .5); rotate(u * 5); scale(P.s ?? 1); shape(rr(-74, -7, 148, 14, 6), { fill: '#f0a32a', lw: 5 }); pop(); } // borrachinha
+  }
+}
+// iPhone novinho na almofada de veludo, com etiqueta de preço (ilustração do jornal, desenho nosso)
+export function iphoneAlmofada(x, y, w, h) {
+  shape(rr(x, y, w, h, 10), { fill: '#e9e0c8', lw: 5 });
+  const cx = x + w / 2, cy = y + h / 2 + 10;
+  shape(spline([[cx - 100, cy + 50], [cx - 60, cy + 20], [cx + 60, cy + 20], [cx + 100, cy + 50], [cx + 70, cy + 80], [cx - 70, cy + 80]], true, 6), { fill: '#8e2f45', lw: 5, shade: () => fillOnly(ell(cx + 30, cy + 64, 60, 12, 16), '#6e2236', { boil: .2 }) });
+  push(); translate(cx, cy - 34); rotate(-.08);
+  shape(rr(-44, -78, 88, 156, 18), { fill: '#c9b8a0', lw: 6 });
+  shape(rr(-36, -70, 72, 140, 12), { fill: '#2a2140', lw: 4, shade: () => fillOnly(spline([[-36, -10], [36, -60], [36, 20], [-36, 60]]), '#4a3a7a', { boil: .2 }) });
+  shape(rr(-14, -64, 28, 9, 5), { fill: INK, lw: 0, stroke: false });
+  for (const [dx, dy] of [[-20, -50], [-6, -50], [-20, -36]]) shape(ell(dx + 40, dy - 10, 7, 7, 10), { fill: '#3a3a44', lw: 3 }); // câmeras
+  pop();
+  // etiqueta de preço pendurada num barbante
+  stroke(spline([[cx + 30, cy - 90], [cx + 64, cy - 110], [cx + 80, cy - 86]], false, 8), 3);
+  push(); translate(cx + 82, cy - 80); rotate(.25);
+  shape([[-6, -14], [70, -14], [70, 28], [-6, 28], [-20, 7]], { fill: '#fff6c2', lw: 4 });
+  text('R$', 32, 8, { font: '800 24px "Baloo 2"', fill: '#d8262e' });
+  pop();
 }
