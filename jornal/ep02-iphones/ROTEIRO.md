@@ -23,8 +23,8 @@ A piada é com o gasto, não com uma pessoa ou um partido. Seu Chicó leva um su
 Um tijolão de teclinha com antena, tela verde e uma borrachinha de dinheiro segurando a tampa (`celularVelho` em `cast.js`). Ele acende, treme e desmonta no tombo (tampa, bateria e borrachinha voam). Prévias: `previa-celular.jpg` e `previa-sala.jpg`.
 
 ## Falas (um MP3 por fala, nesta ordem)
-**Vozes (geradas pela API com `vozes.py`, modelo v4):** Seu Chicó = "Sergio – Friendly and Encouraging" (`RGbeQtiShYRDVCrd9b9w`); Dona Zefinha = "Edna E." (`FrCDCQwye0euHmliGxP9`), voz nova escolhida pela autora a partir deste episódio. Já estão em `voices/` (01–06, 08–11, 13–16), com o tempo de cada palavra em `words/`; todas conferidas por transcrição local (faster-whisper).
-**Lorenzo:** a autora faz à mão as falas **07** e **12**. A 17 é a chamada do ep. 01, reaproveitada (já está em `voices/17-lorenzo.mp3`).
+**Vozes (geradas pela API com `vozes.py`, modelo v4):** Seu Chicó = "Sergio – Friendly and Encouraging" (`RGbeQtiShYRDVCrd9b9w`); Dona Zefinha = "Edna E." (`FrCDCQwye0euHmliGxP9`), voz nova escolhida pela autora a partir deste episódio. Já estão em `voices/`, com o tempo de cada palavra em `words/`; todas conferidas por transcrição local (faster-whisper).
+**Lorenzo:** Fish Audio, voz pública **"Papagaio"** (`cd611264dd134b34aa41dfa78a607941`, modelo s1), escolhida pela autora para a série toda. Sem marcações de emoção, que o Fish não usa. A 12 é exatamente a amostra aprovada; a 07 foi escrita "Trim, trim!" porque "Trim-trim!" saía como "Pepe"; a 17, a chamada, foi refeita nessa voz para o Lorenzo soar igual no episódio inteiro ("Só" com acento, para não virar "ou só?"). Tempos das palavras pelo faster-whisper.
 Para refazer uma fala: corrija o texto na tabela e rode `python3 vozes.py <número>`.
 Marcações entre colchetes são para o ElevenLabs (em inglês funcionam melhor). Os números estão por extenso e "Pró" leva acento de propósito, para a voz não ler "18" em inglês nem "pro" como "para o".
 SFX e música são meus; não precisam ir no áudio.
@@ -37,17 +37,17 @@ SFX e música são meus; não precisam ir no áudio.
 | 4 | `04-chico.mp3` | Seu Chicó | [lowering the paper, outraged] Treze mil reais... num TELEFONE?! [disbelieving laugh] Rapaz, por esse preço ele tinha que vir com uma secretária dentro, pra atender por mim! |
 | 5 | `05-zefinha.mp3` | Dona Zefinha | [dreamy, from the kitchen] Um iPhone dezoito... [sighs] Deus me livre. [short pause] Mas quem me dera. |
 | 6 | `06-chico.mp3` | Seu Chicó | [offended, proudly showing his old phone] Zefinha! E esse aqui? Tem lanterna, tem rádio, tem o joguinho da cobrinha... a bateria dura uma semana, e não custou nem a metade de uma mensalidade daquele! |
-| 7 | `07-lorenzo.mp3` | Lorenzo | [imitating a ringing phone] Trim-trim! Trim-trim! Trim-trim! |
+| 7 | `07-lorenzo.mp3` | Lorenzo | Trim, trim! Trim, trim! Trim, trim! |
 | 8 | `08-chico.mp3` | Seu Chicó | [answering the phone, confused, then furious] Alô? Alô?... Quem fala?... LORENZO! |
 | 9 | `09-chico.mp3` | Seu Chicó | [proud, showing off] E outra: lá eles trocam de celular a cada dois anos. Esse aqui eu tenho desde dois mil e oito... já durou mais que dois mandatos de senador! |
 | 10 | `10-chico.mp3` | Seu Chicó | [shouting] BITUCA! |
 | 11 | `11-chico.mp3` | Seu Chicó | [triumphant, laughing] Viu só? Caiu, desmontou, montou de novo... e tá funcionando! Quero ver o iPhone do senador fazer isso! |
-| 12 | `12-lorenzo.mp3` | Lorenzo | [mocking, squawking] Quem paga é você! Quem paga é você! |
+| 12 | `12-lorenzo.mp3` | Lorenzo | Quem paga é você! Quem paga é você! |
 | 13 | `13-chico.mp3` | Seu Chicó | [deflated, grumbling] ...É. O iPhone é do senador... mas a conta chega aqui em casa. |
 | 14 | `14-zefinha.mp3` | Dona Zefinha | [arms crossed, dry] Bem que eu te avisei, Chicó: era pra você ter virado senador. |
 | 15 | `15-chico.mp3` | Seu Chicó | [laughs] Eu? E trocar meu chinelo por sapato? Nem por um iPhone! |
 | 16 | `16-chico.mp3` | Seu Chicó | [grumpy, getting up] Quer saber? Vou dormir que é melhor. [beat] E se o Senado ligar... diz que eu tô sem sinal. |
-| 17 | `17-lorenzo.mp3` | Lorenzo | *(reaproveitada do ep. 01)* Se você gostou, comenta: Curioso Soh! |
+| 17 | `17-lorenzo.mp3` | Lorenzo | Se você gostou, comenta: Curioso Só! |
 
 ## Plano das cenas (resumo)
 1. **Abertura (fala 1):** a sala às 18h10. Seu Chicó se ajeita na poltrona, serve o café e abre o jornal.

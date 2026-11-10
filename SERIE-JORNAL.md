@@ -39,8 +39,8 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 - **Escolhido:** um MP3 por fala, numerados na ordem (`01-seu.mp3`, `02-esposa.mp3`, `03-papagaio.mp3`…), gerados pela pessoa no ElevenLabs. Eu monto a conversa na linha do tempo, o que dá controle de pausas e das gags.
 - **Alternativa:** um arquivo único de diálogo (ElevenLabs v3 com marcações de emoção como `[ri]`). Eu separo os falantes pela transcrição. Dá menos trabalho para a pessoa, mas é mais difícil corrigir uma fala isolada.
 - No roteiro eu entrego um bloco de texto pronto por fala, com a voz indicada e as marcações de emoção.
-- Vozes (ElevenLabs, modelo v4): **Seu Chicó = "Sergio – Friendly and Encouraging"** (`RGbeQtiShYRDVCrd9b9w`); **Dona Zefinha = "Edna E."** (`FrCDCQwye0euHmliGxP9`) a partir do ep. 02 (no ep. 01 era "Bianca – Raspy and Animated"). Desde o ep. 02 as falas dos dois saem pela API (`ep02-iphones/vozes.py`, que lê a tabela do ROTEIRO.md e salva o MP3 e o tempo de cada palavra). O **Lorenzo** a pessoa faz à mão, com a mesma voz do ep. 01.
-- A chamada final do Lorenzo ("Se você gostou, comenta: Curioso Soh!") é sempre a mesma: reaproveitar `ep01-fhc/voices/16-lorenzo.mp3`.
+- Vozes (ElevenLabs, modelo v4): **Seu Chicó = "Sergio – Friendly and Encouraging"** (`RGbeQtiShYRDVCrd9b9w`); **Dona Zefinha = "Edna E."** (`FrCDCQwye0euHmliGxP9`) a partir do ep. 02 (no ep. 01 era "Bianca – Raspy and Animated"). Desde o ep. 02 as falas dos dois saem pela API (`ep02-iphones/vozes.py`, que lê a tabela do ROTEIRO.md e salva o MP3 e o tempo de cada palavra). **Lorenzo: sempre a voz pública "Papagaio" do Fish Audio** (`cd611264dd134b34aa41dfa78a607941`, modelo s1), escolhida pela pessoa no ep. 02; sai pelo mesmo `vozes.py` (chave do Fish Audio guardada no ambiente). No Fish, nada de marcações de emoção entre colchetes; onomatopeias funcionam melhor separadas por vírgula ("Trim, trim!").
+- A chamada final do Lorenzo ("Se você gostou, comenta: Curioso Só!") é sempre a mesma: reaproveitar `ep02-iphones/voices/17-lorenzo.mp3` (já na voz "Papagaio"; a do ep. 01 era outra voz).
 - **Boca:** sincronizada pela transcrição palavra por palavra; cada personagem mexe só nas próprias falas.
 
 ## Diferenças em relação ao PADRAO.md
@@ -55,4 +55,4 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 
 ## Episódios
 - **Ep. 01 — "Visita boa toma café e vai embora"** (notícia: g1, 09/11/2026, queixa da esposa de FHC contra homem que fez vídeo no apartamento): `jornal/ep01-fhc/visita-boa.mp4`, 118 s, 9:16, −14 LUFS. Roteiro em `jornal/ep01-fhc/ROTEIRO.md`; reconstruir com `sh jornal/ep01-fhc/build.sh`.
-- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): roteiro, prévias e vozes do Chicó e da Zefinha em `jornal/ep02-iphones/`. **Aguardando as falas 07 e 12 do Lorenzo.**
+- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): roteiro, prévias e vozes do Chicó e da Zefinha em `jornal/ep02-iphones/`. Todas as 17 falas prontas; próximo passo: produção (linha do tempo, animação, trilha e mixagem).
