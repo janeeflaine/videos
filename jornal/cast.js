@@ -775,6 +775,7 @@ export function celularVelho(P) {
   }
 }
 // iPhone novinho na almofada de veludo, com etiqueta de preço (ilustração do jornal, desenho nosso)
+const P_TAG = 'R$ 13.499';
 export function iphoneAlmofada(x, y, w, h) {
   shape(rr(x, y, w, h, 10), { fill: '#e9e0c8', lw: 5 });
   const cx = x + w / 2, cy = y + h / 2 + 10;
@@ -787,8 +788,8 @@ export function iphoneAlmofada(x, y, w, h) {
   pop();
   // etiqueta de preço pendurada num barbante
   stroke(spline([[cx + 30, cy - 90], [cx + 64, cy - 110], [cx + 80, cy - 86]], false, 8), 3);
-  push(); translate(cx + 82, cy - 80); rotate(.25);
-  shape([[-6, -14], [70, -14], [70, 28], [-6, 28], [-20, 7]], { fill: '#fff6c2', lw: 4 });
-  text('R$', 32, 8, { font: '800 24px "Baloo 2"', fill: '#d8262e' });
+  push(); translate(cx + 60, cy - 84); rotate(.22);
+  shape([[-6, -16], [104, -16], [104, 30], [-6, 30], [-22, 7]], { fill: '#fff6c2', lw: 4 });
+  text(P_TAG, 50, 8, { font: '800 22px "Baloo 2"', fill: '#d8262e' });
   pop();
 }

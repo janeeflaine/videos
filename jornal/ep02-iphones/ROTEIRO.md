@@ -3,20 +3,20 @@
 Série "Jornal do Seu Chicó" · 9:16 · alvo ≈ 115–125 s · notícia ruim → final de mau humor.
 
 ## A notícia (conferida)
-- **Fonte enviada:** CNN Brasil, 10/11/2026 — cnnbrasil.com.br/politica/senado-dara-95-iphones-18-pro-e-330-celulares-a-parlamentares-e-servidores
+- **Fonte enviada (lida):** CNN Brasil, 10/11/2026, 08h49 — Lucas Massei e Laura Molfese — cnnbrasil.com.br/politica/senado-dara-95-iphones-18-pro-e-330-celulares-a-parlamentares-e-servidores
 - **Conferida em outros veículos** (mesmos números em todos): ND+, MacMagazine (10/11), InfoMoney, Midiamax, Lupa1, Clic Camaquã, Blog do Valente.
-- **Fatos usados:** o Senado abriu um pregão (edital de 27/10) estimado em cerca de R$ 6 milhões (R$ 6.045.048,00) por 48 meses, para telefonia móvel com aparelhos, a partir de 1º/2/2027. São 95 iPhones 18 Pro, para senadores e parte dos diretores, e 330 aparelhos intermediários (Motorola e Samsung), para servidores com função de direção, chefia e assessoramento. Cada iPhone custa R$ 582,74 por mês, com 100 GB de internet. Os aparelhos ficam em comodato: são da operadora, emprestados enquanto durar o contrato. O contrato anterior, de 2022, tinha 93 iPhones 13 Pro.
-- **Fica de fora de propósito:** a briga política em torno do caso (ação popular, TCU), para a piada não tomar partido, e o total de linhas, que diverge entre os veículos (425 aparelhos ou 675 linhas).
+- **Fatos usados (todos da CNN):** licitação aberta no fim de outubro, custo estimado de R$ 6 milhões, contrato de 4 anos. São 95 iPhones 18 Pro e outros 330 celulares Samsung e Motorola para parlamentares e servidores, mais os serviços de telefonia. Os aparelhos ficam em comodato (emprestados durante o contrato) e devem ser trocados a cada dois anos pelo "melhor aparelho da categoria high end". Cada iPhone custa R$ 582,74 por mês; no site da Apple, o mesmo modelo sai por R$ 13.499. A internet dos iPhones dobra de 50 GB para 100 GB. Substitui o contrato de 2022 (93 iPhones 13 Pro e 290 intermediários). A nova legislatura toma posse em 1º de fevereiro e já usa os aparelhos novos. O Senado não respondeu à CNN sobre a escolha dos modelos.
+- **Fica de fora de propósito:** a briga política em torno do caso (ação popular, TCU), para a piada não tomar partido, o total de linhas, que diverge entre os veículos (425 aparelhos ou 675 linhas), e a divisão de quem fica com qual aparelho, que a CNN não detalha.
 
 ## Tom
-A piada é com o gasto, não com uma pessoa ou um partido. Seu Chicó faz a conta com o orçamento da casa dele e defende o celular velho de 2008 como se fosse um tesouro. As gags do papagaio e do gato **provam** o argumento dele (o celular cai, desmonta e volta a funcionar), e o papagaio dá a facada final: "quem paga é você".
+A piada é com o gasto, não com uma pessoa ou um partido. Seu Chicó leva um susto com o preço e defende o celular velho de 2008 como se fosse um tesouro: lá eles trocam a cada dois anos, o dele dura mais que mandato. As gags do papagaio e do gato **provam** o argumento dele (o celular cai, desmonta e volta a funcionar), e o papagaio dá a facada final: "quem paga é você".
 
 ## O jornal (close em primeira pessoa)
 - **Manchete (a real, da CNN Brasil):** SENADO DARÁ 95 IPHONES 18 PRO E 330 CELULARES A PARLAMENTARES E SERVIDORES
 - **Resumo impresso (minhas palavras):**
-  Contrato de R$ 6 milhões, por 4 anos, a partir de fevereiro de 2027. Os iPhones vão para senadores e parte dos diretores; os outros 330, para servidores com chefia. Cada iPhone: R$ 582,74 por mês, com 100 GB. Aparelhos emprestados pela operadora.
+  Contrato de R$ 6 milhões, por 4 anos. Os aparelhos são emprestados pela operadora e trocados a cada 2 anos. Cada iPhone custa ao Senado R$ 582,74 por mês, com 100 GB. Na loja, o mesmo modelo sai por R$ 13.499.
 - **Selo de fonte:** FONTE: CNN Brasil · 10/11/2026 / cnnbrasil.com.br/politica
-- **Ilustração (nossa):** um celular novinho numa almofada de veludo, com etiqueta de preço.
+- **Ilustração (nossa):** um celular novinho numa almofada de veludo, com a etiqueta "R$ 13.499".
 - Prévia: `previa-jornal.jpg`.
 
 ## Objeto novo: o celular do Seu Chicó
@@ -32,13 +32,13 @@ SFX e música são meus; não precisam ir no áudio.
 |---|---|---|---|
 | 1 | `01-chico.mp3` | Seu Chicó | [sighs contentedly] Aaah... cafezinho, poltrona e jornal. Vamo ver o que aprontaram hoje. |
 | 2 | `02-chico.mp3` | Seu Chicó | [reading slowly] "Senado dará noventa e cinco iPhones dezoito Pró e trezentos e trinta celulares a parlamentares e servidores." |
-| 3 | `03-chico.mp3` | Seu Chicó | [reading the newspaper, steady pace] Diz aqui que o Senado abriu uma licitação de seis milhões de reais: quatro anos de celular e internet, a partir de fevereiro. Os iPhones vão pros senadores e pra uma parte dos diretores; os outros trezentos e trinta, pros servidores com cargo de chefia. Cada iPhone sai por quinhentos e oitenta e dois reais por mês. E os aparelhos são emprestados pela operadora. |
-| 4 | `04-chico.mp3` | Seu Chicó | [lowering the paper, outraged] Quinhentos e oitenta e dois reais... POR MÊS?! [disbelieving laugh] Rapaz, com esse dinheiro eu pago a luz, a água, o gás... e ainda compro um celular igual ao meu. À vista! |
+| 3 | `03-chico.mp3` | Seu Chicó | [reading the newspaper, steady pace] Diz aqui que o Senado abriu uma licitação de seis milhões de reais: quatro anos de celular e internet pros parlamentares e servidores. Os aparelhos são emprestados pela operadora e trocados por novos a cada dois anos. Cada iPhone sai por quinhentos e oitenta e dois reais por mês. E na loja, esse mesmo iPhone custa treze mil, quatrocentos e noventa e nove reais. |
+| 4 | `04-chico.mp3` | Seu Chicó | [lowering the paper, outraged] Treze mil reais... num TELEFONE?! [disbelieving laugh] Rapaz, por esse preço ele tinha que vir com uma secretária dentro, pra atender por mim! |
 | 5 | `05-zefinha.mp3` | Dona Zefinha | [dreamy, from the kitchen] Um iPhone dezoito... [sighs] Deus me livre. [short pause] Mas quem me dera. |
-| 6 | `06-chico.mp3` | Seu Chicó | [offended, proudly showing his old phone] Zefinha! E esse aqui? Tem lanterna, tem rádio, tem o joguinho da cobrinha... e a bateria dura uma semana! |
+| 6 | `06-chico.mp3` | Seu Chicó | [offended, proudly showing his old phone] Zefinha! E esse aqui? Tem lanterna, tem rádio, tem o joguinho da cobrinha... a bateria dura uma semana, e não custou nem a metade de uma mensalidade daquele! |
 | 7 | `07-lorenzo.mp3` | Lorenzo | [imitating a ringing phone] Trim-trim! Trim-trim! Trim-trim! |
 | 8 | `08-chico.mp3` | Seu Chicó | [answering the phone, confused, then furious] Alô? Alô?... Quem fala?... LORENZO! |
-| 9 | `09-chico.mp3` | Seu Chicó | [proud, showing off] E outra: esse aqui eu tenho desde dois mil e oito. Já durou mais que dois mandatos de senador! |
+| 9 | `09-chico.mp3` | Seu Chicó | [proud, showing off] E outra: lá eles trocam de celular a cada dois anos. Esse aqui eu tenho desde dois mil e oito... já durou mais que dois mandatos de senador! |
 | 10 | `10-chico.mp3` | Seu Chicó | [shouting] BITUCA! |
 | 11 | `11-chico.mp3` | Seu Chicó | [triumphant, laughing] Viu só? Caiu, desmontou, montou de novo... e tá funcionando! Quero ver o iPhone do senador fazer isso! |
 | 12 | `12-lorenzo.mp3` | Lorenzo | [mocking, squawking] Quem paga é você! Quem paga é você! |
@@ -52,9 +52,9 @@ SFX e música são meus; não precisam ir no áudio.
 1. **Abertura (fala 1):** a sala às 18h10. Seu Chicó se ajeita na poltrona, serve o café e abre o jornal.
 2. **Manchete (fala 2):** corte para o **close em primeira pessoa**: as mãos dele com o BRAZUELA.
 3. **O resumo (fala 3):** a câmera desce pela página: ilustração do iPhone na almofada, resumo impresso e, no fim, o selo de fonte, parado na tela por uns 2 s. No meio, um corte rápido para a Dona Zefinha ouvindo da cozinha.
-4. **A conta (fala 4):** ele baixa o jornal devagar, de boca aberta. No "À vista!" tira do bolso o tijolão.
+4. **O preço (fala 4):** ele baixa o jornal devagar, de boca aberta, e quase engasga com o café.
 5. **"Deus me livre... mas quem me dera" (fala 5):** Dona Zefinha na porta da cozinha, olhando pro teto, sonhando, com a colher de pau no peito. No "mas quem me dera", um brilho de estrelinha nos óculos.
-6. **O tijolão (fala 6):** ele ergue o celular como um troféu; a cada item, um efeito: a lanterninha acende, um chiado de rádio, o "bip" da cobrinha.
+6. **O tijolão (fala 6):** ele tira o tijolão do bolso e ergue como um troféu; a cada item, um efeito: a lanterninha acende, um chiado de rádio, o "bip" da cobrinha.
 7. **Gag do papagaio (falas 7–8):** Lorenzo faz "trim-trim". Seu Chicó leva um susto, olha pro celular (tela apagada), atende assim mesmo: "Alô? Alô? Quem fala?". Só no fim percebe e se vira pro poleiro. Lorenzo balança a cabeça, satisfeito.
 8. **"Dura mais que mandato" (fala 9):** ele põe o celular em pé na mesinha, ao lado da xícara, como num pedestal. Enquanto ele fala, o Bituca sobe na mesinha. No "senador!", a pata derruba o celular (sim, o Bituca de novo).
 9. **O tombo (fala 10):** o celular bate no chão e desmonta: tampa pra um lado, bateria pro outro, borrachinha voando. Silêncio; só o relógio. Close tremido: "BITUCA!".
