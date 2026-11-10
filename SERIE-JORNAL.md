@@ -23,7 +23,7 @@ Casa simples de interior, perto da hora do jantar. Poltrona com mesinha ao lado,
    - notícia ruim: ele fica de mau humor;
    - notícia boa: ele solta uma piadinha.
    Nos dois casos fecha com "vou dormir que é melhor" e vai caminhando pro quarto de chinelo.
-6. Chamada "Se você gostou, comenta: Curioso Soh!" (sugestão: o papagaio grita depois que ele sai).
+6. Chamada do Lorenzo, que grita depois que ele sai: a padrão é "Se você gostou, comenta: Curioso Só!", mas pode puxar o tema da notícia (ep. 02: "comenta: Senado, quero celular!").
 
 ## A notícia no jornal (credibilidade)
 - **Preferir o link.** Eu leio a matéria, confiro os fatos em outra fonte e recomponho a notícia na tipografia do jornal desenhado:
@@ -40,7 +40,7 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 - **Alternativa:** um arquivo único de diálogo (ElevenLabs v3 com marcações de emoção como `[ri]`). Eu separo os falantes pela transcrição. Dá menos trabalho para a pessoa, mas é mais difícil corrigir uma fala isolada.
 - No roteiro eu entrego um bloco de texto pronto por fala, com a voz indicada e as marcações de emoção.
 - Vozes (ElevenLabs, modelo v4): **Seu Chicó = "Sergio – Friendly and Encouraging"** (`RGbeQtiShYRDVCrd9b9w`); **Dona Zefinha = "Edna E."** (`FrCDCQwye0euHmliGxP9`) a partir do ep. 02 (no ep. 01 era "Bianca – Raspy and Animated"). Desde o ep. 02 as falas dos dois saem pela API (`ep02-iphones/vozes.py`, que lê a tabela do ROTEIRO.md e salva o MP3 e o tempo de cada palavra). **Lorenzo: sempre a voz pública "Papagaio" do Fish Audio** (`cd611264dd134b34aa41dfa78a607941`, modelo s1), escolhida pela pessoa no ep. 02; sai pelo mesmo `vozes.py` (chave do Fish Audio guardada no ambiente). No Fish, nada de marcações de emoção entre colchetes; onomatopeias funcionam melhor separadas por vírgula ("Trim, trim!").
-- A chamada final do Lorenzo ("Se você gostou, comenta: Curioso Só!") é sempre a mesma: reaproveitar `ep02-iphones/voices/17-lorenzo.mp3` (já na voz "Papagaio"; a do ep. 01 era outra voz).
+- Chamada final do Lorenzo: pode puxar o tema da notícia (ep. 02: "Se você também quer um celular, comenta: Senado, quero celular! E curte o vídeo. Tchau, tchau!"). A chamada padrão "Se você gostou, comenta: Curioso Só!" já está pronta na voz "Papagaio" em `jornal/lorenzo-chamada-curioso-so.mp3`.
 - **Boca:** sincronizada pela transcrição palavra por palavra; cada personagem mexe só nas próprias falas.
 
 ## Diferenças em relação ao PADRAO.md

@@ -24,7 +24,7 @@ Um tijolão de teclinha com antena, tela verde e uma borrachinha de dinheiro seg
 
 ## Falas (um MP3 por fala, nesta ordem)
 **Vozes (geradas pela API com `vozes.py`, modelo v4):** Seu Chicó = "Sergio – Friendly and Encouraging" (`RGbeQtiShYRDVCrd9b9w`); Dona Zefinha = "Edna E." (`FrCDCQwye0euHmliGxP9`), voz nova escolhida pela autora a partir deste episódio. Já estão em `voices/`, com o tempo de cada palavra em `words/`; todas conferidas por transcrição local (faster-whisper).
-**Lorenzo:** Fish Audio, voz pública **"Papagaio"** (`cd611264dd134b34aa41dfa78a607941`, modelo s1), escolhida pela autora para a série toda. Sem marcações de emoção, que o Fish não usa. A 12 é exatamente a amostra aprovada; a 07 foi escrita "Trim, trim!" porque "Trim-trim!" saía como "Pepe"; a 17, a chamada, foi refeita nessa voz para o Lorenzo soar igual no episódio inteiro ("Só" com acento, para não virar "ou só?"). Tempos das palavras pelo faster-whisper.
+**Lorenzo:** Fish Audio, voz pública **"Papagaio"** (`cd611264dd134b34aa41dfa78a607941`, modelo s1), escolhida pela autora para a série toda. Sem marcações de emoção, que o Fish não usa. A 12 é exatamente a amostra aprovada; a 07 foi escrita "Trim, trim!" porque "Trim-trim!" saía como "Pepe"; a 17, a chamada, foi escrita pela autora para este episódio (escolhida a melhor de 7 gerações). Tempos das palavras pelo faster-whisper.
 Para refazer uma fala: corrija o texto na tabela e rode `python3 vozes.py <número>`.
 Marcações entre colchetes são para o ElevenLabs (em inglês funcionam melhor). Os números estão por extenso e "Pró" leva acento de propósito, para a voz não ler "18" em inglês nem "pro" como "para o".
 SFX e música são meus; não precisam ir no áudio.
@@ -47,7 +47,7 @@ SFX e música são meus; não precisam ir no áudio.
 | 14 | `14-zefinha.mp3` | Dona Zefinha | [arms crossed, dry] Bem que eu te avisei, Chicó: era pra você ter virado senador. |
 | 15 | `15-chico.mp3` | Seu Chicó | [laughs] Eu? E trocar meu chinelo por sapato? Nem por um iPhone! |
 | 16 | `16-chico.mp3` | Seu Chicó | [grumpy, getting up] Quer saber? Vou dormir que é melhor. [beat] E se o Senado ligar... diz que eu tô sem sinal. |
-| 17 | `17-lorenzo.mp3` | Lorenzo | Se você gostou, comenta: Curioso Só! |
+| 17 | `17-lorenzo.mp3` | Lorenzo | Se você também quer um celular, comenta: Senado, quero celular! E curte o vídeo. Tchau, tchau! |
 
 ## Plano das cenas (resumo)
 1. **Abertura (fala 1):** a sala às 18h10. Seu Chicó se ajeita na poltrona, serve o café e abre o jornal.
@@ -64,7 +64,7 @@ SFX e música são meus; não precisam ir no áudio.
 12. **A facada (falas 12–13):** Lorenzo abre as asas: "Quem paga é você!". A risada dele morre; ele murcha na poltrona.
 13. **Dona Zefinha (falas 14–15):** de braços cruzados, ela solta a ideia; ele ri, mexendo os dedões no chinelo.
 14. **Final de mau humor (fala 16):** ele levanta emburrado, deixa o tijolão na mesinha e vai de chinelo pro quarto. Na porta, sem se virar: "...diz que eu tô sem sinal."
-15. **Chamada (fala 17):** sala vazia; Lorenzo grita a chamada. Fim.
+15. **Chamada (fala 17):** sala vazia; Lorenzo grita a chamada, que neste episódio puxa o tema: os letreiros dizem "Se você também quer um celular, comenta:" e "SENADO, QUERO CELULAR!", e no "tchau, tchau" ele acena com a asa. Fim.
 
 ## Estimativa de tempo
 As falas geradas somam ≈ 113 s (sem as duas do Lorenzo) e as vozes saíram mais pausadas do que o previsto. Com os silêncios de cada fala cortados, ≈ 5 s a mais do Lorenzo e ≈ 18 s de pausas e gags, o total dá ≈ 130 s. Na montagem eu aperto as pausas para ficar em ≈ 120–125 s.
