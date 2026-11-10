@@ -37,7 +37,7 @@ const lerp2 = (a, b, u) => [lerp(a[0], b[0], u), lerp(a[1], b[1], u), lerp(a[2],
 
 // —— eventos (tempos do filme) ——
 const T = {
-  close: L[1].t0 - .3, closeEnd: end(2) + 1.7,
+  close: L[1].t0 - .3, closeEnd: end(2) + 1.7, read1: L[2].t0 + 8.55, read2: L[2].t0 + 13.9, read3: L[2].t0 + 16.5,
   throwA: end(6) - .15, throwB: end(6) + .55,           // paninho voa da poltrona pro poleiro
   unveil: L[11].t0 - .1,                                  // paninho escorrega da cabeça do Lorenzo
   catIn: L[9].t0 + .3, catJump: L[9].t0 + 2.4, catOn: L[9].t0 + 2.9,
@@ -131,17 +131,23 @@ function sign(str, x, y, { fill = '#ffd23f', col = INK, sz = 54, rot = 0, p = 1,
 const popIn = (t, a, d = .35) => t < a ? 0 : back(seg(t, a, a + d), 1.2);
 const wordT = (i, w) => (L[i].words.find(q => q.w.toLowerCase().includes(w)) || L[i].words[0]).s;
 
+// o jornal na mão dele (close em primeira pessoa)
+function page(t, cy, z) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#5a3d2e'; g.fillRect(0, 0, 1080, 1920);
+  cam(540, cy, z, () => jornalClose({ t, ...NEWS }));
+}
 // —— planos ——
 const CH = [400, 1330, 1.55], ZE = [800, 1060, 1.7], LO = [235, 880, 2.3], TWO = [640, 1380, 1.2], WIDE = [540, 960, 1];
 const SHOTS = [
   // abertura: a sala às 18h10, empurrando devagar até o Seu Chicó
   [0, T.close, t => cam(...lerp2([540, 1060, 1], [430, 1300, 1.32], ss(seg(t, 0, T.close))), () => room(t, { chico: { look: [0, .1], lid: .55, brow: -.2, sm: .6 } }))],
   // close em primeira pessoa: manchete, e a câmera desce pela página até o selo de fonte
-  [T.close, T.closeEnd, t => {
-    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#5a3d2e'; g.fillRect(0, 0, 1080, 1920);
-    const u = ss(seg(t, L[2].t0 + 1.5, end(2) - 1.2)), z = 1.28 + .03 * seg(t, T.close, T.closeEnd);
-    cam(540, lerp(950, 1130, u), z, () => jornalClose({ t, ...NEWS }));
-  }],
+  [T.close, T.read1, t => page(t, 950, 1.28)],
+  // no meio da leitura: ele lendo de óculos, e a Dona Zefinha ouvindo da cozinha
+  [T.read1, T.read2, t => cam(CH[0], CH[1] - 30, CH[2] + .1 * seg(t, T.read1, T.read2), () => room(t, { chico: { look: [0, .9], lid: .55, brow: .2, sm: 0 } }))],
+  [T.read2, T.read3, t => cam(...ZE, () => room(t, { zef: { look: [-.8, .2], lid: .3, brow: .8, tilt: .05 } }))],
+  // volta pro jornal: resumo e o selo de fonte parado na tela
+  [T.read3, T.closeEnd, t => page(t, lerp(1010, 1130, ss(seg(t, T.read3, end(2) - 1.2))), 1.3)],
   // ele baixa o jornal e comenta
   [T.closeEnd, L[4].t0 - .1, t => cam(...CH, () => room(t, { chico: { look: [.15, 0], lid: .2, brow: .9, sm: -.5 } }))],
   // Dona Zefinha da cozinha: "Né pussive!"
