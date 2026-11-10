@@ -10,8 +10,8 @@ export const PAL = {
   cSkin: '#b8734a', cSkinS: '#955733', cNose: '#c7764c', nail: '#e8b090', hairC: '#f2f1f4', hairCS: '#c4c2cc', stacheC: '#e6e3ea',
   shirt: '#2347c8', shirtS: '#1a369c', pants: '#2a2e4e', pantsS: '#1d2038', frame: '#2a2226',
   flip: '#2fb37a', flipS: '#1f8a5b', flipN: '#2c3050', flipNS: '#1d2038', strapN: '#4a5078', strap: '#f4f1ea', gold: '#e2b33c', goldS: '#b98a1f',
-  // Dona Zefinha: cabelo grisalho em coque, vestido azul de treliça, casaco vermelho geométrico
-  zSkin: '#ad6a42', zSkinS: '#8b502c', zHair: '#a29fa8', zHairS: '#75727c', dressZ: '#2446b8', dressZS: '#17307f', lattice: '#a9c4ff',
+  // Dona Zefinha: pele morena clara, cabelo grisalho curtinho amarrado pra trás, vestido azul de treliça, casaco vermelho geométrico
+  zSkin: '#deb08c', zSkinS: '#c39472', zHair: '#a29fa8', zHairS: '#75727c', dressZ: '#2446b8', dressZS: '#17307f', lattice: '#a9c4ff',
   cardi: '#d8262e', cardiS: '#a51b23', cardiG: '#a9a9b0', cardiW: '#f4f1ea', cardiD: '#7a1420', frameZ: '#8a8078',
   // gato magricelo: cinza rajado
   cat: '#a19fab', catS: '#7d7b88', catStripe: '#64626e', catPink: '#f2a0b5', catBelly: '#d6d4dc',
@@ -242,7 +242,7 @@ function geometrico(x0, y0, w, h, seed = 1) {
   }
 }
 
-// —— 2. DONA ZEFINHA: cabelo grisalho puxado num coque, óculos de aro fino, vestido azul de treliça,
+// —— 2. DONA ZEFINHA: cabelo grisalho curtinho, puxado e amarrado pra trás, óculos de aro fino, vestido azul de treliça,
 //    casaco vermelho geométrico aberto, chinelo azul-marinho; braços cruzados, cara de "bem que te avisei" ——
 // P: { x, y, s, t, face, armL, armR, cross (braços cruzados), mouth, look, lid, brow, tilt, spoon }
 export function zefinha(P) {
@@ -272,7 +272,9 @@ export function zefinha(P) {
   // cabeça
   push(); translate(0, T - 8); rotate(P.tilt ?? 0); scale(1.14);
   shape(spline([[-34, 14], [-30, -40], [30, -40], [34, 14]]), { fill: PAL.zSkin, lw: 7, shade: () => fillOnly(rect(8, -50, 40, 70), PAL.zSkinS, { boil: .3 }) });
-  shape(ell(0, -184, 32, 24, 20), { fill: PAL.zHair, lw: 6, shade: () => stroke(arc(0, -184, 20, 14, Math.PI * 1.1, Math.PI * 1.9, 8), 3, { line: PAL.zHairS }) }); // coque
+  // rabinho curtinho amarrado atrás (só a pontinha aparece do lado da nuca) + elástico
+  shape(spline([[52, -70], [76, -64], [92, -44], [84, -30], [64, -42], [50, -52]]), { fill: PAL.zHair, lw: 5, shade: () => stroke([[60, -60], [84, -40]], 3, { line: PAL.zHairS }) });
+  shape(ell(56, -62, 7, 9, 10), { fill: PAL.cardiD, lw: 4 });
   for (const sx of [-1, 1]) shape(ell(sx * 70, -78, 14, 22, 14), { fill: PAL.zSkin, lw: 6 });
   shape(spline([[-70, -110], [-62, -160], [0, -172], [62, -160], [70, -110], [64, -44], [40, -2], [0, 10], [-40, -2], [-64, -44]]), {
     fill: PAL.zSkin, lw: 7, shade: () => fillOnly(ell(52, -60, 30, 90, 24), PAL.zSkinS, { boil: .4 })
