@@ -3,8 +3,8 @@
 Série "Jornal do Seu Chicó" · 9:16 · alvo ≈ 115–125 s · notícia ruim → final de mau humor.
 
 ## A notícia (conferida)
-- **Fonte usada no selo:** ND+ (ndmais.com.br, editoria de Política), 10/11/2026 — "Por R$ 6 milhões, Senado dará 95 iPhones 18 Pro e outros 330 celulares para parlamentares e servidores".
-- **Conferida em outros veículos** (mesmos números em todos): MacMagazine (10/11), InfoMoney, Midiamax, Lupa1, Clic Camaquã, Blog do Valente.
+- **Fonte enviada:** CNN Brasil, 10/11/2026 — cnnbrasil.com.br/politica/senado-dara-95-iphones-18-pro-e-330-celulares-a-parlamentares-e-servidores
+- **Conferida em outros veículos** (mesmos números em todos): ND+, MacMagazine (10/11), InfoMoney, Midiamax, Lupa1, Clic Camaquã, Blog do Valente.
 - **Fatos usados:** o Senado abriu um pregão (edital de 27/10) estimado em cerca de R$ 6 milhões (R$ 6.045.048,00) por 48 meses, para telefonia móvel com aparelhos, a partir de 1º/2/2027. São 95 iPhones 18 Pro, para senadores e parte dos diretores, e 330 aparelhos intermediários (Motorola e Samsung), para servidores com função de direção, chefia e assessoramento. Cada iPhone custa R$ 582,74 por mês, com 100 GB de internet. Os aparelhos ficam em comodato: são da operadora, emprestados enquanto durar o contrato. O contrato anterior, de 2022, tinha 93 iPhones 13 Pro.
 - **Fica de fora de propósito:** a briga política em torno do caso (ação popular, TCU), para a piada não tomar partido, e o total de linhas, que diverge entre os veículos (425 aparelhos ou 675 linhas).
 
@@ -12,10 +12,10 @@ Série "Jornal do Seu Chicó" · 9:16 · alvo ≈ 115–125 s · notícia ruim �
 A piada é com o gasto, não com uma pessoa ou um partido. Seu Chicó faz a conta com o orçamento da casa dele e defende o celular velho de 2008 como se fosse um tesouro. As gags do papagaio e do gato **provam** o argumento dele (o celular cai, desmonta e volta a funcionar), e o papagaio dá a facada final: "quem paga é você".
 
 ## O jornal (close em primeira pessoa)
-- **Manchete (a real, do ND+):** POR R$ 6 MILHÕES, SENADO DARÁ 95 IPHONES 18 PRO E OUTROS 330 CELULARES PARA PARLAMENTARES E SERVIDORES
+- **Manchete (a real, da CNN Brasil):** SENADO DARÁ 95 IPHONES 18 PRO E 330 CELULARES A PARLAMENTARES E SERVIDORES
 - **Resumo impresso (minhas palavras):**
   Contrato de R$ 6 milhões, por 4 anos, a partir de fevereiro de 2027. Os iPhones vão para senadores e parte dos diretores; os outros 330, para servidores com chefia. Cada iPhone: R$ 582,74 por mês, com 100 GB. Aparelhos emprestados pela operadora.
-- **Selo de fonte:** FONTE: ND+ · 10/11/2026 / ndmais.com.br/politica
+- **Selo de fonte:** FONTE: CNN Brasil · 10/11/2026 / cnnbrasil.com.br/politica
 - **Ilustração (nossa):** um celular novinho numa almofada de veludo, com etiqueta de preço.
 - Prévia: `previa-jornal.jpg`.
 
@@ -31,7 +31,7 @@ SFX e música são meus; não precisam ir no áudio.
 | # | Arquivo | Quem | Fala |
 |---|---|---|---|
 | 1 | `01-chico.mp3` | Seu Chicó | [sighs contentedly] Aaah... cafezinho, poltrona e jornal. Vamo ver o que aprontaram hoje. |
-| 2 | `02-chico.mp3` | Seu Chicó | [reading slowly] "Por seis milhões de reais, Senado dará noventa e cinco iPhones dezoito Pró e outros trezentos e trinta celulares para parlamentares e servidores." |
+| 2 | `02-chico.mp3` | Seu Chicó | [reading slowly] "Senado dará noventa e cinco iPhones dezoito Pró e trezentos e trinta celulares a parlamentares e servidores." |
 | 3 | `03-chico.mp3` | Seu Chicó | [reading the newspaper, steady pace] Diz aqui que o Senado abriu uma licitação de seis milhões de reais: quatro anos de celular e internet, a partir de fevereiro. Os iPhones vão pros senadores e pra uma parte dos diretores; os outros trezentos e trinta, pros servidores com cargo de chefia. Cada iPhone sai por quinhentos e oitenta e dois reais por mês. E os aparelhos são emprestados pela operadora. |
 | 4 | `04-chico.mp3` | Seu Chicó | [lowering the paper, outraged] Quinhentos e oitenta e dois reais... POR MÊS?! [disbelieving laugh] Rapaz, com esse dinheiro eu pago a luz, a água, o gás... e ainda compro um celular igual ao meu. À vista! |
 | 5 | `05-zefinha.mp3` | Dona Zefinha | [dreamy, from the kitchen] Um iPhone dezoito... [sighs] Deus me livre. [short pause] Mas quem me dera. |
