@@ -16,8 +16,8 @@ Casa simples de interior, perto da hora do jantar. Poltrona com mesinha ao lado,
 
 ## Estrutura do episódio
 1. Abertura: ele se ajeita na poltrona e pega o café e o jornal.
-2. Lê a manchete e os fatos.
-3. **Close em primeira pessoa:** as mãos dele segurando o jornal com a notícia. É o momento da credibilidade.
+2. Lê a manchete.
+3. **Close em primeira pessoa:** as mãos dele segurando o jornal com a notícia. É o momento da credibilidade. Ele lê em voz alta um resumo curto da matéria (escrito por mim, ~20–25 s) enquanto a câmera desce pela página até o selo de fonte; assim quem assiste entende o caso antes dos comentários.
 4. Comentários engraçados, risada, intromissão da esposa e gags do gato e do papagaio.
 5. Final:
    - notícia ruim: ele fica de mau humor;
