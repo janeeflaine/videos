@@ -193,19 +193,16 @@ export function chico(P) {
 // segurando o jornal aberto (plano geral): mangas à vista, braços atrás do papel, antebraços em pé pelas laterais,
 // e do lado de cá do papel aparecem só os quatro dedos dobrados sobre a borda (o polegar fica do lado dele)
 function seguraJornal(T, hip, t) {
-  const yP = hip - 70, yH = yP - 58;
+  const yP = hip - 70, yH = yP - 60, W = 250;
+  for (const sx of [-1, 1]) shape(noodle([sx * 112, T + 16], [sx * 160, T + 90], sx * 6, 64, 58), { fill: PAL.shirt, lw: 7 }); // mangas
+  jornalAberto({ x: 0, y: yP, s: 1, t, w: W });
   for (const sx of [-1, 1]) {
-    shape(noodle([sx * 112, T + 16], [sx * 318, hip + 30], sx * 30, 42, 38), { fill: PAL.cSkin, lw: 7 });
-    shape(noodle([sx * 112, T + 16], [sx * 180, T + 110], sx * 10, 64, 58), { fill: PAL.shirt, lw: 7 });
-  }
-  for (const sx of [-1, 1]) shape(noodle([sx * 326, hip + 34], [sx * 322, yH + 20], 0, 40, 34), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(rect(sx > 0 ? 330 : -360, hip - 300, 30, 400), PAL.cSkinS, { boil: .3, alpha: .6 }) });
-  jornalAberto({ x: 0, y: yP, s: 1, t });
-  for (const sx of [-1, 1]) {
-    shape(spline([[sx * 300, yH - 34], [sx * 330, yH - 40], [sx * 350, yH - 14], [sx * 348, yH + 24], [sx * 326, yH + 40], [sx * 302, yH + 34]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(ell(sx * 342, yH, 12, 40, 12), PAL.cSkinS, { boil: .3, alpha: .6 }) });
+    // só a mão: costas da mão um tiquinho pra fora da borda + quatro dedos dobrados por cima do papel
+    shape(spline([[sx * (W - 2), yH - 34], [sx * (W + 22), yH - 40], [sx * (W + 38), yH - 16], [sx * (W + 36), yH + 22], [sx * (W + 18), yH + 38], [sx * (W - 2), yH + 34]]), { fill: PAL.cSkin, lw: 7, shade: () => fillOnly(ell(sx * (W + 30), yH, 10, 40, 12), PAL.cSkinS, { boil: .3, alpha: .6 }) });
     for (let k = 0; k < 4; k++) {
       const fy = yH - 26 + k * 18, len = [30, 36, 34, 26][k];
-      shape(rr(sx > 0 ? 300 - len : -300, fy - 8, len + 6, 17, 8), { fill: PAL.cSkin, lw: 5 });
-      fillOnly(ell(sx * (300 - len + 7), fy, 4, 5, 8), PAL.nail, { boil: .2 });
+      shape(rr(sx > 0 ? W - len : -W, fy - 8, len + 6, 17, 8), { fill: PAL.cSkin, lw: 5 });
+      fillOnly(ell(sx * (W - len + 7), fy, 4, 5, 8), PAL.nail, { boil: .2 });
     }
   }
 }
@@ -213,14 +210,14 @@ function seguraJornal(T, hip, t) {
 // jornal aberto segurado na frente do corpo (plano geral)
 export function jornalAberto(P) {
   push(); translate(P.x, P.y); scale(P.s ?? 1);
-  const w = 300, h = 210;
+  const w = P.w ?? 300, h = 210;
   shape(spline([[-w, -h * .55], [-w * .5, -h * .62], [0, -h * .52], [w * .5, -h * .62], [w, -h * .55], [w * 1.02, h * .5], [w * .5, h * .44], [0, h * .52], [-w * .5, h * .44], [-w * 1.02, h * .5]], true, 6), {
     fill: PAL.paper, lw: 7, shade: () => {
       fillOnly(rect(0, -200, 400, 400), PAL.paperS, { boil: .3 });
       fillOnly(rect(-w + 26, -h * .44, w - 52, 30), PAL.news, { boil: .3 });
-      for (let c = 0; c < 2; c++) for (let k = 0; k < 6; k++) fillOnly(rect(-w + 26 + c * 136, -h * .44 + 50 + k * 22, 116, 8), '#9a9180', { boil: .2 });
+      for (let c = 0; c < 2; c++) for (let k = 0; k < 6; k++) fillOnly(rect(-w + 26 + c * (w - 26) / 2, -h * .44 + 50 + k * 22, (w - 26) / 2 - 20, 8), '#9a9180', { boil: .2 });
       fillOnly(rect(28, -h * .44, w - 54, 90), '#b9ae95', { boil: .3 });
-      for (let c = 0; c < 2; c++) for (let k = 0; k < 4; k++) fillOnly(rect(28 + c * 136, -h * .44 + 108 + k * 22, 116, 8), '#9a9180', { boil: .2 });
+      for (let c = 0; c < 2; c++) for (let k = 0; k < 4; k++) fillOnly(rect(28 + c * (w - 54) / 2, -h * .44 + 108 + k * 22, (w - 54) / 2 - 20, 8), '#9a9180', { boil: .2 });
     }
   });
   stroke([[0, -h * .52], [0, h * .52]], 5);
@@ -306,14 +303,22 @@ export function zefinha(P) {
     limb(shF, { e: [50, 190], h: [-120, 196], ang: Math.PI + .2 }, sleeve);
   } else {
     const armF = P.armR || { h: [40, 200], bend: 24 };
-    limb(shF, armF, { ...sleeve, under: P.spoon ? hp => colher(hp, armF.spoonA ?? -1.9) : null });
+    limb(shF, armF, { ...sleeve, under: P.spoon ? hp => colher(hp, armF.spoonA ?? -1.9, armF.spoonL ?? 1) : null });
   }
   pop();
 }
-function colher(hp, a) {
-  push(); translate(hp[0], hp[1] + 6); rotate(a);
+function colher(hp, a, len = 1) {
+  push(); translate(hp[0], hp[1] + 6); rotate(a); scale(len, 1);
   shape(rr(-6, -14, 180, 12, 6), { fill: PAL.wood, lw: 5 });
   shape(ell(196, -8, 30, 20, 18), { fill: PAL.wood, lw: 6, shade: () => fillOnly(ell(200, -4, 18, 10, 12), PAL.woodS, { boil: .3 }) });
+  pop();
+}
+
+// jornal dobrado (deixado na poltrona)
+export function jornalDobrado(x, y, s = 1, rot = 0) {
+  push(); translate(x, y); rotate(rot); scale(s);
+  shape([[-120, -10], [110, -22], [124, 30], [-110, 42]], { fill: PAL.paper, lw: 6, shade: () => { fillOnly(rect(-130, 14, 260, 40), PAL.paperS, { boil: .2 }); fillOnly(rect(-90, -6, 120, 10), PAL.news, { boil: .2 }); for (let k = 0; k < 2; k++) fillOnly(rect(-90, 12 + k * 12, 170, 5), '#9a9180', { boil: .2 }); } });
+  stroke([[-118, 14], [118, 4]], 4);
   pop();
 }
 
@@ -341,8 +346,11 @@ export function gato(P) {
   for (let k = 0; k < 3; k++) stroke(arc(mid[0] - 10 + k * 22, mid[1] + 34, 14, 22, Math.PI * .7, Math.PI * 1.3, 6), 4); // costelas
   leg([hip[0] - 4, hip[1] + 24], [-138, -4], 18, PAL.cat, 38);
   leg([sho[0] + 4, sho[1] + 24], [104, -4], 18, PAL.cat, -6);
-  // cabeça grande
-  push(); translate(sho[0] + 40, sho[1] - 60); rotate(P.tilt ?? -.08);
+  gatoCabeca(sho[0] + 40, sho[1] - 60, P);
+  pop();
+}
+function gatoCabeca(x, y, P) {
+  push(); translate(x, y); rotate(P.tilt ?? -.08);
   // orelhas (a da direita dobrada)
   shape(spline([[-58, -40], [-62, -108], [-16, -64]]), { fill: PAL.cat, lw: 6, shade: () => fillOnly([[-52, -50], [-56, -94], [-26, -62]], PAL.catPink, { boil: .3 }) });
   shape(spline([[16, -64], [52, -102], [78, -96], [62, -44]]), { fill: PAL.cat, lw: 6, shade: () => fillOnly([[28, -64], [56, -90], [60, -54]], PAL.catPink, { boil: .3 }) });
@@ -356,6 +364,33 @@ export function gato(P) {
   mouth(0, 20, 26, P.mouth || { o: 0, sm: .8, skew: -.4, lw: 5 });
   for (const sx of [-1, 1]) for (let k = 0; k < 3; k++) stroke([[sx * 22, 10 + k * 6], [sx * 74, 2 + k * 12]], 3);
   pop();
+}
+// Bituca em pé nas patas de trás, com as da frente apoiadas na mesa (olhando a xícara); swipe 0..1 = a pata que derruba
+// origem: patas de trás no chão; +x = para a mesa (use face: -1 pra virar)
+export function gatoEmPe(P) {
+  const t = P.t ?? 0, sw = P.swipe ?? 0, reach = P.reach ?? [70, -416];
+  push(); translate(P.x, P.y); scale((P.s ?? 1) * (P.face ?? 1), P.s ?? 1);
+  const tw = Math.sin(t * TAU * .5) * 10;
+  tube(spline([[-30, -140], [-96, -80], [-120 + tw, -20], [-90 + tw, 6], [-60, 2]], false, 8), 16, PAL.cat); // rabo no chão
+  const paw = (x, y, col) => shape(ell(x + 6, y - 4, 18, 10, 12), { fill: col, lw: 5 });
+  // perna de trás (fundo) dobrada
+  shape(noodle([-24, -150], [16, -80], -10, 30, 24), { fill: PAL.catS, lw: 6 }); shape(noodle([16, -80], [-14, -8], 0, 22, 18), { fill: PAL.catS, lw: 6 }); paw(-14, 0, PAL.catS);
+  // pata da frente de trás (apoiada na mesa)
+  shape(noodle([24, -320], [reach[0] - 14, reach[1] + 8], -8, 20, 16), { fill: PAL.catS, lw: 6 }); paw(reach[0] - 20, reach[1] + 8, PAL.catS);
+  // corpo em pé, magrelo
+  shape(spline([[-44, -130], [-46, -220], [-10, -320], [30, -352], [62, -330], [52, -260], [36, -180], [24, -128], [-10, -112]]), {
+    fill: PAL.cat, lw: 7, shade: () => {
+      for (let k = 0; k < 4; k++) fillOnly(spline([[-80, -170 - k * 44], [80, -190 - k * 44], [80, -180 - k * 44], [-80, -160 - k * 44]]), PAL.catStripe, { boil: .3 });
+      fillOnly(ell(30, -230, 24, 90, 16), PAL.catBelly, { boil: .3 });
+    }
+  });
+  for (let k = 0; k < 3; k++) stroke(arc(10, -270 + k * 26, 22, 10, Math.PI * .1, Math.PI * .6, 6), 4); // costelas
+  // perna de trás (frente)
+  shape(noodle([-10, -150], [34, -82], -14, 34, 26), { fill: PAL.cat, lw: 6 }); shape(noodle([34, -82], [6, -6], 0, 24, 20), { fill: PAL.cat, lw: 6 }); paw(6, 0, PAL.cat);
+  // pata da frente (a que derruba): sai da mesa, vai pra frente e bate na xícara
+  const pf = [lerp(reach[0], reach[0] + 80, Math.sin(sw * Math.PI)) + sw * 30, reach[1] - Math.sin(sw * Math.PI) * 40];
+  shape(noodle([40, -316], pf, -10, 22, 18), { fill: PAL.cat, lw: 6 }); paw(pf[0], pf[1], PAL.cat);
+  gatoCabeca(40, -400, { ...P, tilt: P.tilt ?? .12 });
   pop();
 }
 
@@ -513,6 +548,7 @@ export function sala(P = {}, hooks = {}) {
       // fogão de 4 bocas com panela fumegando
       fogao({ x: D.x0 + 330, y: SET.kFloor + 20, s: .8, t });
       if (hooks.kitchen) hooks.kitchen();
+      push(); translate(D.x0 + 330, SET.kFloor + 20); scale(.8); panelaFrente({ x: 0, y: 0, s: 1 }); pop();
     }
   });
   // batente da porta
@@ -546,7 +582,8 @@ function janelaSala({ x, y, w, h, t }) {
     cols.forEach((c, i) => fillOnly(rect(x, y + i * h * .16, w, h * .16 + 1), c, { boil: 0 }));
     shape(ell(x + w * .62, y + h * .72, 70, 70, 36), { fill: PAL.sunD, lw: 5 });
     fillOnly(spline([[x - 10, y + h * .82], [x + w * .3, y + h * .74], [x + w * .6, y + h * .8], [x + w + 10, y + h * .72], [x + w + 10, y + h + 10], [x - 10, y + h + 10]]), '#6c4a7a', { boil: .4 }); // morro
-    for (const [px, ph] of [[.2, 50], [.32, 70], [.85, 60]]) { stroke([[x + w * px, y + h * .8], [x + w * px, y + h * .8 - ph]], 5); shape(ell(x + w * px, y + h * .8 - ph - 16, 22, 18, 14), { fill: '#4a3260', lw: 5 }); } // arvorezinhas
+    mandacaru(x + w * .2, y + h * .82, 1); mandacaru(x + w * .86, y + h * .8, .72); xiquexique(x + w * .38, y + h * .82, .8);
+    galhoSeco(x + w * .62, y + h * .84, .8);
   } });
   stroke([[x + w / 2, y], [x + w / 2, y + h]], 8); stroke([[x, y + h * .5], [x + w, y + h * .5]], 8);
   shape(rect(x - 20, y + h, w + 40, 22), { fill: PAL.wood, lw: 6 });
@@ -559,6 +596,25 @@ function janelaSala({ x, y, w, h, t }) {
     shape(ell(cx + d * 22, y + h * .45, 20, 12, 12), { fill: PAL.chitaL, lw: 5 });
   }
   shape(rr(x - 70, y - 44, w + 140, 18, 9), { fill: PAL.woodS, lw: 6 });
+}
+// caatinga na janela (silhuetas contra o pôr do sol)
+const CACTO = '#3d2a52';
+function mandacaru(x, y, s) {
+  push(); translate(x, y); scale(s);
+  shape(rr(-9, -150, 18, 150, 9), { fill: CACTO, lw: 4 });
+  shape(spline([[8, -70], [34, -70], [40, -78], [40, -122], [28, -122], [28, -84], [8, -84]], true, 3), { fill: CACTO, lw: 4 });
+  shape(spline([[-8, -96], [-30, -96], [-36, -104], [-36, -136], [-24, -136], [-24, -110], [-8, -110]], true, 3), { fill: CACTO, lw: 4 });
+  pop();
+}
+function xiquexique(x, y, s) {
+  push(); translate(x, y); scale(s);
+  for (const [dx, h, a] of [[-16, 48, -.35], [0, 64, 0], [16, 40, .4], [26, 30, .7]]) { push(); translate(dx * .4, 0); rotate(a); shape(rr(-6, -h, 12, h, 6), { fill: CACTO, lw: 4 }); pop(); }
+  pop();
+}
+function galhoSeco(x, y, s) {
+  push(); translate(x, y); scale(s);
+  stroke([[0, 0], [0, -40], [-18, -64]], 4); stroke([[0, -40], [16, -70], [30, -78]], 4); stroke([[16, -70], [10, -90]], 3); stroke([[0, -20], [-20, -34]], 3);
+  pop();
 }
 function vaquinha(x, y, s) { push(); translate(x, y); scale(s);
   shape(rr(-50, -30, 100, 56, 24), { fill: '#ffffff', lw: 5, shade: () => { fillOnly(ell(-20, -10, 16, 12, 12), INK, { boil: .3 }); fillOnly(ell(26, 8, 12, 10, 12), INK, { boil: .3 }); } });
@@ -574,13 +630,17 @@ function filtro({ x, y, s }) { push(); translate(x, y); scale(s);
 function fogao({ x, y, s, t }) { push(); translate(x, y); scale(s);
   shape(rr(-120, -260, 260, 260, 10), { fill: '#fbfaf3', lw: 7, shade: () => { fillOnly(rect(80, -270, 70, 280), '#dcdcd4', { boil: .2 }); shape(rr(-90, -170, 200, 130, 10), { fill: '#3a3a44', lw: 5 }); for (let k = 0; k < 4; k++) shape(ell(-80 + k * 56, -226, 14, 14, 12), { fill: '#3a3a44', lw: 4 }); } });
   shape(rr(-130, -290, 280, 34, 8), { fill: '#e6e6de', lw: 6 });
-  // panela com tampa e vapor
-  shape(spline([[-80, -290], [-84, -380], [40, -380], [36, -290]]), { fill: PAL.steel, lw: 6, shade: () => fillOnly(rect(10, -400, 40, 120), PAL.steelS, { boil: .2 }) });
-  shape(ell(-22, -384, 70, 14, 20), { fill: PAL.steelS, lw: 6 }); shape(rr(-34, -406, 24, 18, 6), { fill: '#3a3a44', lw: 4 });
-  for (const sx of [-1, 1]) shape(rr(sx > 0 ? 34 : -104, -360, 26, 14, 6), { fill: '#3a3a44', lw: 4 });
+  // panela aberta (feijão no fogo) com vapor; a frente é redesenhada depois de quem mexe (panelaFrente)
+  shape(ell(-22, -380, 62, 13, 24), { fill: '#6a3a1e', lw: 6, shade: () => { for (const [bx, by] of [[-40, -380], [-6, -384], [14, -377]]) shape(ell(bx, by, 6, 3, 8), { fill: '#8a5230', lw: 2 }); } });
+  panelaFrente({ x: 0, y: 0, s: 1 });
   for (let k = 0; k < 3; k++) { const ph = t * 1.2 + k * .33, a = ph % 1; stroke(spline([[-60 + k * 36, -420], [-72 + k * 36 + Math.sin(ph * 5) * 8, -460], [-56 + k * 36, -500], [-66 + k * 36, -530]], false, 6), 5, { line: '#ffffff', alpha: .9 - a * .6 }); }
   pop(); }
 
+// corpo da panela (cobre a ponta da colher que está dentro dela)
+export function panelaFrente({ x, y, s }) { push(); translate(x, y); scale(s);
+  shape([[-84, -380], ...arc(-22, -380, 62, 13, Math.PI, 0, 14), [40, -380], [36, -290], [-80, -290]], { fill: PAL.steel, lw: 6, shade: () => fillOnly(rect(10, -400, 40, 120), PAL.steelS, { boil: .2 }) });
+  for (const sx of [-1, 1]) shape(rr(sx > 0 ? 34 : -104, -360, 26, 14, 6), { fill: '#3a3a44', lw: 4 });
+  pop(); }
 // quebra de linha por largura (fonte do canvas)
 export function wrap(str, font, maxW) {
   g.save(); g.font = font; const out = []; let cur = '';

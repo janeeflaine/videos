@@ -58,7 +58,7 @@ put(whoosh(.7), EV['throwA'], .8); put(rustle(.25), EV['throwB'] - .05, .6)
 for i in (5, 11, 15):
     for j in range(int(L[i]['dur'] / .16)): put(flap(), st(i) + j * .16, .7)
 put(rustle(.35), EV['unveil'], .6)
-boing(EV['catJump'])
+for j in range(2): put(bp(noise(.05), 300, 2500) * envd(int(SR * .05), .001, .015) * 1.5, EV['catJump'] + .3 + j * .12, .7)  # patinhas na mesa
 put(clink(.5), EV['crash'] - .02, .6); smash(EV['crash'] + .38)
 for j in range(4): put(tick(), en(9) + .9 + j * .5, .5)  # o silêncio depois do tombo: só o relógio
 creak(EV['stand'])

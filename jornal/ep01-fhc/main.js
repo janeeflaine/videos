@@ -2,7 +2,7 @@
 // Tudo amarrado a timeline.json (falas cortadas, posições no filme, envelope de boca e palavras).
 import { clamp, lerp, seg, ss, eo, ei, eio, back, hash, TAU } from '../lib.js';
 import { INK, init, frame, g, push, pop, translate, rotate, scale, shape, fillOnly, stroke, rect, rr, ell, arc, spline, text, S } from '../toon.js';
-import { chico, zefinha, gato, papagaio, poleiro, poltrona, mesinha, garrafa, xicara, sala, paninho, jornalClose, PAL } from '../cast.js';
+import { chico, zefinha, gato, gatoEmPe, papagaio, poleiro, poltrona, mesinha, garrafa, xicara, sala, paninho, jornalClose, jornalDobrado, PAL } from '../cast.js';
 
 init(document.getElementById('c'));
 const TL = await (await fetch(new URL('./timeline.json', import.meta.url))).json();
@@ -40,7 +40,7 @@ const T = {
   close: L[1].t0 - .3, closeEnd: end(2) + 1.7, read1: L[2].t0 + 8.55, read2: L[2].t0 + 13.9, read3: L[2].t0 + 16.5,
   throwA: end(6) - .15, throwB: end(6) + .55,           // paninho voa da poltrona pro poleiro
   unveil: L[11].t0 - .1,                                  // paninho escorrega da cabeça do Lorenzo
-  catIn: L[9].t0 + .3, catJump: L[9].t0 + 2.4, catOn: L[9].t0 + 2.9,
+  catIn: L[9].t0 + .3, catUp: L[9].t0 + 2.4,
   crash: end(9) + .12,                                   // a pata derruba a xícara
   stand: end(14) + .35, walkA: end(14) + .8, walkB: L[15].t0 - .5,
 };
@@ -76,9 +76,9 @@ function chicoAt(t, o = {}) {
   chico({ x: 400, y: 1800, s: .95, t, sit: true, paper: {}, closed: cl, ...o, mouth: { o: m * (o.mouthK ?? .95), sm: o.sm ?? .3, ...(o.mouthX || {}) } });
 }
 function zefAt(t, o = {}) {
-  const m = mouthOf('zefinha', t), stir = Math.sin(t * TAU * .8);
-  zefinha({ x: 780, y: 1302, s: .66, t, spoon: !o.cross, cross: o.cross,
-    armR: o.cross ? undefined : (o.armR || { h: [130 + stir * 14, 40 + stir * 8], bend: -40, spoonA: -.6 + stir * .15 }), armL: { h: [-20, 200], bend: -10 },
+  const m = mouthOf('zefinha', t), ph = st(t) * TAU * .7, cx = Math.cos(ph), sy = Math.sin(ph);
+  zefinha({ x: 760, y: 1302, s: .66, t, spoon: !o.cross, cross: o.cross,
+    armR: o.cross ? undefined : (o.armR || { e: [58, 74], h: [106 + cx * 18, -36 + sy * 6], spoonA: 1.38 - cx * .12, spoonL: .55 }), armL: { h: [-20, 200], bend: -10 },
     look: o.look || [.5, 0], lid: blink(t, 1.7) ? 1 : (o.lid ?? .35), brow: o.brow ?? .3, tilt: o.tilt ?? 0,
     mouth: { o: m * .9, sm: o.sm ?? -.45 } });
 }
@@ -94,11 +94,11 @@ function lorenzoAt(t, o = {}) {
 }
 function bitucaAt(t) {
   if (t < T.catIn) return;
-  if (t < T.catJump) { const u = ss(seg(t, T.catIn, T.catJump)); gato({ x: lerp(1220, 1000, u), y: 1890 - Math.abs(Math.sin(st(t) * 9)) * 8, s: .5, t, face: -1, arch: .2, look: [-.4, -.6] }); return; }
-  if (t < T.catOn) { const u = seg(t, T.catJump, T.catOn); gato({ x: lerp(1000, 1000, u), y: lerp(1890, 1468, eo(u)) - Math.sin(u * Math.PI) * 120, s: .5, t, face: -1, arch: .05, look: [-.3, -.3] }); return; }
-  const swipe = t > T.crash - .25 && t < T.crash + .3;
-  gato({ x: 1000, y: 1468, s: .5, t, face: -1, arch: swipe ? .1 : .35, tilt: swipe ? .15 : -.08, look: t > T.crash + .4 ? [.9, 0] : [-.6, .4], lid: t > T.crash + .4 ? .45 : .15,
-    mouth: t > T.crash + .4 ? { o: 0, sm: .9, skew: -.5, lw: 5 } : undefined });
+  if (t < T.catUp) { const u = ss(seg(t, T.catIn, T.catUp)); gato({ x: lerp(1240, 1060, u), y: 1798 - Math.abs(Math.sin(st(t) * 9)) * 8, s: .5, t, face: -1, arch: .2, look: [-.4, -.6] }); return; }
+  const up = seg(t, T.catUp, T.catUp + .35), sq = 1 + Math.sin(up * Math.PI) * .08;
+  const sw = seg(t, T.crash - .28, T.crash + .06), after = t > T.crash + .45;
+  gatoEmPe({ x: 1012, y: 1792, s: .75 * sq, t, face: -1, swipe: sw < 1 ? sw : 0, look: after ? [.9, .1] : [.8, .5], lid: after ? .45 : .1,
+    mouth: after ? { o: 0, sm: .9, skew: -.5, lw: 5 } : undefined });
 }
 // a sala inteira, na ordem de profundidade
 function room(t, o = {}) {
@@ -109,6 +109,7 @@ function room(t, o = {}) {
   garrafa({ x: 826, y: 1472, s: .55 });
   const c = cupPos(t); if (c && c.on) xicara({ x: c.p[0], y: c.p[1], s: .6, t });
   poltrona({ x: 400, y: 1820, s: .9, noDoily: t >= T.throwA });
+  if (t >= T.stand) jornalDobrado(392, 1566, .95, -.04);
   chicoAt(t, o.chico || {});
   bitucaAt(t);
   if (c && !c.on) xicara({ x: c.p[0], y: c.p[1], s: .6, t, rot: c.r, steam: false });

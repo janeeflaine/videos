@@ -19,7 +19,7 @@ window.render = (t) => {
     tag('close em 1ª pessoa · prévia', 90);
     return;
   }
-  sala({ t }, { kitchen: () => zefinha({ x: 780, y: 1302, s: .66, t, spoon: true, armR: { h: [130, 40], bend: -40, spoonA: -.6 }, armL: { h: [-20, 200], bend: -10 }, look: [.5, 0], lid: .35, brow: .3 }) });
+  sala({ t }, { kitchen: () => zefinha({ x: 760, y: 1302, s: .66, t, spoon: true, armR: { e: [58, 74], h: [112, -36], spoonA: 1.3, spoonL: .55 }, armL: { h: [-20, 200], bend: -10 }, look: [.5, 0], lid: .35, brow: .3 }) });
   poleiro({ x: 160, y: 1430, s: 1, h: 420 });
   papagaio({ x: 150, y: 996, s: .7, t, look: [.6, .3] });
   mesinha({ x: 860, y: 1770, s: .9 });
