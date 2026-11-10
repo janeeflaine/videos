@@ -51,3 +51,6 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 1. Folha de elenco e cenário para aprovação: senhor, esposa, gato, papagaio e a sala com a cozinha ao fundo. **Feito, aguardando aprovação:** `jornal/elenco-previa.jpg`, `jornal/cenario-previa.jpg`, `jornal/jornal-close-previa.jpg` (código em `jornal/cast.js`).
 2. Nomes definidos: **Seu Chicó**, **Dona Zefinha**, o gato **Bituca**, o papagaio **Lorenzo** e o jornal **BRAZUELA** (nome no cabeçalho do jornal desenhado). Áudio: a pessoa manda as falas separadas, um MP3 por fala.
 3. Primeira notícia: roteiro com as falas por personagem → MP3s da pessoa → produção. Reaproveitar o pipeline de `ciclone-janela/`: `tools/`, `toon.js`, `lib.js`, `mix.py`, `score.py`.
+
+## Episódios
+- **Ep. 01 — "Visita boa toma café e vai embora"** (notícia: g1, 09/11/2026, queixa da esposa de FHC contra homem que fez vídeo no apartamento): `jornal/ep01-fhc/visita-boa.mp4`, 118 s, 9:16, −14 LUFS. Roteiro em `jornal/ep01-fhc/ROTEIRO.md`; reconstruir com `sh jornal/ep01-fhc/build.sh`.
