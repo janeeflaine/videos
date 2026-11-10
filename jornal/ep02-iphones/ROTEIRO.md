@@ -23,9 +23,10 @@ A piada é com o gasto, não com uma pessoa ou um partido. Seu Chicó leva um su
 Um tijolão de teclinha com antena, tela verde e uma borrachinha de dinheiro segurando a tampa (`celularVelho` em `cast.js`). Ele acende, treme e desmonta no tombo (tampa, bateria e borrachinha voam). Prévias: `previa-celular.jpg` e `previa-sala.jpg`.
 
 ## Falas (um MP3 por fala, nesta ordem)
-**Vozes:** as mesmas do ep. 01, que estão no seu histórico do ElevenLabs: **Seu Chicó = "Sergio – Friendly and Encouraging"**, **Dona Zefinha = "Bianca – Raspy and Animated"** (modelo v4). Para o Lorenzo, use a mesma voz do ep. 01.
+**Vozes (geradas pela API com `vozes.py`, modelo v4):** Seu Chicó = "Sergio – Friendly and Encouraging" (`RGbeQtiShYRDVCrd9b9w`); Dona Zefinha = "Edna E." (`FrCDCQwye0euHmliGxP9`), voz nova escolhida pela autora a partir deste episódio. Já estão em `voices/` (01–06, 08–11, 13–16), com o tempo de cada palavra em `words/`; todas conferidas por transcrição local (faster-whisper).
+**Lorenzo:** a autora faz à mão as falas **07** e **12**. A 17 é a chamada do ep. 01, reaproveitada (já está em `voices/17-lorenzo.mp3`).
+Para refazer uma fala: corrija o texto na tabela e rode `python3 vozes.py <número>`.
 Marcações entre colchetes são para o ElevenLabs (em inglês funcionam melhor). Os números estão por extenso e "Pró" leva acento de propósito, para a voz não ler "18" em inglês nem "pro" como "para o".
-A fala 17 é a chamada do ep. 01, reaproveitada. Você **não precisa gerar** essa fala: ela já está copiada em `voices/17-lorenzo.mp3`.
 SFX e música são meus; não precisam ir no áudio.
 
 | # | Arquivo | Quem | Fala |
@@ -66,4 +67,4 @@ SFX e música são meus; não precisam ir no áudio.
 15. **Chamada (fala 17):** sala vazia; Lorenzo grita a chamada. Fim.
 
 ## Estimativa de tempo
-≈ 100 s de fala + ≈ 20 s de pausas e gags (tombo, conserto, saída) ≈ **120 s**.
+As falas geradas somam ≈ 113 s (sem as duas do Lorenzo) e as vozes saíram mais pausadas do que o previsto. Com os silêncios de cada fala cortados, ≈ 5 s a mais do Lorenzo e ≈ 18 s de pausas e gags, o total dá ≈ 130 s. Na montagem eu aperto as pausas para ficar em ≈ 120–125 s.

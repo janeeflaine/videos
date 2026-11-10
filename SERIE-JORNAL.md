@@ -39,7 +39,7 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 - **Escolhido:** um MP3 por fala, numerados na ordem (`01-seu.mp3`, `02-esposa.mp3`, `03-papagaio.mp3`…), gerados pela pessoa no ElevenLabs. Eu monto a conversa na linha do tempo, o que dá controle de pausas e das gags.
 - **Alternativa:** um arquivo único de diálogo (ElevenLabs v3 com marcações de emoção como `[ri]`). Eu separo os falantes pela transcrição. Dá menos trabalho para a pessoa, mas é mais difícil corrigir uma fala isolada.
 - No roteiro eu entrego um bloco de texto pronto por fala, com a voz indicada e as marcações de emoção.
-- Vozes (as do ep. 01, no histórico do ElevenLabs da pessoa, modelo v4): **Seu Chicó = "Sergio – Friendly and Encouraging"** (`RGbeQtiShYRDVCrd9b9w`), **Dona Zefinha = "Bianca – Raspy and Animated"** (`HReOQZPV9tH5iTEnSbGo`); o Lorenzo usa a mesma voz do ep. 01. São vozes da biblioteca: a API não as libera no plano gratuito, então a pessoa gera as falas no site.
+- Vozes (ElevenLabs, modelo v4): **Seu Chicó = "Sergio – Friendly and Encouraging"** (`RGbeQtiShYRDVCrd9b9w`); **Dona Zefinha = "Edna E."** (`FrCDCQwye0euHmliGxP9`) a partir do ep. 02 (no ep. 01 era "Bianca – Raspy and Animated"). Desde o ep. 02 as falas dos dois saem pela API (`ep02-iphones/vozes.py`, que lê a tabela do ROTEIRO.md e salva o MP3 e o tempo de cada palavra). O **Lorenzo** a pessoa faz à mão, com a mesma voz do ep. 01.
 - A chamada final do Lorenzo ("Se você gostou, comenta: Curioso Soh!") é sempre a mesma: reaproveitar `ep01-fhc/voices/16-lorenzo.mp3`.
 - **Boca:** sincronizada pela transcrição palavra por palavra; cada personagem mexe só nas próprias falas.
 
@@ -55,4 +55,4 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 
 ## Episódios
 - **Ep. 01 — "Visita boa toma café e vai embora"** (notícia: g1, 09/11/2026, queixa da esposa de FHC contra homem que fez vídeo no apartamento): `jornal/ep01-fhc/visita-boa.mp4`, 118 s, 9:16, −14 LUFS. Roteiro em `jornal/ep01-fhc/ROTEIRO.md`; reconstruir com `sh jornal/ep01-fhc/build.sh`.
-- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): roteiro e prévias em `jornal/ep02-iphones/` (`ROTEIRO.md`, `previa-*.jpg`). **Aguardando as falas** (MP3s 01–16; a 17 já está lá).
+- **Ep. 02 — "Dura mais que mandato"** (notícia: CNN Brasil, 10/11/2026, Senado dará 95 iPhones 18 Pro e 330 celulares a parlamentares e servidores): roteiro, prévias e vozes do Chicó e da Zefinha em `jornal/ep02-iphones/`. **Aguardando as falas 07 e 12 do Lorenzo.**
