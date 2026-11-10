@@ -46,13 +46,13 @@ window.render = (t) => {
     fillOnly(rect(0, 1240, 540, 50), PAL.floor, { boil: 0 });
     gato({ x: 290, y: 1258, s: .95, t, arch: .55, look: [.6, -.4] });
   });
-  label(20, 888, 3, 'O GATO', 'magricelo · bagunceiro');
+  label(20, 888, 3, 'BITUCA', 'magricelo · bagunceiro');
   clip(540, 850, 540, 440, () => {
     cell(540, 850, 540, 440, ['#ffb347', '#ff9a55', '#ff8a5c']);
     poleiro({ x: 800, y: 1290, s: 1, h: 120 });
     papagaio({ x: 790, y: 1166, s: .82, t, beak: .8, wing: .6, look: [.6, -.2] });
   });
-  label(560, 888, 4, 'O PAPAGAIO', 'repete na pior hora');
+  label(560, 888, 4, 'LORENZO', 'repete na pior hora');
   vline(540, 850, 1290); hline(1290);
 
   // 5 Poltrona + mesinha + café
@@ -73,7 +73,7 @@ window.render = (t) => {
     jornalClose({ t });
     pop();
   });
-  label(560, 1328, 6, 'O JORNAL', 'close nas mãos dele');
+  label(560, 1328, 6, 'BRAZUELA', 'o jornal · close nas mãos dele');
   vline(540, 1290, 1920);
 };
 await document.fonts.load('58px "Titan One"'); await document.fonts.load('800 38px "Baloo 2"'); await document.fonts.load('78px "Bungee"');

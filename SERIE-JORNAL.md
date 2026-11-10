@@ -8,8 +8,8 @@ A pessoa manda uma **notícia** (de preferência o link; print também serve). U
 ## Elenco fixo (desenhar uma vez, reaproveitar em todo episódio)
 - **Seu Chicó** (o senhor; desenhado a partir da foto de referência da pessoa): cabelo branco cacheado, óculos de armação escura, bigodinho branco, camiseta azul com o "14" pontilhado, calça azul-marinho e chinelo de dedo. Gesto típico: a mão no queixo. Sentado na poltrona, lê o jornal todo dia, dá opiniões engraçadas e ri.
 - **Dona Zefinha** (a esposa; mesma foto de referência): cabelo grisalho puxado num coque, óculos de aro fino, vestido azul com estampa de treliça, casaco vermelho com desenhos geométricos e chinelo azul-marinho. Fica de braços cruzados e cara séria. Está sempre na cozinha fazendo alguma coisa. Se intromete de vez em quando com bordões: "bem que te avisei", "né pussive", "rapaz, o mundo tá de cabeça pra baixo mesmo" e outros a inventar.
-- **Gato magricelo:** faz bagunça e estressa o senhor (derruba a xícara etc.).
-- **Papagaio:** repete palavras para zoar o senhor no pior momento.
+- **Bituca** (gato magricelo): faz bagunça e estressa o senhor (derruba a xícara etc.).
+- **Lorenzo** (papagaio): repete palavras para zoar o senhor no pior momento.
 
 ## Cenário fixo
 Casa simples de interior, perto da hora do jantar. Poltrona com mesinha ao lado, garrafa de café e xícara. Cozinha visível ao fundo.
@@ -36,7 +36,7 @@ Casa simples de interior, perto da hora do jantar. Poltrona com mesinha ao lado,
 
 ## Áudio com várias vozes (ponto de atenção)
 São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
-- **Recomendado:** um MP3 por fala, numerados na ordem (`01-seu.mp3`, `02-esposa.mp3`, `03-papagaio.mp3`…), gerados pela pessoa no ElevenLabs. Eu monto a conversa na linha do tempo, o que dá controle de pausas e das gags.
+- **Escolhido:** um MP3 por fala, numerados na ordem (`01-seu.mp3`, `02-esposa.mp3`, `03-papagaio.mp3`…), gerados pela pessoa no ElevenLabs. Eu monto a conversa na linha do tempo, o que dá controle de pausas e das gags.
 - **Alternativa:** um arquivo único de diálogo (ElevenLabs v3 com marcações de emoção como `[ri]`). Eu separo os falantes pela transcrição. Dá menos trabalho para a pessoa, mas é mais difícil corrigir uma fala isolada.
 - No roteiro eu entrego um bloco de texto pronto por fala, com a voz indicada e as marcações de emoção.
 - Vozes a definir: uma para cada personagem. O senhor pode ou não usar a voz padrão `ZqE9vIHPcrC35dZv0Svu`.
@@ -49,5 +49,5 @@ São três vozes: senhor, esposa e papagaio, com risadas e interrupções.
 
 ## Próximo passo
 1. Folha de elenco e cenário para aprovação: senhor, esposa, gato, papagaio e a sala com a cozinha ao fundo. **Feito, aguardando aprovação:** `jornal/elenco-previa.jpg`, `jornal/cenario-previa.jpg`, `jornal/jornal-close-previa.jpg` (código em `jornal/cast.js`).
-2. Nomes: **Seu Chicó** e **Dona Zefinha** (definidos). Faltam o nome do gato e do papagaio, as vozes do ElevenLabs e o nome do jornal (provisório: "O NOTICIÃO").
+2. Nomes definidos: **Seu Chicó**, **Dona Zefinha**, o gato **Bituca**, o papagaio **Lorenzo** e o jornal **BRAZUELA** (nome no cabeçalho do jornal desenhado). Áudio: a pessoa manda as falas separadas, um MP3 por fala.
 3. Primeira notícia: roteiro com as falas por personagem → MP3s da pessoa → produção. Reaproveitar o pipeline de `ciclone-janela/`: `tools/`, `toon.js`, `lib.js`, `mix.py`, `score.py`.

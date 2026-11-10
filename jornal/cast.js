@@ -317,7 +317,7 @@ function colher(hp, a) {
   pop();
 }
 
-// —— 3. O GATO MAGRICELO: cinza rajado, costelas à mostra, orelha dobrada, rabo com dobra, olhão de aprontar ——
+// —— 3. BITUCA, o gato magricelo: cinza rajado, costelas à mostra, orelha dobrada, rabo com dobra, olhão de aprontar ——
 // P: { x, y, s, t, face, arch (0..1), look, lid, mouth, tail }
 export function gato(P) {
   const t = P.t ?? 0, arch = P.arch ?? .3;
@@ -359,7 +359,7 @@ export function gato(P) {
   pop();
 }
 
-// —— 4. O PAPAGAIO: verde, testa azul, cara amarela, ombro vermelho, bico curvo que abre pra gritar ——
+// —— 4. LORENZO, o papagaio: verde, testa azul, cara amarela, ombro vermelho, bico curvo que abre pra gritar ——
 // P: { x, y, s, t, face, beak (0..1 aberto), look, lid, wing (0..1 aberta), bob }
 export function papagaio(P) {
   const t = P.t ?? 0, bk = P.beak ?? 0, wing = P.wing ?? 0;
@@ -586,7 +586,7 @@ export function jornalClose(P) {
     fillOnly(rect(W2 - 60, -H2, 80, H2 * 2), PAL.paperS, { boil: .2 });
     stroke([[-W2 + 30, -H2 + 150], [W2 - 30, -H2 + 150]], 6, { line: PAL.news }); stroke([[-W2 + 30, -H2 + 196], [W2 - 30, -H2 + 196]], 3, { line: PAL.news });
   } });
-  text(P.masthead ?? 'O NOTICIÃO', 0, -H2 + 82, { font: '92px "Titan One"', fill: PAL.news });
+  text(P.masthead ?? 'BRAZUELA', 0, -H2 + 82, { font: '92px "Titan One"', fill: PAL.news });
   text(P.date ?? 'SEGUNDA-FEIRA, 9 DE NOVEMBRO DE 2026', 0, -H2 + 174, { font: '700 26px "Baloo 2"', fill: PAL.news });
   if (P.kicker) { shape(rr(-W2 + 34, -H2 + 222, 260, 44, 8), { fill: PAL.pRed, lw: 5 }); text(P.kicker, -W2 + 164, -H2 + 245, { font: '800 28px "Baloo 2"', fill: '#ffffff' }); }
   const hl = P.headline ?? ['A MANCHETE REAL', 'DA NOTÍCIA ENTRA', 'AQUI, BEM GRANDE'];
