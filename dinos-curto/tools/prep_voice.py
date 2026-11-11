@@ -5,7 +5,8 @@ import numpy as np, soundfile as sf
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lines import LINES
 D = os.path.dirname(os.path.abspath(__file__)) + '/../voices'
-TEMPO = {'N': 1.17, 'NOE': 1.0, 'REX': 1.08}
+TEMPO = {'N': 1.2, 'NOE': 1.0, 'REX': 1.08}
+TEMPO_ID = {'06': 1.3}   # a chamada final um pouco mais rápida (cabe nos 20 s)
 MAXP = {'N': .26, 'NOE': .55, 'REX': .3}
 SR = 48000
 def squeeze(y, maxp, keep):
@@ -35,7 +36,7 @@ for k, (who, _) in LINES.items():
     a = np.abs(y) > np.abs(y).max() * .03; i0 = max(0, np.argmax(a) - int(.05 * SR)); i1 = min(len(y), len(y) - np.argmax(a[::-1]) + int(.18 * SR))
     y = squeeze(y[i0:i1], MAXP[who], MAXP[who] * .75); sf.write(tmp, y, SR)
     o = f'{D}/{k}.wav'
-    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', tmp, '-af', f'atempo={TEMPO[who]},afade=t=in:d=0.02,areverse,afade=t=in:d=0.06,areverse', '-ar', str(SR), o], check=True)
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', tmp, '-af', f'atempo={TEMPO_ID.get(k, TEMPO[who])},afade=t=in:d=0.02,areverse,afade=t=in:d=0.06,areverse', '-ar', str(SR), o], check=True)
     os.remove(tmp)
     y, _ = sf.read(o); dur[k] = round(len(y) / SR, 3)
     # envelope de boca: RMS (abertura) e centróide (largo × redondo) a 24 Hz

@@ -8,7 +8,7 @@ init(document.getElementById('c'));
 const J = async f => { try { const r = await fetch(f); if (r.ok) return await r.json(); } catch (e) { } return null; };
 const DURS = await J('voices/dur.json'), WORDS = (await J('voices/words.json')) || {}, ENV = (await J('voices/env.json')) || {};
 const { VO, END, w, SC } = build(DURS, WORDS);
-const T66 = w('02', '66') - .12;
+const T66 = w('02', '66') - .15;
 const q = t => Math.floor(t * 12 + 1e-6) / 12;
 const endOf = id => VO[id] + DURS[id];
 const SCS = Object.fromEntries(SC.map(([id, a, b]) => [id, [a, b]]));
@@ -249,32 +249,38 @@ function s01(t) {
   if (t > tImp - .12) { scr(); fillOnly(rect(0, 0, W, H), 'rgba(255,250,235,.9)', { boil: 0 }); }
   hookTitle(t);
 }
-// 02 — "Eles perderam a arca por 66 milhões de anos."  (a arca indo embora; o Rex na margem)
+// 02 — "O asteroide acabou com eles 66 milhões de anos antes de existir gente."
 function s02(t) {
-  const t0 = SCS['02'][0], t66 = w('02', '66'), tAn = w('02', 'anos');
-  const k = ss(seg(t, t0, SCS['03'][0]));
-  cam(540, 1150, lerp(1.05, .98, k), 0, t);
-  rainSky(t);
-  water(t, 1380, { A: 22 });
-  arca(lerp(760, 1020, k), 1380, 520, { t, necks: 1, roll: Math.sin(t * 1.5) * .03 });
-  shape(spline([[-600, 1500], [-200, 1420], [300, 1440], [520, 1520], [700, 2400], [-600, 2400]]), { fill: '#55704f', lw: 8 });
-  const lnd = t - (t0 + .3);
-  REX({ x: 260, y: 1700, s: .78, t, look: [.9, -.1], arms: 1, mouth: { o: .7, sm: -.8 }, brow: 1, browAng: -.6, eyeS: 1.2, nerv: .5, smoke: true, sweat: true, sq: lnd > 0 ? 1 - .2 * Math.cos(lnd * 20) * Math.exp(-lnd * 6) : 1 });
-  if (t < t0 + .3) { scr(); fillOnly(rect(0, 0, W, H), `rgba(255,47,168,${.6 * (1 - seg(t, t0, t0 + .3))})`, { boil: 0 }); }
-  rain(t, 60);
-  if (t > t66 - .1) {
-    scr(); const a = popIn(t, t66 - .1, .3, 2);
-    push(); translate(540, 330); rotate(-.06); scale(a);
-    shape(rr(-440, -110, 880, 220, 30), { fill: '#e8392b', lw: 8 });
-    text('66 MILHÕES', 0, -28, { font: '96px "Titan One"', fill: '#ffffff', outlineW: 14 });
-    text('DE ANOS ATRASADO', 0, 62, { font: '58px "Titan One"', fill: '#ffd23f', outlineW: 10 });
-    pop();
+  const t0 = SCS['02'][0], t66 = w('02', '66'), tAn = w('02', 'antes');
+  if (t < t66 - .1) {
+    // o impacto visto do espaço (o asteroide do gancho)
+    cam(540, 960, 1, t < t0 + .5 ? 14 : 0, t);
+    space(t);
+    globe(540, 1250, 400, t, { hit: seg(t, t0 + .05, t66) });
+    if (t < t0 + .08) { scr(); fillOnly(rect(0, 0, W, H), 'rgba(255,250,235,.9)', { boil: 0 }); }
+    sign('ASTEROIDE', 540, 1760, { size: 64, fill: '#ff9a2f', s: popIn(t, w('02', 'asteroide') - .05) });
+  } else {
+    // os grandes dinossauros tombam no horizonte cinzento
+    cam(540, 1100, 1, 0, t);
+    fillScreen('#6e6a72'); bands(['#8a8590', '#7c7882', '#6e6a72', '#605c64'], -400, 1400, -2000, 3000);
+    for (let i = 0; i < 4; i++) {
+      const tf = t66 + i * .22, k = ss(seg(t, tf, tf + .4)), sink = ei(seg(t, tf + .4, tf + .9));
+      if (sink > .98) continue;
+      push(); translate(140 + i * 270, 1420 + sink * 700); rotate(k * (i % 2 ? 1.4 : -1.4)); translate(0, k * 60);
+      sauropod(0, 0, .45 + (i % 2) * .08, '#2b2830', t * (1 - k), i);
+      pop();
+      if (k > .85 && sink < .6) for (let p = 0; p < 3; p++) fillOnly(ell(140 + i * 270 + (p - 1) * 60, 1410, 50, 30, 12), 'rgba(160,150,160,.6)', { boil: .5 });
+    }
+    shape(rect(-2000, 1420, 5000, 900), { fill: '#3e3a40', lw: 7 });
+    scr();
+    sign('66 MILHÕES DE ANOS', 540, 380, { size: 76, fill: '#ffd23f', s: popIn(t, t66 - .1), font: 'Titan One', weight: '400', rot: -.03 });
+    if (t > tAn - .1) sign('ANTES DE EXISTIR GENTE', 540, 520, { size: 58, fill: '#ffffff', s: popIn(t, tAn - .1), rot: .02 });
   }
   hookTitle(t);
 }
 // 03 — o campo de 100 m: humanos só nos últimos 45 cm (e a arca nos últimos milímetros)
 function s03(t) {
-  const t0 = SCS['03'][0], tCam = w('03', 'campo'), tHum = w('03', 'humanos'), t45 = w('03', '45'), tCen = w('03', 'centímetros'), tEnd = SCS['04'][0];
+  const t0 = SCS['03'][0], tCam = w('03', 'campo'), tHum = w('03', 'gente'), t45 = w('03', '45'), tCen = w('03', 'centímetros'), tEnd = SCS['04'][0];
   const runA = tHum - .35, runB = t45 - .05, tLupa = tCen + .15;
   const rk = ss(seg(t, runA, runB)), rxw = lerp(520, FL - 260, rk);
   const Z = (a, b, k) => Math.exp(lerp(Math.log(a), Math.log(b), k));
@@ -293,11 +299,11 @@ function s03(t) {
   REX({ x: rxw, y: GY + 160, s: .8, t, run: t > runA && t < runB, lean: t > runA && t < runB ? .18 : 0, look: [1, 0], mouth: { o: .6, sm: .4 }, brow: .8, arms: t < runA ? 1 : 0 });
   scr();
   if (t < runA + .2) {
-    sign('INÍCIO', 120, 1180, { size: 40, fill: '#e8392b', col: '#ffffff', s: popIn(t, t0) }); sign('HOJE', 960, 1180, { size: 40, fill: '#3f6fd1', col: '#ffffff', s: popIn(t, t0 + .15) });
+    sign('ASTEROIDE', 150, 1180, { size: 38, fill: '#e8392b', col: '#ffffff', s: popIn(t, t0) }); sign('HOJE', 960, 1180, { size: 40, fill: '#3f6fd1', col: '#ffffff', s: popIn(t, t0 + .15) });
     sign('100 m = 66 MILHÕES DE ANOS', 540, 420, { size: 54, fill: '#ffffff', s: popIn(t, tCam - .1) });
   }
   if (t > runA && t < runB) speedLines(t, 12);
-  if (t > t45 - .1 && t < tLupa) sign('HUMANOS: 45 cm', 540, 420, { size: 66, fill: '#ffd23f', s: popIn(t, t45 - .1) });
+  if (t > t45 - .1 && t < tLupa) sign('GENTE: 45 cm', 540, 420, { size: 66, fill: '#ffd23f', s: popIn(t, t45 - .1) });
   if (t > tLupa) {
     const a = ss(seg(t, tLupa, tLupa + .25));
     stroke(ell(540, 1000, 470 * a + 1, 470 * a + 1, 80), 30, { line: '#5b3a1f' }); stroke(ell(540, 1000, 492 * a + 1, 492 * a + 1, 80), 6);
@@ -314,42 +320,39 @@ function s04(t) {
   sign('A ARCA', FL - 3, GY + 20, { size: 30, fill: '#ffffff', s: .77 }); stroke([[FL - 3, GY + 60], [FL - 3, GY + 140]], 5);
   REX({ x: FL - 260, y: GY + 160, s: .8, t, look: [.9, .9], mouth: { o: Math.max(L.o, .25), sm: -.5 }, brow: 1, browAng: -.8, sweat: true, bob: Math.abs(Math.sin(t * 9)) * 12, lean: -.06, headTilt: .2, eyeS: 1.25 });
 }
-// 05 — "Mas calma: as aves são dinossauros! E Noé soltou uma pomba."  → a resposta, com o trabalho pronto
+// 05 — "Mas as aves são dinossauros. Então tinha dinossauro na arca, sim: a pomba!"  → a resposta, com a arca pronta
 function s05(t) {
-  const t0 = SCS['05'][0], tAv = w('05', 'aves'), tSao = w('05', 'são'), tE = w('05', 'e'), tPo = w('05', 'pomba');
-  if (t < tAv - .1) {
-    // a pomba pousa na barba do Noé
-    cam(560, 1180, 1.7, 0, t);
-    deck(t, { floorY: 1700 });
-    const fl = seg(t, t0, t0 + .45), lnd = t - (t0 + .45);
-    NOE({ x: 520, y: 2000, s: 1.5, t, lid: .5, look: t > t0 + .5 ? [.4, -.9] : [.2, .3], brow: .4, wet: 1 });
-    bird({ x: lerp(1100, 600, eo(fl)), y: lerp(700, 1390, eo(fl)), s: 1.15, t, fly: fl < 1 ? 1 : 0, face: -1, look: [-.4, .3], smug: 1, sq: lnd > 0 ? 1 - .25 * Math.cos(lnd * 22) * Math.exp(-lnd * 7) : 1 });
-    return;
-  }
-  if (t < tE - .1) {
-    // sombra de raptor + carimbo DINOSSAURO
+  const t0 = SCS['05'][0], tSao = w('05', 'são'), tEn = w('05', 'então'), tTi = w('05', 'tinha'), tPo = w('05', 'pomba');
+  if (t < tEn - .1) {
+    // a sombra da pomba é um raptor + carimbo DINOSSAURO
     cam(540, 1150, 1, t > tSao && t < tSao + .25 ? 10 : 0, t);
     deck(t, { win: false, floorY: 1560, lamp: true });
     stroke([[-100, 1500], [1200, 1500]], 18, { line: PAL.woodS });
-    raptorShadow(560, 1460, 1.9, 'rgba(30,20,40,.5)', .3 + .4 * Math.max(0, Math.sin(t * 6)));
+    const m = ss(seg(t, t0, t0 + .4));
+    raptorShadow(560, 1460, 1.9 * (.6 + .4 * m), `rgba(30,20,40,${.5 * m})`, .3 + .4 * Math.max(0, Math.sin(t * 6)));
     bird({ x: 480, y: 1500, s: 1.3, t, face: 1, look: [.5, 0], smug: 1 });
+    sign('AVES', 540, 380, { size: 80, fill: '#9be08a', s: popIn(t, t0), font: 'Titan One', weight: '400' });
     const a = popIn(t, tSao - .05, .2, 2.4);
-    if (a > 0) { scr(); push(); translate(540, 520); rotate(-.18); scale(lerp(2.2, 1, Math.min(1, a))); shape(rr(-360, -80, 720, 160, 20), { fill: 'rgba(0,0,0,0)', lw: 12, line: '#e8392b' }); text('DINOSSAURO', 0, 6, { font: '110px "Titan One"', fill: '#e8392b' }); pop(); }
+    if (a > 0) { scr(); push(); translate(540, 620); rotate(-.18); scale(lerp(2.2, 1, Math.min(1, a))); shape(rr(-360, -80, 720, 160, 20), { fill: 'rgba(0,0,0,0)', lw: 12, line: '#e8392b' }); text('DINOSSAURO', 0, 6, { font: '110px "Titan One"', fill: '#e8392b' }); pop(); }
     return;
   }
-  // resposta: arco-íris, a arca pronta, a pomba (dinossauro de pena) voando com o raminho
-  const k = ss(seg(t, tE - .1, SCS['06'][0]));
-  cam(540, lerp(1150, 1100, k), lerp(1.05, .95, k), 0, t);
-  afterSky(t, ss(seg(t, tE - .1, tE + .9)));
+  // a resposta: arca pronta sob o arco-íris; a pomba sai voando da mão do Noé
+  const k = ss(seg(t, tEn - .1, SCS['06'][0]));
+  cam(540, lerp(1150, 1110, k), lerp(1.05, .97, k), 0, t);
+  afterSky(t, ss(seg(t, tEn - .1, tEn + .7)));
   water(t, 1480, { A: 10, cols: ['#6fb6d6', '#5aa3c6', '#4a90b3'] });
   arca(560, 1500, 860, { t, necks: 1, roll: Math.sin(t * .9) * .015 });
   push(); translate(560, 1500 - 180 * .955); scale(.42);
-  noe({ x: -520, y: 0, s: 1, t, holdR: 'clip', marks: 2, zero: 1, look: [.6, -.5], lid: .45, mouth: { sm: .6 }, armL: { h: [-60, -170], bend: -20 } });
+  noe({ x: -520, y: 0, s: 1, t, look: [.6, -.6], lid: .45, mouth: { sm: .6 }, armR: { h: [60, -200], bend: 30 } });
   rex({ x: 640, y: 0, s: .9, t, face: -1, arms: 1, look: [-.4, -.6], mouth: { o: .4, sm: 1 }, brow: .4 });
   pop();
-  const fk = seg(t, tPo - .7, tPo + 1.4);
-  if (fk > 0) bird({ x: lerp(380, 1150, fk), y: lerp(1200, 520, fk) + Math.sin(t * 4) * 15, s: .8, t, fly: 1, branch: true, look: [.8, -.2] });
-  scr(); sign('AVES = DINOSSAUROS', 540, 300, { size: 64, fill: '#9be08a', s: popIn(t, tE - .1) });
+  const fk = seg(t, tPo - .35, tPo + 1.1);
+  const hx = 560 + (-520 + 140) * .42, hy = 1500 - 180 * .955 + (-400 - 210) * .42;
+  if (fk <= 0) bird({ x: hx + 10, y: hy, s: .55, t, look: [.6, -.3], smug: 1 });
+  else bird({ x: lerp(hx, 700, eo(fk)), y: lerp(hy, 900, eo(fk)) + Math.sin(t * 4) * 12, s: lerp(.55, 1.5, eo(fk)), t, fly: 1, branch: true, look: [.4, .2], smug: 1 });
+  scr();
+  sign('TINHA DINOSSAURO NA ARCA!', 540, 300, { size: 54, fill: '#ffd23f', s: popIn(t, tTi - .1) });
+  if (t > tPo - .1) sign('A POMBA!', 540, 430, { size: 72, fill: '#9be08a', s: popIn(t, tPo - .1), font: 'Titan One', weight: '400', rot: -.04 });
 }
 // 06 — chamada
 function s06(t) {
@@ -383,7 +386,6 @@ window.render = (t) => {
   fillScreen('#000');
   const sc = SC.find(([, a, b]) => t >= a && t < b) || SC[SC.length - 1];
   FN[sc[0]](t, t - sc[1], sc[2] - sc[1]);
-  swirlWipe(t, SCS['02'][0], .2);
 };
 
 // —— eventos de som ——
@@ -395,23 +397,23 @@ const tImp = S('02') - .14;
 ev('cue', 0, { name: 'panico', t0: 0, t1: tImp });
 ev('cue', S('02'), { name: 'perdeu', t0: S('02'), t1: S('03') });
 ev('cue', S('03'), { name: 'campo', t0: S('03'), t1: S('04') });
-ev('cue', S('05'), { name: 'aves', t0: S('05'), t1: w('05', 'e') - .1 });
-ev('cue', w('05', 'e') - .1, { name: 'final', t0: w('05', 'e') - .1, t1: END });
+ev('cue', S('05'), { name: 'aves', t0: S('05'), t1: w('05', 'então') - .1 });
+ev('cue', w('05', 'então') - .1, { name: 'final', t0: w('05', 'então') - .1, t1: END });
 // 01
-ev('meteor', 0, { d: tImp + .05 }); ev('steps', w('01', 'corre', 1) - .06, { d: tImp - w('01', 'corre', 1), fast: 1 }); ev('impact', tImp); ev('portalWhoosh', S('02') - .1);
+ev('meteor', 0, { d: tImp + .05 }); ev('steps', w('01', 'corre', 1) - .06, { d: tImp - w('01', 'corre', 1), fast: 1 }); ev('impact', tImp);
 // 02
-ev('thud', S('02') + .3); ev('thunder', S('02') + .5); ev('stamp', w('02', '66') - .1); ev('sting', w('02', '66') + .1);
+ev('pop', w('02', 'asteroide') - .05); for (let i = 0; i < 4; i++) ev('fall', w('02', '66') + i * .22 + .1); ev('stamp', w('02', '66') - .1); ev('pop', w('02', 'antes') - .1);
 // 03
-ev('pop', S('03') + .02); ev('pop', w('03', 'campo') - .1); ev('whistle', w('03', 'humanos') - .5); ev('steps', w('03', 'humanos') - .35, { d: w('03', '45') - w('03', 'humanos') + .3, fast: 1 });
-ev('zoomIn', w('03', 'humanos') - .3, { d: w('03', '45') - w('03', 'humanos') + .5 }); ev('skid', w('03', '45') - .1); ev('pop', w('03', '45') - .1); ev('zoomIn', w('03', 'centímetros') + .15, { d: .9 }); ev('ding', w('03', 'centímetros') + .3);
+ev('pop', S('03') + .02); ev('pop', w('03', 'campo') - .1); ev('whistle', w('03', 'gente') - .5); ev('steps', w('03', 'gente') - .35, { d: w('03', '45') - w('03', 'gente') + .3, fast: 1 });
+ev('zoomIn', w('03', 'gente') - .3, { d: w('03', '45') - w('03', 'gente') + .5 }); ev('skid', w('03', '45') - .1); ev('pop', w('03', '45') - .1); ev('zoomIn', w('03', 'centímetros') + .15, { d: .9 }); ev('ding', w('03', 'centímetros') + .3);
 // 04
 ev('boing', VO['04'] + .05);
 // 05
-ev('flutter', S('05'), { d: .5 }); ev('squish', S('05') + .45); ev('coo', S('05') + .6); ev('roar', w('05', 'aves') - .1); ev('stamp', w('05', 'são') - .02);
-ev('harp', w('05', 'e') - .1); ev('pop', w('05', 'e') - .05); ev('flutter', w('05', 'pomba') - .6, { d: 1.2 }); ev('coo', w('05', 'pomba') + .2);
+ev('roar', S('05') + .05); ev('stamp', w('05', 'são') - .02); ev('harp', w('05', 'então') - .1); ev('pop', w('05', 'tinha') - .1);
+ev('flutter', w('05', 'pomba') - .35, { d: 1.2 }); ev('titleHit', w('05', 'pomba') - .1); ev('coo', w('05', 'pomba') + .3);
 // 06
 ev('pop', VO['06'] - .15); ev('pop', w('06', 'comenta') - .08); ev('pop', w('06', 'curte') - .08); ev('titleHit', w('06', 'compartilha') - .08);
-for (const [id, a, b] of SC) ev('amb', a, { d: +(b - a).toFixed(3), w: { '01': 'jungle', '02': 'rain', '03': 'field', '04': 'field', '05': 'rain', '06': 'none' }[id] });
+for (const [id, a, b] of SC) ev('amb', a, { d: +(b - a).toFixed(3), w: { '01': 'jungle', '02': 'none', '03': 'field', '04': 'field', '05': 'rain', '06': 'none' }[id] });
 EV.sort((a, b) => a.t - b.t);
 window.EV = EV;
 

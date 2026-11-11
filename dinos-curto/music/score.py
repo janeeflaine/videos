@@ -175,10 +175,11 @@ for k in range(int(d / .25)): D.add(tom(38 + (k % 2) * 3, 1), k * .25, .28)
 D.add(crash(1.3), evt('impact'), .5); D.add(kick(1.5), evt('impact'), .8)
 for b in BUS.values(): b.cut(c['t1'] + .2, c['t1'] + .22, .15)
 
-# ——— perdeu o barco: tuba "uá-uá" com chuva ———
-c = CUE['perdeu']
-for i, n in enumerate(['G3', 'F#3', 'F3', 'E3']): B.add(tuba(0, .32 if i < 3 else .9, M(n), 1), c['t0'] + .5 + i * .38, .7)
-s0 = evt('stamp'); H.add(brass(.4, [M('D3'), M('F3'), M('A3'), M('D4')], 1), s0, .45); D.add(snare(1), s0, .25)
+# ——— o impacto e o fim dos grandes: cordas descendo, golpe de metais no "66 milhões" ———
+c = CUE['perdeu']; d = c['t1'] - c['t0']
+H.add(strings_trem(d, [M('D3'), M('F3'), M('A3')], 1, rise=-3), c['t0'], .22)
+B.add(bass(0, d, M('D2'), 1, 400), c['t0'], .35)
+s0 = evt('stamp'); H.add(brass(.5, [M('D3'), M('F3'), M('A3'), M('D4')], 1), s0, .5); D.add(snare(1), s0, .25); D.add(tom(36, 1), s0, .4)
 for b in BUS.values(): b.cut(c['t1'], c['t1'] + .02, .01)
 
 # ——— campo: marcha de estádio, acelera na corrida (xilofone) ———
@@ -215,7 +216,7 @@ for b in BUS.values(): b.cut(c['t1'], c['t1'] + .02, .01)
 
 # ——— final: pad quente + teremim; acorde no "compartilha" ———
 c = CUE['final']
-hit = evt('titleHit')
+hit = [e for e in EVS if e['type'] == 'titleHit'][-1]['t']
 DMj = [([M('D3'), M('F#3'), M('A3')], M('D2')), ([M('G2'), M('B2'), M('D3')], M('G1')), ([M('A2'), M('C#3'), M('E3')], M('A1'))]
 t = c['t0']; k = 0
 while t < hit - .2:

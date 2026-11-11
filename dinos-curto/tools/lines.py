@@ -6,9 +6,9 @@ VOICE = {
 }
 LINES = {
     '01': ('REX', '[screaming] Corre, Noé! Corre!'),
-    '02': ('N', 'Eles perderam a arca por sessenta e seis milhões de anos.'),
-    '03': ('N', 'Num campo de cem metros, os humanos só aparecem nos últimos quarenta e cinco centímetros.'),
+    '02': ('N', 'O asteroide acabou com eles sessenta e seis milhões de anos antes de existir gente.'),
+    '03': ('N', 'Se esse tempo fosse um campo de cem metros, a gente só aparece nos últimos quarenta e cinco centímetros.'),
     '04': ('REX', '[out of breath] Cheguei atrasado?!'),
-    '05': ('N', 'Mas calma: as aves são dinossauros! E Noé soltou uma pomba.'),
+    '05': ('N', 'Mas as aves são dinossauros. Então tinha dinossauro na arca, sim: a pomba!'),
     '06': ('N', 'Se você gostou, comenta, curte e compartilha.'),
 }
