@@ -1,0 +1,8 @@
+fonts/*.woff2
+stills/
+out/
+mix.wav
+music/score.wav
+music/stems/
+*.tmp.mp4
+__pycache__/

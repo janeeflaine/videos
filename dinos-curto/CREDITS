@@ -1,0 +1,20 @@
+Cadê os dinossauros? (versão curta, 19 s) — créditos de terceiros
+
+Vozes: ElevenLabs (elevenlabs.io), geradas pela API com a conta da pessoa. Uso conforme os termos da ElevenLabs para o plano da conta.
+  Narrador: voz ZqE9vIHPcrC35dZv0Svu (modelo eleven_multilingual_v2).
+  Noé: voz "Sergio" RGbeQtiShYRDVCrd9b9w (modelo eleven_v3).
+  Rex: voz "Elvis" zNEsdgTUa3ndwKry8Xcq (modelo eleven_v3).
+  Áudios originais: voices/src/*.mp3.
+Verificação de fala: faster-whisper (MIT) com o modelo Systran/faster-whisper-small (MIT).
+Fontes (SIL Open Font License 1.1, Google Fonts): Baloo 2, Titan One, VT323, Bungee.
+Música e efeitos sonoros: sintetizados em código para este filme (sem samples).
+Globo: desenho estilizado feito à mão para o filme (sem dados de mapa, sem fronteiras).
+Motor de desenho e ferramentas de render: biblioteca Lemo-Opuscar (MIT), estilo Sci-Fi Sitcom Toon.
+
+Fontes dos fatos citados no roteiro:
+  Extinção dos dinossauros não-avianos há ~66 milhões de anos; impacto de Chicxulub (~10 km, Yucatán, México):
+    https://en.wikipedia.org/wiki/Chicxulub_crater
+  Homo sapiens há ~300 mil anos: https://en.wikipedia.org/wiki/Homo_sapiens
+  Aves são dinossauros terópodes: https://en.wikipedia.org/wiki/Origin_of_birds
+  Conta do campo: 66 milhões de anos = 100 m → 300 mil anos ≈ 45 cm; alguns milhares de anos ≈ alguns milímetros.
+  Noé soltou uma pomba: Gênesis 8:8–12.
