@@ -4,7 +4,9 @@ Sempre gerar **duas versões** de cada vídeo:
 
 1. **Versão completa**: Sci-Fi Sitcom Toon (biblioteca Lemo-Opuscar, estilo `scifi-toon`), humor, 9:16 (1080×1920),
    entre 60 e 130 s. Narrador no ElevenLabs com a voz `ZqE9vIHPcrC35dZv0Svu`; personagens que falam usam outras vozes do
-   ElevenLabs. Sem legendas na imagem. Vídeo dinâmico, com os personagens se movimentando. Termina com a resposta mostrando o
+   ElevenLabs. Sem legendas na imagem. Vídeo dinâmico, com os personagens se movimentando. **Também começa com um gancho
+   forte nos 3 primeiros segundos** (mesmas regras da versão curta abaixo: ação no quadro 0, pergunta na tela, som desde o
+   início, sem abertura lenta nem silêncio). Termina com a resposta mostrando o
    trabalho pronto e depois a chamada "Se você gostou, comenta, curte e compartilha". Pasta `<tema>/`.
 2. **Versão curta** (para testar engajamento): mesmo elenco, cenários e vozes, **no máximo 20 s**, com **gancho forte nos
    3 primeiros segundos** (ação já no quadro 0, a pergunta do vídeo na tela desde o primeiro quadro, som desde o início, sem
